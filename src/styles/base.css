@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+html [hidden] {
+  display: none;
+}
+
 html {
   color-scheme: dark;
   background: var(--color-teletext);

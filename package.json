@@ -12,15 +12,17 @@
     "data:check": "node scripts/build-catalog.mjs --check",
     "build": "npm run data:check && tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "biome check src scripts tests data public/data vite.config.ts",
+    "lint": "biome check src scripts tests e2e data public/data vite.config.ts playwright.config.ts",
     "test": "vitest run",
+    "test:e2e": "playwright test",
     "test:timezone": "TZ=Pacific/Honolulu vitest run tests/schedule-compiler.test.mjs tests/schedule-engine.test.ts",
     "test:watch": "vitest",
-    "check": "npm run lint && npm run test && npm run test:timezone && npm run build"
+    "check": "npm run lint && npm run test && npm run test:timezone && npm run build && npm run test:e2e"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.8",
     "@js-temporal/polyfill": "^0.5.1",
+    "@playwright/test": "^1.65.0",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "typescript": "^6.0.3",

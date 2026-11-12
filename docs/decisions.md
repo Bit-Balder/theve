@@ -58,6 +58,16 @@ Senast uppdaterad: 12 november 2026.
   slut visas reservbild till nästa tablåslot; tablåns klocka stoppas aldrig.
 - Inga video- eller ljudfiler lagras i repot. Internet Archive-identitet,
   rights status och family status fortsätter vara separata kontroller.
+- I sändningsläget betyder pil upp/ned kanal upp/ned. I programguiden flyttar
+  samma knappar fokus; Enter byter till kanalens program som pågår nu.
+- `G` och plattformskoden `Guide` öppnar nu/nästa-guiden. Escape, Backspace,
+  BrowserBack, GoBack och TV-kod 461 normaliseras till samma Back-handling.
+- Direktnummer samlas i en synlig buffert i en sekund. Enter kan bekräfta
+  tidigare; okänt kanalnummer lämnar nuvarande kanal orörd.
+- Guideposter representerar kanaler, inte programval. Nästa program visas som
+  text och kan inte startas i förtid.
+- Fokus återgår till TV-ytan när ett överlägg stängs. Senaste kanalvalet och
+  senaste asynkrona laddningen är alltid de som får uppdatera bilden.
 
 ## Öppet inför senare etapper
 
