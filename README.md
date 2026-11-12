@@ -3,10 +3,10 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 4: ett återanvändbart designsystem, en stabil
-4:3-yta, validerade innehållskontrakt och en deterministisk schemamotor för
-svensk tid. Ingen skarp videokatalog, spelare eller färdig kanaldesign ingår
-ännu.
+Det här repot innehåller etapp 5: ett återanvändbart designsystem, en stabil
+4:3-yta, en deterministisk schemamotor samt en feltålig Internet Archive-
+adapter och spelarkontroller. Ingen skarp videokatalog eller färdig
+kanaldesign ingår ännu.
 
 ## Förutsättningar
 
@@ -81,7 +81,8 @@ docs/                  beslut och arkitektur
 .github/workflows/     gemensam kvalitetskontroll
 ```
 
-Läs [guiden till schemamotorn](docs/schedule-engine.md),
+Läs [spelarens publika API](docs/player-api.md),
+[guiden till schemamotorn](docs/schedule-engine.md),
 [beslutsloggen](docs/decisions.md) och
 [arkitekturgrunden](docs/architecture.md) innan nästa etapp påbörjas.
 
@@ -112,7 +113,8 @@ Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
 
 ## Status
 
-Etapp 4 etablerar veckomallar i `Europe/Stockholm`, ett minst åtta veckor långt
-UTC-schema och ett rent API för nuvarande program, nästa program och
-uppspelningsposition. Nästa steg är etapp 5: katalog och medieintegration.
+Etapp 5 etablerar en metadataadapter, en dokumenterad MP4-prioritering,
+användaraktiverad uppspelning, exakt offset och reservhantering för nätverks-
+och decodefel. Testerna använder simulerad media; inga videofiler lagras i
+projektet. Nästa steg är etapp 6: kanalbyte, guide och fjärrstyrning.
 
