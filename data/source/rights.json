@@ -29,6 +29,15 @@
       "notes": "Grönt exempel för datamodell och test. Ingen video ingår."
     },
     {
+      "catalogItemId": "retro-testbild",
+      "status": "approved",
+      "basis": "Egenskapat genererat testmönster utan externt material",
+      "evidenceUrl": null,
+      "reviewedAt": "2026-11-12",
+      "publicationAllowed": true,
+      "notes": "Grönt exempel för schemamotorn. Ingen video ingår."
+    },
+    {
       "catalogItemId": "retro-arkiv-kandidat",
       "status": "review_required",
       "basis": "Internet Archive-kandidat utan granskat rättighetsunderlag",

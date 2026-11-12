@@ -5,6 +5,11 @@ import { join } from "node:path";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 
+import {
+  compileWeeklySchedule,
+  findScheduleOverlaps,
+} from "./schedule-compiler.mjs";
+
 export class CatalogDataError extends Error {
   constructor(messages) {
     super(`Datavalideringen misslyckades:\n- ${messages.join("\n- ")}`);
@@ -54,7 +59,11 @@ function collectDuplicates(values) {
 }
 
 function validateSchemas(data) {
-  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  const ajv = new Ajv2020({
+    allErrors: true,
+    strict: true,
+    strictRequired: false,
+  });
   addFormats(ajv);
   const messages = [];
 
@@ -66,6 +75,59 @@ function validateSchemas(data) {
   }
 
   return messages;
+}
+
+function validateProgramSlot(
+  slot,
+  template,
+  catalogById,
+  rightsByItemId,
+  messages,
+) {
+  const slotName = `${template.id}/${slot.id}`;
+  const channelId = template.channelId;
+  const item = catalogById.get(slot.catalogItemId);
+  const rights = rightsByItemId.get(slot.catalogItemId);
+
+  if (!item) {
+    messages.push(
+      `slot "${slotName}" hänvisar till okänt katalogobjekt "${slot.catalogItemId}"`,
+    );
+    return;
+  }
+  if (item.channelId !== channelId) {
+    messages.push(
+      `slot "${slotName}" ligger på kanal "${channelId}" men katalogobjektet tillhör "${item.channelId}"`,
+    );
+  }
+  if (slot.durationSeconds > item.durationSeconds) {
+    messages.push(
+      `slot "${slotName}" är längre än katalogobjektet "${slot.catalogItemId}"`,
+    );
+  }
+  if (!rights) {
+    return;
+  }
+  if (rights.status !== "approved") {
+    messages.push(
+      `slot "${slotName}" får inte publiceras: rättighetsstatus är "${rights.status}"`,
+    );
+  }
+  if (!rights.publicationAllowed) {
+    messages.push(
+      `slot "${slotName}" får inte publiceras: publicering är inte godkänd`,
+    );
+  }
+  if (item.familyStatus !== "approved") {
+    messages.push(
+      `slot "${slotName}" får inte publiceras: familjestatus är "${item.familyStatus}"`,
+    );
+  }
+  if (!["available", "test_only"].includes(item.availabilityStatus)) {
+    messages.push(
+      `slot "${slotName}" får inte publiceras: tillgänglighet är "${item.availabilityStatus}"`,
+    );
+  }
 }
 
 export function validateProjectData(data) {
@@ -80,9 +142,9 @@ export function validateProjectData(data) {
   );
   const catalogIds = data.catalog.items.map((item) => item.id);
   const rightsIds = data.rights.entries.map((entry) => entry.catalogItemId);
-  const slotIds = data.schedule.slots.map((slot) => slot.id);
-  const slotPositions = data.schedule.slots.map(
-    (slot) => `${slot.channelId}:${slot.order}`,
+  const templateIds = data.schedule.templates.map((template) => template.id);
+  const templateSlotIds = data.schedule.templates.flatMap((template) =>
+    template.slots.map((slot) => `${template.id}/${slot.id}`),
   );
 
   for (const duplicate of collectDuplicates(channelIds)) {
@@ -97,11 +159,16 @@ export function validateProjectData(data) {
   for (const duplicate of collectDuplicates(rightsIds)) {
     messages.push(`rättighetsrad för "${duplicate}" förekommer flera gånger`);
   }
-  for (const duplicate of collectDuplicates(slotIds)) {
+  for (const duplicate of collectDuplicates(templateIds)) {
+    messages.push(`veckomall-id "${duplicate}" är inte unikt`);
+  }
+  for (const duplicate of collectDuplicates(templateSlotIds)) {
     messages.push(`slot-id "${duplicate}" är inte unikt`);
   }
-  for (const duplicate of collectDuplicates(slotPositions)) {
-    messages.push(`slotposition "${duplicate}" är inte unik`);
+  if (
+    new Date(`${data.schedule.horizon.startDate}T00:00:00Z`).getUTCDay() !== 1
+  ) {
+    messages.push("tablåhorisontens startdatum måste vara en måndag");
   }
 
   const channelsById = new Map(
@@ -133,55 +200,39 @@ export function validateProjectData(data) {
     }
   }
 
-  for (const slot of data.schedule.slots) {
-    const channel = channelsById.get(slot.channelId);
-    const item = catalogById.get(slot.catalogItemId);
-    const rights = rightsByItemId.get(slot.catalogItemId);
-
-    if (!channel) {
+  for (const template of data.schedule.templates) {
+    if (!channelsById.has(template.channelId)) {
       messages.push(
-        `slot "${slot.id}" hänvisar till okänd kanal "${slot.channelId}"`,
+        `veckomall hänvisar till okänd kanal "${template.channelId}"`,
       );
     }
-    if (!item) {
-      messages.push(
-        `slot "${slot.id}" hänvisar till okänt katalogobjekt "${slot.catalogItemId}"`,
-      );
-      continue;
-    }
-    if (item.channelId !== slot.channelId) {
-      messages.push(
-        `slot "${slot.id}" ligger på kanal "${slot.channelId}" men katalogobjektet tillhör "${item.channelId}"`,
-      );
-    }
-    if (!rights) {
-      continue;
-    }
-    if (rights.status !== "approved") {
-      messages.push(
-        `slot "${slot.id}" får inte publiceras: rättighetsstatus är "${rights.status}"`,
-      );
-    }
-    if (!rights.publicationAllowed) {
-      messages.push(
-        `slot "${slot.id}" får inte publiceras: publicering är inte godkänd`,
-      );
-    }
-    if (item.familyStatus !== "approved") {
-      messages.push(
-        `slot "${slot.id}" får inte publiceras: familjestatus är "${item.familyStatus}"`,
-      );
-    }
-    if (!["available", "test_only"].includes(item.availabilityStatus)) {
-      messages.push(
-        `slot "${slot.id}" får inte publiceras: tillgänglighet är "${item.availabilityStatus}"`,
-      );
+    for (const slot of template.slots) {
+      if (slot.type === "program") {
+        validateProgramSlot(
+          slot,
+          template,
+          catalogById,
+          rightsByItemId,
+          messages,
+        );
+      }
     }
   }
 
   if (messages.length > 0) {
     throw new CatalogDataError(messages);
   }
+
+  const compiledSchedule = compileWeeklySchedule(data.schedule);
+  for (const overlap of findScheduleOverlaps(compiledSchedule)) {
+    messages.push(`överlappande tablå: ${overlap}`);
+  }
+
+  if (messages.length > 0) {
+    throw new CatalogDataError(messages);
+  }
+
+  return compiledSchedule;
 }
 
 function createRevision(value) {
@@ -192,11 +243,7 @@ function createRevision(value) {
 }
 
 export function buildPublicData(data) {
-  validateProjectData(data);
-
-  const channelNumberById = new Map(
-    data.channels.channels.map((channel) => [channel.id, channel.number]),
-  );
+  const compiledSchedule = validateProjectData(data);
   const catalogById = new Map(
     data.catalog.items.map((item) => [item.id, item]),
   );
@@ -204,7 +251,11 @@ export function buildPublicData(data) {
     data.rights.entries.map((entry) => [entry.catalogItemId, entry]),
   );
   const scheduledItemIds = new Set(
-    data.schedule.slots.map((slot) => slot.catalogItemId),
+    data.schedule.templates.flatMap((template) =>
+      template.slots
+        .filter((slot) => slot.type === "program")
+        .map((slot) => slot.catalogItemId),
+    ),
   );
 
   const channels = [...data.channels.channels].sort(
@@ -217,37 +268,34 @@ export function buildPublicData(data) {
       rightsStatus: rightsByItemId.get(item.id).status,
     }))
     .sort((left, right) => left.id.localeCompare(right.id, "sv"));
-  const slots = [...data.schedule.slots].sort((left, right) => {
-    const channelDifference =
-      channelNumberById.get(left.channelId) -
-      channelNumberById.get(right.channelId);
-    return (
-      channelDifference ||
-      left.order - right.order ||
-      left.id.localeCompare(right.id, "sv")
-    );
-  });
+  const schedule = {
+    ...compiledSchedule,
+    slots: compiledSchedule.slots.map((slot) => ({
+      ...slot,
+      catalogTitle: slot.catalogItemId
+        ? catalogById.get(slot.catalogItemId).title
+        : null,
+    })),
+  };
 
   const revisionSource = {
-    schemaVersion: "1.0.0",
+    schemaVersion: "2.0.0",
     channels,
     items,
-    slots: slots.map((slot) => ({
-      ...slot,
-      catalogTitle: catalogById.get(slot.catalogItemId).title,
-    })),
+    schedule,
   };
   const revision = createRevision(revisionSource);
 
   return {
     "manifest.json": {
-      schemaVersion: "1.0.0",
+      schemaVersion: "2.0.0",
       revision,
       counts: {
         channels: channels.length,
         catalogItems: items.length,
-        scheduleSlots: slots.length,
+        scheduleSlots: schedule.slots.length,
       },
+      scheduleHorizon: schedule.horizon,
     },
     "channels.json": {
       schemaVersion: "1.0.0",
@@ -260,9 +308,8 @@ export function buildPublicData(data) {
       items,
     },
     "schedule.json": {
-      schemaVersion: "1.0.0",
+      ...schedule,
       revision,
-      slots: revisionSource.slots,
     },
   };
 }

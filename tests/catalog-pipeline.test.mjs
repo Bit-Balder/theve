@@ -13,7 +13,13 @@ function freshData() {
   return structuredClone(loadProjectData(projectRoot));
 }
 
-describe("Etapp 3:s datarör", () => {
+function retroProgramSlot(data) {
+  return data.schedule.templates.find(
+    (template) => template.channelId === "retro-tv",
+  ).slots[0];
+}
+
+describe("Etapp 4:s datarör", () => {
   it("bygger samma publika data deterministiskt", () => {
     const first = buildPublicData(freshData());
     const second = buildPublicData(freshData());
@@ -21,47 +27,36 @@ describe("Etapp 3:s datarör", () => {
     expect(second).toEqual(first);
     expect(first["manifest.json"].counts).toEqual({
       channels: 5,
-      catalogItems: 3,
-      scheduleSlots: 3,
+      catalogItems: 4,
+      scheduleSlots: 448,
     });
   });
 
   it("stoppar en okänd programreferens med begripligt fel", () => {
     const data = freshData();
-    data.schedule.slots[0].catalogItemId = "saknat-program";
+    data.schedule.templates[0].slots[0].catalogItemId = "saknat-program";
 
     expect(() => validateProjectData(data)).toThrow(
-      'slot "barnkanalen-000" hänvisar till okänt katalogobjekt "saknat-program"',
+      'slot "barnkanalen-daglig/morgon" hänvisar till okänt katalogobjekt "saknat-program"',
     );
   });
 
   it("stoppar review_required från publicerad tablå", () => {
     const data = freshData();
-    data.schedule.slots.push({
-      id: "retro-tv-000",
-      channelId: "retro-tv",
-      catalogItemId: "retro-arkiv-kandidat",
-      order: 0,
-      plannedDurationSeconds: 1800,
-    });
+    retroProgramSlot(data).catalogItemId = "retro-arkiv-kandidat";
 
     expect(() => buildPublicData(data)).toThrow(
-      'slot "retro-tv-000" får inte publiceras: rättighetsstatus är "review_required"',
+      'slot "retro-tv-daglig/kvall" får inte publiceras: rättighetsstatus är "review_required"',
     );
   });
 
   it("stoppar rejected från publicerad tablå", () => {
     const data = freshData();
-    data.schedule.slots.push({
-      id: "retro-tv-000",
-      channelId: "retro-tv",
-      catalogItemId: "avvisat-rattighetsexempel",
-      order: 0,
-      plannedDurationSeconds: 600,
-    });
+    retroProgramSlot(data).catalogItemId = "avvisat-rattighetsexempel";
+    retroProgramSlot(data).durationSeconds = 600;
 
     expect(() => buildPublicData(data)).toThrow(
-      'slot "retro-tv-000" får inte publiceras: rättighetsstatus är "rejected"',
+      'slot "retro-tv-daglig/kvall" får inte publiceras: rättighetsstatus är "rejected"',
     );
   });
 
@@ -70,7 +65,7 @@ describe("Etapp 3:s datarör", () => {
     data.catalog.items[0].availabilityStatus = "unavailable";
 
     expect(() => buildPublicData(data)).toThrow(
-      'slot "barnkanalen-000" får inte publiceras: tillgänglighet är "unavailable"',
+      'slot "barnkanalen-daglig/morgon" får inte publiceras: tillgänglighet är "unavailable"',
     );
   });
 
@@ -80,6 +75,35 @@ describe("Etapp 3:s datarör", () => {
 
     expect(() => validateProjectData(data)).toThrow(
       'kanalnummer "1" är inte unikt',
+    );
+  });
+
+  it("tillåter flera veckomallar för samma kanal", () => {
+    const data = freshData();
+    data.schedule.templates.push({
+      id: "retro-tv-lordagsvinjett",
+      channelId: "retro-tv",
+      daysOfWeek: [6],
+      slots: [
+        {
+          id: "lordagsvinjett",
+          type: "ident",
+          startLocal: "19:55",
+          durationSeconds: 300,
+          label: "Lördagskväll på Retro TV",
+        },
+      ],
+    });
+
+    expect(() => validateProjectData(data)).not.toThrow();
+  });
+
+  it("kräver att tablåhorisonten börjar på en måndag", () => {
+    const data = freshData();
+    data.schedule.horizon.startDate = "2026-10-20";
+
+    expect(() => validateProjectData(data)).toThrow(
+      "tablåhorisontens startdatum måste vara en måndag",
     );
   });
 

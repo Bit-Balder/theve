@@ -1,26 +1,94 @@
 {
-  "schemaVersion": "1.0.0",
-  "slots": [
+  "schemaVersion": "2.0.0",
+  "timezone": "Europe/Stockholm",
+  "horizon": {
+    "startDate": "2026-10-19",
+    "weeks": 8
+  },
+  "templates": [
     {
-      "id": "barnkanalen-000",
+      "id": "barnkanalen-daglig",
       "channelId": "barnkanalen",
-      "catalogItemId": "barnmorgon-testbild",
-      "order": 0,
-      "plannedDurationSeconds": 900
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "morgon",
+          "type": "program",
+          "startLocal": "06:00",
+          "durationSeconds": 900,
+          "catalogItemId": "barnmorgon-testbild"
+        },
+        {
+          "id": "slutvinjett",
+          "type": "ident",
+          "startLocal": "18:55",
+          "durationSeconds": 300,
+          "label": "Barnkanalen stänger för kvällen"
+        },
+        {
+          "id": "natt",
+          "type": "off_air",
+          "startLocal": "19:00",
+          "endLocal": "06:00",
+          "label": "Sändningsuppehåll till 06:00"
+        }
+      ]
     },
     {
-      "id": "tecknat-000",
+      "id": "tecknat-daglig",
       "channelId": "tecknat",
-      "catalogItemId": "tecknat-formprov",
-      "order": 0,
-      "plannedDurationSeconds": 900
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "morgon",
+          "type": "program",
+          "startLocal": "07:00",
+          "durationSeconds": 900,
+          "catalogItemId": "tecknat-formprov"
+        },
+        {
+          "id": "kvallsident",
+          "type": "ident",
+          "startLocal": "21:55",
+          "durationSeconds": 300,
+          "label": "Tecknat önskar god natt"
+        },
+        {
+          "id": "natt",
+          "type": "off_air",
+          "startLocal": "22:00",
+          "endLocal": "07:00",
+          "label": "Sändningsuppehåll till 07:00"
+        }
+      ]
     },
     {
-      "id": "natur-tv-000",
+      "id": "natur-tv-daglig",
       "channelId": "natur-tv",
-      "catalogItemId": "nordisk-natur-testbild",
-      "order": 0,
-      "plannedDurationSeconds": 900
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "morgon",
+          "type": "program",
+          "startLocal": "08:00",
+          "durationSeconds": 900,
+          "catalogItemId": "nordisk-natur-testbild"
+        }
+      ]
+    },
+    {
+      "id": "retro-tv-daglig",
+      "channelId": "retro-tv",
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "kvall",
+          "type": "program",
+          "startLocal": "20:00",
+          "durationSeconds": 900,
+          "catalogItemId": "retro-testbild"
+        }
+      ]
     }
   ]
 }

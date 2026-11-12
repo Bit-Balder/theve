@@ -3,9 +3,9 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 3: ett återanvändbart designsystem, en stabil
-4:3-yta samt validerade kontrakt för kanaler, katalog, rättigheter och
-provtablå. Ingen skarp videokatalog, spelare eller färdig kanaldesign ingår
+Det här repot innehåller etapp 4: ett återanvändbart designsystem, en stabil
+4:3-yta, validerade innehållskontrakt och en deterministisk schemamotor för
+svensk tid. Ingen skarp videokatalog, spelare eller färdig kanaldesign ingår
 ännu.
 
 ## Förutsättningar
@@ -38,6 +38,11 @@ npm run check
 
 `npm run check` kör hela kvalitetsgrinden. Produktionsfiler skrivs till
 `dist/`.
+
+Tablån skrivs som återanvändbara veckomallar i svensk lokal tid. Byggsteget
+expanderar mallarna till minst åtta veckor och publicerar entydiga UTC-tider.
+Ett separat test körs med datorn inställd på en annan tidszon för att fånga
+tidszonsberoenden.
 
 Källdata finns i `data/source/`. Bygg om den publicerbara katalogen efter en
 ändring med:
@@ -76,7 +81,8 @@ docs/                  beslut och arkitektur
 .github/workflows/     gemensam kvalitetskontroll
 ```
 
-Läs [beslutsloggen](docs/decisions.md) och
+Läs [guiden till schemamotorn](docs/schedule-engine.md),
+[beslutsloggen](docs/decisions.md) och
 [arkitekturgrunden](docs/architecture.md) innan nästa etapp påbörjas.
 
 ## Publicering och innehåll
@@ -106,6 +112,7 @@ Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
 
 ## Status
 
-Etapp 3 etablerar JSON Schema, validerad provdata, rättighetsgrind och en
-deterministisk publik katalog. Nästa steg är etapp 4: schemamotor.
+Etapp 4 etablerar veckomallar i `Europe/Stockholm`, ett minst åtta veckor långt
+UTC-schema och ett rent API för nuvarande program, nästa program och
+uppspelningsposition. Nästa steg är etapp 5: katalog och medieintegration.
 

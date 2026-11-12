@@ -1,4 +1,4 @@
-# Datamodell · etapp 3
+# Datamodell · etapp 4
 
 Etapp 3 skiljer källdata från data som får publiceras. Källdata granskas och
 valideras; endast godkända objekt skrivs till `public/data/`.
@@ -10,7 +10,7 @@ valideras; endast godkända objekt skrivs till `public/data/`.
 | Kanaler | `data/source/channels.json` | `data/schema/channels.schema.json` |
 | Katalog | `data/source/catalog.json` | `data/schema/catalog.schema.json` |
 | Rättigheter | `data/source/rights.json` | `data/schema/rights.schema.json` |
-| Provtablå | `data/source/schedule.json` | `data/schema/schedule.schema.json` |
+| Veckotablå | `data/source/schedule.json` | `data/schema/schedule.schema.json` |
 
 Publika filer genereras deterministiskt till `public/data/`. Varje fil har
 schema- och revisionsnummer. Samma källfiler ger alltid samma revision.
@@ -39,9 +39,22 @@ ingenting om rätten att publicera materialet.
 `familyStatus` är en separat familjegranskning och måste också vara
 `approved`. En tillgänglig fil blir alltså aldrig automatiskt godkänd.
 
+## Tablå
+
+Källtablån innehåller veckomallar i `Europe/Stockholm`. Varje mall har ett
+unikt ID, en kanal, ISO-veckodagar och slotar med lokal starttid. Flera mallar
+kan användas för samma kanal, till exempel en vardagsmall och en helgmall.
+
+Bygget expanderar mallarna till minst åtta veckor. Den publika filen innehåller
+UTC-start, UTC-slut, svenskt UTC-offset och en revisionsnyckel. Slottyperna är:
+
+- `program`, som måste hänvisa till ett godkänt katalogobjekt;
+- `ident`, för kanalvinjett eller analog slutskylt;
+- `off_air`, för ett planerat sändningsuppehåll.
+
 ## Provobjekt
 
-De tre gröna objekten är egenskapade, genererade testmönster utan video eller
+De fyra gröna objekten är egenskapade, genererade testmönster utan video eller
 externt material. Den gula Internet Archive-raden är endast ett kandidatfall
 och saknar riktig identifierare tills rättigheter har granskats. Det röda
 objektet är ett uttryckligt blockeringstest.
@@ -53,8 +66,9 @@ filer. `npm run data:check` stoppar bygget om genererade filer inte motsvarar
 källan. Följande fel stoppar alltid publicering:
 
 - saknade obligatoriska fält;
-- dubbla kanalnummer, ID eller slotpositioner;
+- dubbla kanalnummer, mall-ID, objekt-ID eller slot-ID inom en mall;
 - okända kanal- eller programreferenser;
+- överlappande slotar på samma kanal;
 - `review_required` eller `rejected` i en schemalagd slot;
 - ej godkänd publicering eller familjestatus;
 - otillgänglig källa i en schemalagd slot.
@@ -63,7 +77,9 @@ källan. Följande fel stoppar alltid publicering:
 
 1. Lägg katalogobjektet i källdatan.
 2. Lägg en separat rättighetsrad med underlag och datum.
-3. Kör `npm run data:build`.
-4. Lägg objektet i provtablån först när både rättigheter och familjestatus är
+3. Lägg objektet i veckotablån först när både rättigheter och familjestatus är
    godkända.
+4. Kör `npm run data:build` för att skapa UTC-tablån.
 5. Kör `npm run check` före pull request.
+
+Se [schemamotorns guide](schedule-engine.md) för kompletta exempel.

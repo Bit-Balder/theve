@@ -1,27 +1,40 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://theve.local/schema/schedule.schema.json",
-  "title": "Theve schedule source",
+  "title": "Theve weekly schedule",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "slots"],
+  "required": ["schemaVersion", "timezone", "horizon", "templates"],
   "properties": {
     "schemaVersion": {
-      "const": "1.0.0"
+      "const": "2.0.0"
     },
-    "slots": {
+    "timezone": {
+      "const": "Europe/Stockholm"
+    },
+    "horizon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["startDate", "weeks"],
+      "properties": {
+        "startDate": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "weeks": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 52
+        }
+      }
+    },
+    "templates": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "id",
-          "channelId",
-          "catalogItemId",
-          "order",
-          "plannedDurationSeconds"
-        ],
+        "required": ["id", "channelId", "daysOfWeek", "slots"],
         "properties": {
           "id": {
             "type": "string",
@@ -31,17 +44,94 @@
             "type": "string",
             "minLength": 1
           },
-          "catalogItemId": {
-            "type": "string",
-            "minLength": 1
+          "daysOfWeek": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 7
+            }
           },
-          "order": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "plannedDurationSeconds": {
-            "type": "integer",
-            "minimum": 1
+          "slots": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "type", "startLocal"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                },
+                "type": {
+                  "enum": ["program", "ident", "off_air"]
+                },
+                "startLocal": {
+                  "type": "string",
+                  "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+                },
+                "durationSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "endLocal": {
+                  "type": "string",
+                  "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+                },
+                "catalogItemId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "program"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": ["catalogItemId", "durationSeconds"]
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "ident"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": ["label", "durationSeconds"]
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "off_air"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": ["label", "endLocal"],
+                    "not": {
+                      "required": ["durationSeconds"]
+                    }
+                  }
+                }
+              ]
+            }
           }
         }
       }

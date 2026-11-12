@@ -35,6 +35,17 @@ Senast uppdaterad: 12 november 2026.
   schemalagda objekt med gröna godkännanden genereras för publicering.
 - GitHub Pages publiceras med GitHub Actions från ett byggartifact, inte från
   en incheckad `dist`-branch.
+- Tablåkällan skrivs som veckomallar i `Europe/Stockholm`. Veckodagar följer
+  ISO: måndag är 1 och söndag är 7.
+- Byggsteget expanderar minst åtta veckor och skriver entydiga UTC-tider till
+  den publika tablån. Webbläsaren ska inte själv tolka svensk sommartid.
+- Vid en obefintlig lokal tid under vårens omställning flyttas tiden framåt.
+  Vid en upprepad lokal tid under höstens omställning väljs den tidigare
+  förekomsten. Policyn heter `compatible` och sparas i den byggda filen.
+- En slot gäller från och med `startsAtUtc` men inte vid `endsAtUtc`. Därför
+  byter två angränsande program exakt på samma millisekund utan överlapp.
+- `program`, `ident` och `off_air` är egna slottyper. Saknad eller utgången
+  tablå ger ett uttryckligt reservläge i stället för ett godtyckligt program.
 
 ## Öppet inför senare etapper
 
