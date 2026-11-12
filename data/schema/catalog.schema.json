@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://theve.local/schema/catalog.schema.json",
+  "title": "Theve catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "items"],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "channelId",
+          "durationSeconds",
+          "source",
+          "availabilityStatus",
+          "familyStatus"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "channelId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "durationSeconds": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "mediaRef"],
+            "properties": {
+              "type": {
+                "enum": [
+                  "generated_test_pattern",
+                  "internet_archive",
+                  "local_test"
+                ]
+              },
+              "mediaRef": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "availabilityStatus": {
+            "enum": ["available", "unavailable", "unknown", "test_only"]
+          },
+          "familyStatus": {
+            "enum": ["approved", "review_required", "rejected"]
+          }
+        }
+      }
+    }
+  }
+}

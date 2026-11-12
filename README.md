@@ -3,9 +3,10 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 2: ett återanvändbart designsystem, en stabil
-4:3-yta och en fjärrstyrd grundmeny. Ingen skarp videokatalog, spelare eller
-färdig kanaldesign ingår ännu.
+Det här repot innehåller etapp 3: ett återanvändbart designsystem, en stabil
+4:3-yta samt validerade kontrakt för kanaler, katalog, rättigheter och
+provtablå. Ingen skarp videokatalog, spelare eller färdig kanaldesign ingår
+ännu.
 
 ## Förutsättningar
 
@@ -30,12 +31,23 @@ startvy.
 ```sh
 npm run lint
 npm run test
+npm run data:check
 npm run build
 npm run check
 ```
 
 `npm run check` kör hela kvalitetsgrinden. Produktionsfiler skrivs till
 `dist/`.
+
+Källdata finns i `data/source/`. Bygg om den publicerbara katalogen efter en
+ändring med:
+
+```sh
+npm run data:build
+```
+
+Endast schemalagda objekt med godkänd rättighets- och familjestatus når
+`public/data/`.
 
 Testa Pages-liknande distribution lokalt med:
 
@@ -56,6 +68,9 @@ src/
   components/         återanvändbara vykomponenter
   core/               ren produkt- och domänlogik
   styles/             gemensamma tokens och basstilar
+data/                  scheman och granskad källdata
+public/data/           deterministiskt genererad publik data
+scripts/               validering och katalogbygge
 tests/                 automatiska tester
 docs/                  beslut och arkitektur
 .github/workflows/     gemensam kvalitetskontroll
@@ -74,6 +89,13 @@ Material från Internet Archive får inte läggas i en publicerad katalog enbart
 för att filen går att spela. Rättighetsunderlag och familjelämplighet ska
 granskas separat i kommande innehållsetapper.
 
+## GitHub Pages
+
+Välj `Settings` → `Pages` → `Source` → `GitHub Actions`. Workflowen
+`Deploy Pages` bygger, kontrollerar och publicerar `dist/` efter en godkänd
+push till `main`. Använd inte `Deploy from a branch`; byggda filer ska inte
+lagras i huvudbranchen.
+
 ## Typsnitt
 
 - TDAText används för Text-TV och vanlig TV-text.
@@ -84,6 +106,6 @@ Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
 
 ## Status
 
-Etapp 2 etablerar designsystemet, 4:3-skalet, säker yta, fjärrfokus och en
-valfri diskret CRT-effekt. Nästa steg är etapp 3: datamodell och provkatalog.
+Etapp 3 etablerar JSON Schema, validerad provdata, rättighetsgrind och en
+deterministisk publik katalog. Nästa steg är etapp 4: schemamotor.
 

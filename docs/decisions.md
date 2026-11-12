@@ -29,6 +29,12 @@ Senast uppdaterad: 12 november 2026.
   projektet.
 - Diskret CRT-brus är på som standard. Reducerad rörelse stänger av den
   rörliga effekten.
+- Startutbudets arbetsnamn är Theve 0, Barnkanalen, Tecknat, Natur TV och
+  Retro TV. Slutliga kanalidentiteter fastställs i etapp 7.
+- Tillgänglighet, rättighetsstatus och familjestatus är separata fält. Endast
+  schemalagda objekt med gröna godkännanden genereras för publicering.
+- GitHub Pages publiceras med GitHub Actions från ett byggartifact, inte från
+  en incheckad `dist`-branch.
 
 ## Öppet inför senare etapper
 

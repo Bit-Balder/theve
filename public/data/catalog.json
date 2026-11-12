@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "revision": "0045341678975de9",
+  "items": [
+    {
+      "id": "barnmorgon-testbild",
+      "title": "Barnmorgon · testbild",
+      "channelId": "barnkanalen",
+      "durationSeconds": 900,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://barnmorgon"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved",
+      "rightsStatus": "approved"
+    },
+    {
+      "id": "nordisk-natur-testbild",
+      "title": "Nordisk natur · testbild",
+      "channelId": "natur-tv",
+      "durationSeconds": 900,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://natur"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved",
+      "rightsStatus": "approved"
+    },
+    {
+      "id": "tecknat-formprov",
+      "title": "Tecknat · formprov",
+      "channelId": "tecknat",
+      "durationSeconds": 900,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://tecknat"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved",
+      "rightsStatus": "approved"
+    }
+  ]
+}

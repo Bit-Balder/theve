@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "slots": [
+    {
+      "id": "barnkanalen-000",
+      "channelId": "barnkanalen",
+      "catalogItemId": "barnmorgon-testbild",
+      "order": 0,
+      "plannedDurationSeconds": 900
+    },
+    {
+      "id": "tecknat-000",
+      "channelId": "tecknat",
+      "catalogItemId": "tecknat-formprov",
+      "order": 0,
+      "plannedDurationSeconds": 900
+    },
+    {
+      "id": "natur-tv-000",
+      "channelId": "natur-tv",
+      "catalogItemId": "nordisk-natur-testbild",
+      "order": 0,
+      "plannedDurationSeconds": 900
+    }
+  ]
+}

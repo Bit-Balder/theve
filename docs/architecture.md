@@ -11,6 +11,10 @@ TypeScript utan ramverk eller serverberoende.
 - `src/core/` innehåller ren produkt- och domänlogik utan DOM-beroenden.
 - `src/styles/` innehåller fontdefinitioner, tokens, basstilar och komponentstilar.
 - `src/assets/fonts/` innehåller licensierade lokala fontfiler.
+- `data/schema/` innehåller versionsstyrda JSON Schema-kontrakt.
+- `data/source/` innehåller granskad källdata som aldrig publiceras direkt.
+- `scripts/` validerar och genererar deterministisk publik data.
+- `public/data/` innehåller endast data som klarat publiceringsgrinden.
 - `tests/` innehåller tester för ren logik och kontrakt.
 
 Kommande etapper lägger till tid, schema, katalog, spelare, fokusmodell och
@@ -36,4 +40,8 @@ GitHub Pages är offentligt; familjesyftet är en produktavgränsning, inte ett
 
 `npm run check` kör lint, test och produktionsbygge i den ordningen. Samma
 kommando används lokalt och i GitHub Actions.
+
+Produktionsbygget kräver att `public/data/` exakt motsvarar källdatan. På
+`main` publicerar en separat Pages-workflow den färdiga `dist/`-mappen via ett
+GitHub Pages-artifact; byggfiler checkas inte in i huvudbranchen.
 
