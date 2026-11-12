@@ -23,14 +23,19 @@ Senast uppdaterad: 12 november 2026.
 - Theves huvudmärke använder en gul sol och lika höga linjer i gul, korall och
   gräddvit. Kanalernas märken ska vara egna och följa samma system.
 - Verkliga TV-kanalers namn och logotyper används inte som kanalidentiteter.
+- TDAText används för Text-TV och vanlig TV-text. VT323 används för
+  kanalnummer, klockor och äldre datortext.
+- Fontfilerna lagras lokalt och deras SIL Open Font License 1.1 följer med
+  projektet.
+- Diskret CRT-brus är på som standard. Reducerad rörelse stänger av den
+  rörliga effekten.
 
 ## Öppet inför senare etapper
 
-- Exakta namn och filer för displayfont, UI-font och Text-TV-font.
 - Slutliga kanalnamn och vilka fyra videokanaler som ingår i startutbudet.
 - Vilka orter som visas i Text-TV-vädret.
-- Om diskret CRT-brus är på eller av som standard.
 - Vilken fysisk TV eller TV-box som används för manuell acceptanstest.
 
-Fontnamn eller fontfiler kan läggas till senare. De blockerar inte etapp 1.
+Den nuvarande CSS-baserade Theve-symbolen är ett formprov. Slutlig
+masterlogotyp och kanalidentiteter tas fram i etapp 7.
 

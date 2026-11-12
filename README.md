@@ -3,8 +3,9 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 1: en liten, körbar och testbar projektgrund.
-Ingen skarp videokatalog, spelare eller färdig kanaldesign ingår ännu.
+Det här repot innehåller etapp 2: ett återanvändbart designsystem, en stabil
+4:3-yta och en fjärrstyrd grundmeny. Ingen skarp videokatalog, spelare eller
+färdig kanaldesign ingår ännu.
 
 ## Förutsättningar
 
@@ -50,7 +51,9 @@ GitHub Pages-projektadress.
 
 ```text
 src/
-  app.ts              vy och montering
+  app.ts              startvy och sammansättning
+  assets/fonts/       lokala, licensierade fontfiler
+  components/         återanvändbara vykomponenter
   core/               ren produkt- och domänlogik
   styles/             gemensamma tokens och basstilar
 tests/                 automatiska tester
@@ -71,8 +74,16 @@ Material från Internet Archive får inte läggas i en publicerad katalog enbart
 för att filen går att spela. Rättighetsunderlag och familjelämplighet ska
 granskas separat i kommande innehållsetapper.
 
+## Typsnitt
+
+- TDAText används för Text-TV och vanlig TV-text.
+- VT323 används för kanalnummer, klockor och teknisk datortext.
+
+Båda fontfilerna ligger lokalt i projektet och distribueras enligt SIL Open
+Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
+
 ## Status
 
-Etapp 1 etablerar byggkedja, modulgränser, dokumenterade beslut och en körbar
-startvy. Nästa steg är etapp 2: designsystem, 4:3-skal och fjärrkontrollfokus.
+Etapp 2 etablerar designsystemet, 4:3-skalet, säker yta, fjärrfokus och en
+valfri diskret CRT-effekt. Nästa steg är etapp 3: datamodell och provkatalog.
 
