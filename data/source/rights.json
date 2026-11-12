@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "entries": [
+    {
+      "catalogItemId": "barnmorgon-testbild",
+      "status": "approved",
+      "basis": "Egenskapat genererat testmönster utan externt material",
+      "evidenceUrl": null,
+      "reviewedAt": "2026-11-12",
+      "publicationAllowed": true,
+      "notes": "Grönt exempel för datamodell och test. Ingen video ingår."
+    },
+    {
+      "catalogItemId": "tecknat-formprov",
+      "status": "approved",
+      "basis": "Egenskapat genererat testmönster utan externt material",
+      "evidenceUrl": null,
+      "reviewedAt": "2026-11-12",
+      "publicationAllowed": true,
+      "notes": "Grönt exempel för datamodell och test. Ingen video ingår."
+    },
+    {
+      "catalogItemId": "nordisk-natur-testbild",
+      "status": "approved",
+      "basis": "Egenskapat genererat testmönster utan externt material",
+      "evidenceUrl": null,
+      "reviewedAt": "2026-11-12",
+      "publicationAllowed": true,
+      "notes": "Grönt exempel för datamodell och test. Ingen video ingår."
+    },
+    {
+      "catalogItemId": "retro-arkiv-kandidat",
+      "status": "review_required",
+      "basis": "Internet Archive-kandidat utan granskat rättighetsunderlag",
+      "evidenceUrl": null,
+      "reviewedAt": null,
+      "publicationAllowed": false,
+      "notes": "Gult exempel. Får inte nå publicerad katalog."
+    },
+    {
+      "catalogItemId": "avvisat-rattighetsexempel",
+      "status": "rejected",
+      "basis": "Avvisat testfall utan publiceringsunderlag",
+      "evidenceUrl": null,
+      "reviewedAt": "2026-11-12",
+      "publicationAllowed": false,
+      "notes": "Rött exempel. Får inte nå publicerad katalog."
+    }
+  ]
+}

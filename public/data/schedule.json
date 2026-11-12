@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "revision": "0045341678975de9",
+  "slots": [
+    {
+      "id": "barnkanalen-000",
+      "channelId": "barnkanalen",
+      "catalogItemId": "barnmorgon-testbild",
+      "order": 0,
+      "plannedDurationSeconds": 900,
+      "catalogTitle": "Barnmorgon · testbild"
+    },
+    {
+      "id": "tecknat-000",
+      "channelId": "tecknat",
+      "catalogItemId": "tecknat-formprov",
+      "order": 0,
+      "plannedDurationSeconds": 900,
+      "catalogTitle": "Tecknat · formprov"
+    },
+    {
+      "id": "natur-tv-000",
+      "channelId": "natur-tv",
+      "catalogItemId": "nordisk-natur-testbild",
+      "order": 0,
+      "plannedDurationSeconds": 900,
+      "catalogTitle": "Nordisk natur · testbild"
+    }
+  ]
+}

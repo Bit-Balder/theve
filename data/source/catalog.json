@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0.0",
+  "items": [
+    {
+      "id": "barnmorgon-testbild",
+      "title": "Barnmorgon · testbild",
+      "channelId": "barnkanalen",
+      "durationSeconds": 900,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://barnmorgon"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved"
+    },
+    {
+      "id": "tecknat-formprov",
+      "title": "Tecknat · formprov",
+      "channelId": "tecknat",
+      "durationSeconds": 900,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://tecknat"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved"
+    },
+    {
+      "id": "nordisk-natur-testbild",
+      "title": "Nordisk natur · testbild",
+      "channelId": "natur-tv",
+      "durationSeconds": 900,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://natur"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved"
+    },
+    {
+      "id": "retro-arkiv-kandidat",
+      "title": "Retroarkiv · kandidat",
+      "channelId": "retro-tv",
+      "durationSeconds": 1800,
+      "source": {
+        "type": "internet_archive",
+        "mediaRef": "pending-rights-review"
+      },
+      "availabilityStatus": "unknown",
+      "familyStatus": "review_required"
+    },
+    {
+      "id": "avvisat-rattighetsexempel",
+      "title": "Avvisat rättighetsexempel",
+      "channelId": "retro-tv",
+      "durationSeconds": 600,
+      "source": {
+        "type": "local_test",
+        "mediaRef": "unavailable://rejected-example"
+      },
+      "availabilityStatus": "unavailable",
+      "familyStatus": "rejected"
+    }
+  ]
+}
