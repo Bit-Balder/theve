@@ -26,7 +26,18 @@ Schemamodulen är redan delad i två lager:
 
 Kompilatorn använder tidszonsdata, medan körmotorn bara läser färdiga
 UTC-tider. Båda är fria från DOM- och videoberoenden och kan testas isolerat.
-Kommande etapper kopplar katalog, spelare och Text-TV till dessa kontrakt.
+
+Spelarkedjan är också uppdelad:
+
+- `src/core/internet-archive.ts` hämtar och normaliserar opålitlig metadata,
+  väljer publika MP4-kandidater och exponerar alternativa derivat;
+- `src/core/player-controller.ts` äger ett litet, testbart gränssnitt mot
+  HTML-video, söker till tablåns offset och hanterar timeout och decodefel;
+- `src/core/playback-service.ts` avbryter gammal metadata eller media vid nytt
+  kanalval och kopplar adapterfel till reservbild.
+
+Kanal- och guideflödet i etapp 6 kan konsumera dessa API:er utan att känna till
+Internet Archives JSON-format eller spelarens interna tillstånd.
 
 ## Designskal
 
@@ -43,6 +54,10 @@ från `tokens.css`. Komponentstilar innehåller inga egna hexvärden.
 därför under GitHub Pages projektadress och vid lokal statisk förhandsvisning.
 GitHub Pages är offentligt; familjesyftet är en produktavgränsning, inte ett
 åtkomstskydd.
+
+Videofiler proxas eller lagras inte av Theve. En godkänd Internet Archive-fil
+levereras direkt från `archive.org`, medan repot endast innehåller identifierare
+och rättighetsunderlag.
 
 ## Kvalitetsgrind
 

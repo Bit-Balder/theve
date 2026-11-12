@@ -30,6 +30,11 @@ Namnen är arbetsnamn tills kanalidentiteterna fastställs i etapp 7.
 `availabilityStatus` beskriver om en teknisk källa går att använda. Det säger
 ingenting om rätten att publicera materialet.
 
+För en Internet Archive-källa är `source.mediaRef` objektets exakta
+identifierare, inte en fullständig URL. Spelarkedjan bygger metadata-, detalj-
+och nedladdningsadresser från identifieraren. Identifieraren publiceras först
+när objektet både är schemalagt och har klarat rättighets- och familjegrinden.
+
 `rights.status` beskriver rättighetsgranskningen:
 
 - `approved`: grönt, men kräver även `publicationAllowed: true`.

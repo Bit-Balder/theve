@@ -46,6 +46,18 @@ Senast uppdaterad: 12 november 2026.
   byter två angränsande program exakt på samma millisekund utan överlapp.
 - `program`, `ident` och `off_air` är egna slottyper. Saknad eller utgången
   tablå ger ett uttryckligt reservläge i stället för ett godtyckligt program.
+- Internet Archive-adaptern accepterar endast identifierare med bokstäver,
+  siffror, bindestreck och understreck. Metadata behandlas som opålitlig data.
+- Publika MP4-filer med H.264-märkning prioriteras. Övriga MP4-derivat behålls
+  som alternativ; webbläsaren avgör slutligen om filen kan avkodas.
+- Uppspelning med ljud startar först efter den uttryckliga handlingen `Starta
+  TV`. En nekad `play()` återgår till vänteläget och kräver ny handling.
+- Vid nytt kanal- eller slotval avbryts föregående metadatahämtning och
+  medieladdning. Den senaste begäran är alltid den enda som får ändra läget.
+- 404, timeout och decodefel provar nästa godkända MP4. När alternativen är
+  slut visas reservbild till nästa tablåslot; tablåns klocka stoppas aldrig.
+- Inga video- eller ljudfiler lagras i repot. Internet Archive-identitet,
+  rights status och family status fortsätter vara separata kontroller.
 
 ## Öppet inför senare etapper
 

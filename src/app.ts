@@ -1,6 +1,7 @@
 import { createFocusMenu } from "./components/focus-menu";
 import { createScreen43 } from "./components/screen43";
 import { createTvShell, setCrtMode } from "./components/tv-shell";
+import { PlayerController } from "./core/player-controller";
 import { project } from "./core/project";
 
 export interface StartViewModel {
@@ -92,6 +93,13 @@ export function mountStartView(
 ): void {
   const shell = createTvShell();
   const { screen, safeArea } = createScreen43();
+  const media = document.createElement("video");
+  media.className = "player-surface";
+  media.hidden = true;
+  media.playsInline = true;
+  media.preload = "metadata";
+  media.setAttribute("aria-label", "Theves videospelare");
+  const player = new PlayerController(media);
 
   const topbar = document.createElement("header");
   topbar.className = "topbar";
@@ -150,7 +158,10 @@ export function mountStartView(
     ],
     onAction: (action, button) => {
       if (action === "start") {
-        status.textContent = "SÄNDNING OCH KANALER KOMMER I EN SENARE ETAPP";
+        void player.activate().then(() => {
+          status.textContent =
+            "SPELAREN ÄR AKTIVERAD · VÄNTAR PÅ GODKÄND SÄNDNING";
+        });
       }
 
       if (action === "focus") {
@@ -180,7 +191,7 @@ export function mountStartView(
   controls.append(menuTitle, menu, status);
   content.append(intro, controls);
   safeArea.append(topbar, content, createFocusProof());
-  screen.append(safeArea);
+  screen.append(media, safeArea);
   shell.append(screen);
   root.replaceChildren(shell);
 
