@@ -14,11 +14,13 @@
     "preview": "vite preview",
     "lint": "biome check src scripts tests data public/data vite.config.ts",
     "test": "vitest run",
+    "test:timezone": "TZ=Pacific/Honolulu vitest run tests/schedule-compiler.test.mjs tests/schedule-engine.test.ts",
     "test:watch": "vitest",
-    "check": "npm run lint && npm run test && npm run build"
+    "check": "npm run lint && npm run test && npm run test:timezone && npm run build"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.8",
+    "@js-temporal/polyfill": "^0.5.1",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "typescript": "^6.0.3",

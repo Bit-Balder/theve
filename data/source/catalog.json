@@ -38,6 +38,18 @@
       "familyStatus": "approved"
     },
     {
+      "id": "retro-testbild",
+      "title": "Retro TV · testbild",
+      "channelId": "retro-tv",
+      "durationSeconds": 900,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://retro"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved"
+    },
+    {
       "id": "retro-arkiv-kandidat",
       "title": "Retroarkiv · kandidat",
       "channelId": "retro-tv",

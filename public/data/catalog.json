@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "revision": "0045341678975de9",
+  "revision": "8c33d92f8d842d5a",
   "items": [
     {
       "id": "barnmorgon-testbild",
@@ -23,6 +23,19 @@
       "source": {
         "type": "generated_test_pattern",
         "mediaRef": "theve-pattern://natur"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved",
+      "rightsStatus": "approved"
+    },
+    {
+      "id": "retro-testbild",
+      "title": "Retro TV · testbild",
+      "channelId": "retro-tv",
+      "durationSeconds": 900,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://retro"
       },
       "availabilityStatus": "available",
       "familyStatus": "approved",

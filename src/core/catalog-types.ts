@@ -37,10 +37,31 @@ export interface RightsEntry {
   readonly notes: string;
 }
 
-export interface ScheduleSlotSource {
+export type ScheduleSlotType = "program" | "ident" | "off_air";
+
+export interface WeeklyScheduleSlot {
+  readonly id: string;
+  readonly type: ScheduleSlotType;
+  readonly startLocal: string;
+  readonly durationSeconds?: number;
+  readonly endLocal?: string;
+  readonly catalogItemId?: string;
+  readonly label?: string;
+}
+
+export interface WeeklyScheduleTemplate {
   readonly id: string;
   readonly channelId: string;
-  readonly catalogItemId: string;
-  readonly order: number;
-  readonly plannedDurationSeconds: number;
+  readonly daysOfWeek: readonly number[];
+  readonly slots: readonly WeeklyScheduleSlot[];
+}
+
+export interface WeeklyScheduleSource {
+  readonly schemaVersion: "2.0.0";
+  readonly timezone: "Europe/Stockholm";
+  readonly horizon: {
+    readonly startDate: string;
+    readonly weeks: number;
+  };
+  readonly templates: readonly WeeklyScheduleTemplate[];
 }

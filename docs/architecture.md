@@ -17,8 +17,16 @@ TypeScript utan ramverk eller serverberoende.
 - `public/data/` innehåller endast data som klarat publiceringsgrinden.
 - `tests/` innehåller tester för ren logik och kontrakt.
 
-Kommande etapper lägger till tid, schema, katalog, spelare, fokusmodell och
-Text-TV bakom separata moduler. Kärnlogik ska kunna testas utan DOM och video.
+Schemamodulen är redan delad i två lager:
+
+- `scripts/lib/schedule-compiler.mjs` expanderar veckomallar i svensk lokal tid
+  till ett versionsstyrt UTC-schema vid bygge;
+- `src/core/schedule-engine.ts` väljer nuvarande och nästa slot och räknar
+  uppspelningsposition från ett uttryckligt millisekundvärde.
+
+Kompilatorn använder tidszonsdata, medan körmotorn bara läser färdiga
+UTC-tider. Båda är fria från DOM- och videoberoenden och kan testas isolerat.
+Kommande etapper kopplar katalog, spelare och Text-TV till dessa kontrakt.
 
 ## Designskal
 
@@ -38,8 +46,8 @@ GitHub Pages är offentligt; familjesyftet är en produktavgränsning, inte ett
 
 ## Kvalitetsgrind
 
-`npm run check` kör lint, test och produktionsbygge i den ordningen. Samma
-kommando används lokalt och i GitHub Actions.
+`npm run check` kör lint, test, ett separat tidszonstest och produktionsbygge i
+den ordningen. Samma kommando används lokalt och i GitHub Actions.
 
 Produktionsbygget kräver att `public/data/` exakt motsvarar källdatan. På
 `main` publicerar en separat Pages-workflow den färdiga `dist/`-mappen via ett
