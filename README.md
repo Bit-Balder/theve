@@ -3,10 +3,9 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 5: ett återanvändbart designsystem, en stabil
-4:3-yta, en deterministisk schemamotor samt en feltålig Internet Archive-
-adapter och spelarkontroller. Ingen skarp videokatalog eller färdig
-kanaldesign ingår ännu.
+Det här repot innehåller etapp 6: ett komplett fjärrstyrt kärnflöde i en stabil
+4:3-yta, med linjär schemamotor, feltålig spelare, kanalbyte, direktnummer och
+programguide. Ingen skarp videokatalog eller slutlig kanalidentitet ingår ännu.
 
 ## Förutsättningar
 
@@ -20,6 +19,7 @@ användas för projektet.
 
 ```sh
 npm ci
+npx playwright install chromium
 npm run dev
 ```
 
@@ -31,13 +31,14 @@ startvy.
 ```sh
 npm run lint
 npm run test
+npm run test:e2e
 npm run data:check
 npm run build
 npm run check
 ```
 
-`npm run check` kör hela kvalitetsgrinden. Produktionsfiler skrivs till
-`dist/`.
+`npm run check` kör hela kvalitetsgrinden, inklusive ett riktigt
+tangentbordsflöde i Chromium. Produktionsfiler skrivs till `dist/`.
 
 Tablån skrivs som återanvändbara veckomallar i svensk lokal tid. Byggsteget
 expanderar mallarna till minst åtta veckor och publicerar entydiga UTC-tider.
@@ -77,11 +78,13 @@ data/                  scheman och granskad källdata
 public/data/           deterministiskt genererad publik data
 scripts/               validering och katalogbygge
 tests/                 automatiska tester
+e2e/                   tangentbordsdrivet webbläsarflöde
 docs/                  beslut och arkitektur
 .github/workflows/     gemensam kvalitetskontroll
 ```
 
-Läs [spelarens publika API](docs/player-api.md),
+Läs [fjärrkontrollens knappkarta](docs/remote-control.md),
+[spelarens publika API](docs/player-api.md),
 [guiden till schemamotorn](docs/schedule-engine.md),
 [beslutsloggen](docs/decisions.md) och
 [arkitekturgrunden](docs/architecture.md) innan nästa etapp påbörjas.
@@ -113,8 +116,8 @@ Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
 
 ## Status
 
-Etapp 5 etablerar en metadataadapter, en dokumenterad MP4-prioritering,
-användaraktiverad uppspelning, exakt offset och reservhantering för nätverks-
-och decodefel. Testerna använder simulerad media; inga videofiler lagras i
-projektet. Nästa steg är etapp 6: kanalbyte, guide och fjärrstyrning.
+Etapp 6 etablerar kanal upp/ned, direktnummer med synlig sifferbuffert,
+kanalbugg, tillfällig programbanner, nu/nästa-guide, roving tabindex, Back-stack
+och alternativa fjärrkoder. Nästa steg är etapp 7: slutliga logotyper och
+kanalidentiteter.
 

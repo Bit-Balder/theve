@@ -16,6 +16,8 @@ TypeScript utan ramverk eller serverberoende.
 - `scripts/` validerar och genererar deterministisk publik data.
 - `public/data/` innehåller endast data som klarat publiceringsgrinden.
 - `tests/` innehåller tester för ren logik och kontrakt.
+- `e2e/` kör kärnflödet i Chromium med samma tangenttryckningar som en enkel
+  fjärrkontroll.
 
 Schemamodulen är redan delad i två lager:
 
@@ -36,8 +38,15 @@ Spelarkedjan är också uppdelad:
 - `src/core/playback-service.ts` avbryter gammal metadata eller media vid nytt
   kanalval och kopplar adapterfel till reservbild.
 
-Kanal- och guideflödet i etapp 6 kan konsumera dessa API:er utan att känna till
-Internet Archives JSON-format eller spelarens interna tillstånd.
+Kanal- och guideflödet konsumerar dessa API:er utan att känna till Internet
+Archives JSON-format eller spelarens interna tillstånd. Det är uppdelat i:
+
+- `public-tv-data.ts`, som laddar fyra filer med samma revision;
+- `remote-input.ts`, som normaliserar tangentbord och alternativa TV-koder;
+- `channel-navigation.ts` och `direct-number-buffer.ts`, som håller
+  kanalvalet fritt från DOM;
+- `overlay-back-stack.ts`, som stänger senaste överlägget först;
+- `channel-guide.ts`, som äger roving tabindex och fokusåterställning.
 
 ## Designskal
 
@@ -61,8 +70,9 @@ och rättighetsunderlag.
 
 ## Kvalitetsgrind
 
-`npm run check` kör lint, test, ett separat tidszonstest och produktionsbygge i
-den ordningen. Samma kommando används lokalt och i GitHub Actions.
+`npm run check` kör lint, enhetstester, ett separat tidszonstest,
+produktionsbygge och Playwright-flödet i den ordningen. Samma kommando används
+lokalt och i GitHub Actions.
 
 Produktionsbygget kräver att `public/data/` exakt motsvarar källdatan. På
 `main` publicerar en separat Pages-workflow den färdiga `dist/`-mappen via ett

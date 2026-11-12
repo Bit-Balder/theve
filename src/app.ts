@@ -1,8 +1,27 @@
+import {
+  type ChannelGuideEntry,
+  createChannelGuide,
+} from "./components/channel-guide";
 import { createFocusMenu } from "./components/focus-menu";
 import { createScreen43 } from "./components/screen43";
+import { createTvExperience } from "./components/tv-experience";
 import { createTvShell, setCrtMode } from "./components/tv-shell";
+import {
+  findChannelByNumber,
+  getAdjacentChannel,
+} from "./core/channel-navigation";
+import { DirectNumberBuffer } from "./core/direct-number-buffer";
+import { InternetArchiveAdapter } from "./core/internet-archive";
+import { OverlayBackStack } from "./core/overlay-back-stack";
+import { ArchivePlaybackService } from "./core/playback-service";
 import { PlayerController } from "./core/player-controller";
 import { project } from "./core/project";
+import { loadPublicTvData, type PublicTvData } from "./core/public-tv-data";
+import { normalizeRemoteInput } from "./core/remote-input";
+import {
+  type CompiledScheduleSlot,
+  getScheduleState,
+} from "./core/schedule-engine";
 
 export interface StartViewModel {
   readonly eyebrow: string;
@@ -22,6 +41,41 @@ export function createStartViewModel(): StartViewModel {
     timeLabel: "20:45",
     instruction: "ANVÄND PILARNA OCH ENTER",
   };
+}
+
+function slotTitle(slot: CompiledScheduleSlot | null): string {
+  if (!slot) {
+    return "INGEN TABLÅUPPGIFT";
+  }
+  return slot.catalogTitle ?? slot.label ?? "PROGRAMUPPGIFT SAKNAS";
+}
+
+function createGuideEntries(
+  data: PublicTvData,
+  nowEpochMs: number,
+): readonly ChannelGuideEntry[] {
+  return data.channels.map((channel) => {
+    if (channel.kind === "info") {
+      return {
+        channelId: channel.id,
+        number: channel.number,
+        name: channel.name,
+        now: "THEVE INFORMATION",
+        next: "KANALÖVERSIKT",
+      };
+    }
+
+    const state = getScheduleState(data.schedule, channel.id, nowEpochMs);
+    return {
+      channelId: channel.id,
+      number: channel.number,
+      name: channel.name,
+      now: state.current
+        ? slotTitle(state.current)
+        : (state.reserveMessage ?? "RESERVBILD"),
+      next: state.next ? slotTitle(state.next) : "INGEN UPPGIFT",
+    };
+  });
 }
 
 function createBrand(): HTMLElement {
@@ -100,6 +154,239 @@ export function mountStartView(
   media.preload = "metadata";
   media.setAttribute("aria-label", "Theves videospelare");
   const player = new PlayerController(media);
+  const playback = new ArchivePlaybackService(
+    new InternetArchiveAdapter(),
+    player,
+  );
+  const tv = createTvExperience();
+  const backStack = new OverlayBackStack();
+  const startScreen = document.createElement("div");
+  startScreen.className = "start-screen";
+
+  let publicData: PublicTvData | null = null;
+  let publicDataPromise: Promise<PublicTvData> | null = null;
+  let currentChannelId = "";
+  let started = false;
+  let starting = false;
+  let selectionRevision = 0;
+  let bannerTimer: ReturnType<typeof setTimeout> | null = null;
+  let scheduleTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const closeGuide = () => {
+    guide.close();
+    backStack.remove("guide");
+  };
+
+  const guide = createChannelGuide({
+    onTune: (channelId) => {
+      void tuneChannel(channelId);
+    },
+    onRequestClose: () => {
+      if (!backStack.back()) {
+        closeGuide();
+      }
+    },
+  });
+
+  const directNumber = new DirectNumberBuffer({
+    timeoutMs: 1_000,
+    maxDigits: 3,
+    onChange: (digits) => {
+      tv.numberBuffer.hidden = digits.length === 0;
+      tv.numberBuffer.textContent = digits
+        ? `KANAL ${digits.padStart(2, "_")}`
+        : "";
+    },
+    onCommit: (channelNumber) => {
+      if (!publicData) {
+        return;
+      }
+      const channel = findChannelByNumber(publicData.channels, channelNumber);
+      if (!channel) {
+        tv.status.textContent = `KANAL ${channelNumber} FINNS INTE`;
+        return;
+      }
+      void tuneChannel(channel.id);
+    },
+  });
+
+  function getPublicData(): Promise<PublicTvData> {
+    publicDataPromise ??= loadPublicTvData();
+    return publicDataPromise;
+  }
+
+  function showBanner(program: string, next: string): void {
+    tv.bannerProgram.textContent = program;
+    tv.bannerNext.textContent = `NÄSTA · ${next}`;
+    tv.banner.classList.remove("program-banner--hidden");
+    if (bannerTimer) {
+      clearTimeout(bannerTimer);
+    }
+    bannerTimer = setTimeout(() => {
+      tv.banner.classList.add("program-banner--hidden");
+    }, 4_000);
+  }
+
+  function scheduleNextBoundary(
+    channelId: string,
+    current: CompiledScheduleSlot | null,
+    next: CompiledScheduleSlot | null,
+    nowEpochMs: number,
+  ): void {
+    if (scheduleTimer) {
+      clearTimeout(scheduleTimer);
+      scheduleTimer = null;
+    }
+
+    const boundary = current?.endsAtUtc ?? next?.startsAtUtc;
+    if (!boundary) {
+      return;
+    }
+    const delay = Date.parse(boundary) - nowEpochMs + 25;
+    if (delay <= 0) {
+      return;
+    }
+    scheduleTimer = setTimeout(
+      () => {
+        if (currentChannelId === channelId) {
+          void tuneChannel(channelId);
+        }
+      },
+      Math.min(delay, 2_147_000_000),
+    );
+  }
+
+  async function tuneChannel(channelId: string): Promise<void> {
+    if (!publicData) {
+      return;
+    }
+    const channel = publicData.channels.find(
+      (candidate) => candidate.id === channelId,
+    );
+    if (!channel) {
+      return;
+    }
+
+    const revision = ++selectionRevision;
+    currentChannelId = channel.id;
+    tv.root.dataset.channelId = channel.id;
+    tv.picture.dataset.channelId = channel.id;
+    tv.channelNumber.textContent = String(channel.number).padStart(2, "0");
+    tv.channelName.textContent = channel.name;
+    tv.status.textContent = `KANAL ${channel.number} · ${channel.name}`;
+    media.hidden = true;
+    tv.picture.hidden = false;
+
+    if (channel.kind === "info") {
+      playback.stop();
+      tv.pictureLabel.textContent = "THEVE · KANALÖVERSIKT";
+      showBanner("THEVE INFORMATION", "PROGRAMGUIDE");
+      scheduleNextBoundary(channel.id, null, null, Date.now());
+      return;
+    }
+
+    const nowEpochMs = Date.now();
+    const scheduleState = getScheduleState(
+      publicData.schedule,
+      channel.id,
+      nowEpochMs,
+    );
+    const currentTitle = scheduleState.current
+      ? slotTitle(scheduleState.current)
+      : (scheduleState.reserveMessage ?? "RESERVBILD");
+    const nextTitle = scheduleState.next
+      ? slotTitle(scheduleState.next)
+      : "INGEN UPPGIFT";
+    showBanner(currentTitle, nextTitle);
+    scheduleNextBoundary(
+      channel.id,
+      scheduleState.current,
+      scheduleState.next,
+      nowEpochMs,
+    );
+
+    if (!scheduleState.current) {
+      playback.stop();
+      tv.pictureLabel.textContent =
+        scheduleState.reserveMessage ?? "RESERVBILD";
+      return;
+    }
+
+    if (scheduleState.current.type !== "program") {
+      playback.stop();
+      tv.pictureLabel.textContent = slotTitle(scheduleState.current);
+      return;
+    }
+
+    const catalogItem = publicData.catalogItems.find(
+      (item) => item.id === scheduleState.current?.catalogItemId,
+    );
+    if (!catalogItem) {
+      playback.stop();
+      tv.pictureLabel.textContent = "PROGRAMMET SAKNAS I KATALOGEN";
+      return;
+    }
+
+    if (catalogItem.source.type !== "internet_archive") {
+      playback.stop();
+      tv.pictureLabel.textContent = catalogItem.title;
+      return;
+    }
+
+    tv.pictureLabel.textContent = "HÄMTAR GODKÄND ARKIVSÄNDNING";
+    const playerState = await playback.tune({
+      slotId: scheduleState.current.id,
+      archiveIdentifier: catalogItem.source.mediaRef,
+      offsetMs: scheduleState.offsetMs ?? 0,
+    });
+    if (revision !== selectionRevision) {
+      return;
+    }
+    if (playerState.phase === "playing") {
+      tv.picture.hidden = true;
+      media.hidden = false;
+      return;
+    }
+    tv.pictureLabel.textContent = playerState.message;
+  }
+
+  function openGuide(): void {
+    if (!publicData || !currentChannelId || guide.isOpen()) {
+      return;
+    }
+    backStack.push({ id: "guide", close: guide.close });
+    guide.open(createGuideEntries(publicData, Date.now()), currentChannelId);
+  }
+
+  async function startTv(): Promise<void> {
+    if (started || starting) {
+      return;
+    }
+    starting = true;
+    menuStatus.textContent = "LÄSER KANALER OCH TABLÅ";
+    await playback.activate();
+
+    try {
+      publicData = await getPublicData();
+      const firstChannel =
+        publicData.channels.find((channel) => channel.kind === "video") ??
+        publicData.channels[0];
+      if (!firstChannel) {
+        throw new Error("Kanaldata saknas.");
+      }
+
+      started = true;
+      startScreen.hidden = true;
+      tv.root.hidden = false;
+      tv.root.focus();
+      await tuneChannel(firstChannel.id);
+    } catch {
+      menuStatus.textContent = "KANALDATA KUNDE INTE LÄSAS · FÖRSÖK IGEN";
+      publicDataPromise = null;
+    } finally {
+      starting = false;
+    }
+  }
 
   const topbar = document.createElement("header");
   topbar.className = "topbar";
@@ -144,11 +431,11 @@ export function mountStartView(
   menuTitle.className = "menu-title";
   menuTitle.textContent = "TV-MENY";
 
-  const status = document.createElement("p");
-  status.className = "menu-status";
-  status.setAttribute("role", "status");
-  status.setAttribute("aria-live", "polite");
-  status.textContent = viewModel.instruction;
+  const menuStatus = document.createElement("p");
+  menuStatus.className = "menu-status";
+  menuStatus.setAttribute("role", "status");
+  menuStatus.setAttribute("aria-live", "polite");
+  menuStatus.textContent = viewModel.instruction;
 
   const menu = createFocusMenu({
     items: [
@@ -158,16 +445,13 @@ export function mountStartView(
     ],
     onAction: (action, button) => {
       if (action === "start") {
-        void player.activate().then(() => {
-          status.textContent =
-            "SPELAREN ÄR AKTIVERAD · VÄNTAR PÅ GODKÄND SÄNDNING";
-        });
+        void startTv();
       }
 
       if (action === "focus") {
         const proof = safeArea.querySelector<HTMLElement>(".focus-proof");
         proof?.classList.toggle("focus-proof--highlighted");
-        status.textContent = "SAMMA FOKUSRING VISAS PÅ FYRA BAKGRUNDER";
+        menuStatus.textContent = "SAMMA FOKUSRING VISAS PÅ FYRA BAKGRUNDER";
       }
 
       if (action === "crt") {
@@ -180,7 +464,7 @@ export function mountStartView(
             nextMode === "subtle" ? "CRT · DISKRET" : "CRT · AV";
           hint.textContent = nextMode === "subtle" ? "PÅ" : "AV";
         }
-        status.textContent =
+        menuStatus.textContent =
           nextMode === "subtle"
             ? "DISKRET BILDRÖRSEFFEKT PÅ"
             : "BILDRÖRSEFFEKT AV";
@@ -188,12 +472,64 @@ export function mountStartView(
     },
   });
 
-  controls.append(menuTitle, menu, status);
+  controls.append(menuTitle, menu, menuStatus);
   content.append(intro, controls);
-  safeArea.append(topbar, content, createFocusProof());
+  startScreen.append(topbar, content, createFocusProof());
+  safeArea.append(startScreen, tv.root, guide.element);
   screen.append(media, safeArea);
   shell.append(screen);
   root.replaceChildren(shell);
+
+  window.addEventListener("keydown", (event) => {
+    if (!started || !publicData || event.defaultPrevented) {
+      return;
+    }
+    const action = normalizeRemoteInput(event);
+    if (!action) {
+      return;
+    }
+
+    if (guide.isOpen()) {
+      if (action.type === "back" || action.type === "guide") {
+        event.preventDefault();
+        backStack.back();
+      }
+      return;
+    }
+
+    event.preventDefault();
+    if (action.type === "digit") {
+      directNumber.push(action.digit);
+      return;
+    }
+    if (action.type === "confirm") {
+      directNumber.confirm();
+      return;
+    }
+    if (action.type === "guide") {
+      directNumber.clear();
+      openGuide();
+      return;
+    }
+    if (action.type === "back") {
+      directNumber.clear();
+      if (!backStack.back()) {
+        tv.status.textContent = "INGET ÖVERLÄGG ATT STÄNGA";
+      }
+      return;
+    }
+
+    directNumber.clear();
+    const direction = action.type === "channel_up" ? 1 : -1;
+    const channel = getAdjacentChannel(
+      publicData.channels,
+      currentChannelId,
+      direction,
+    );
+    if (channel) {
+      void tuneChannel(channel.id);
+    }
+  });
 
   requestAnimationFrame(() => {
     menu.querySelector<HTMLButtonElement>("button")?.focus();

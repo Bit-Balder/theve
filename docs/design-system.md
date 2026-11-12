@@ -30,9 +30,10 @@ genomskinlighet eller `color-mix`, inte med nya hexvärden.
 
 ## Fokus och fjärrkontroll
 
-Grundmenyn kan användas med piltangenter, Home, End och Enter. Fokus flyttas
-cirkulärt och kräver inte hover. Fokusringen består av gräddvit, svart och gul
-och visas i formprovet på blå, svart, gul och korall bakgrund.
+Grundmenyn och programguiden kan användas med piltangenter, Home, End och
+Enter. Fokus flyttas cirkulärt och kräver inte hover. I sändningsläget byter
+pil upp/ned kanal. Fokusringen består av gräddvit, svart och gul och visas i
+formprovet på blå, svart, gul och korall bakgrund.
 
 ## CRT
 
@@ -53,7 +54,7 @@ säker yta, läsbar text och synlig fokusmarkering.
 ## Kända avgränsningar
 
 - CSS-symbolen för Theve är ett formprov; slutlig SVG-logotyp hör till etapp 7.
-- Starta TV bekräftar endast knapptryckningen; spelare och sändning hör till
-  etapp 5.
+- Kanalernas CSS-mönster är reservbilder och formprov. Slutliga märken och
+  kanalidentiteter hör till etapp 7.
 - Fysisk TV eller TV-box väljs och provas i en senare etapp. Etapp 2 provas i
   TV-liknande 16:10- och 4:3-viewporter.
