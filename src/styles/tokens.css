@@ -4,6 +4,38 @@
   --color-coral: #e97867;
   --color-cream: #f5eacd;
   --color-teletext: #000000;
-  --font-ui-fallback: "Courier New", Courier, monospace;
-}
 
+  --font-ui: "TDAText", "Courier New", monospace;
+  --font-teletext: "TDAText", "Courier New", monospace;
+  --font-numeric: "VT323", "Courier New", monospace;
+
+  --font-size-xs: clamp(0.72rem, 1.15vw, 0.9rem);
+  --font-size-sm: clamp(0.86rem, 1.4vw, 1.05rem);
+  --font-size-md: clamp(1rem, 1.75vw, 1.35rem);
+  --font-size-lg: clamp(1.3rem, 2.5vw, 2rem);
+  --font-size-xl: clamp(3.2rem, 8vw, 7rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  --screen-ratio: 4 / 3;
+  --safe-area-inline: 6%;
+  --safe-area-block: 5.5%;
+  --control-min-height: 3.2rem;
+
+  --focus-outline-width: 0.2rem;
+  --focus-outline-offset: 0.18rem;
+  --focus-ring:
+    0 0 0 0.18rem var(--color-cream), 0 0 0 0.38rem var(--color-teletext),
+    0 0 0 0.58rem var(--color-yellow);
+
+  --crt-opacity: 0.12;
+  --crt-line-size: 0.22rem;
+  --crt-duration: 9s;
+  --motion-duration: 160ms;
+}

@@ -1,0 +1,17 @@
+/* TDAText: Copyright 2024 Dmitry Tretyakov, SIL OFL 1.1. */
+@font-face {
+  font-family: "TDAText";
+  src: url("../assets/fonts/TDAText.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* VT323: Copyright 2011 The VT323 Project Authors, SIL OFL 1.1. */
+@font-face {
+  font-family: "VT323";
+  src: url("../assets/fonts/VT323-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
