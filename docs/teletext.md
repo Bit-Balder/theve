@@ -1,4 +1,4 @@
-# Text-TV · etapp 10
+# Text-TV · etapp 11
 
 Theves Text-TV är ett informationslager ovanpå senast valda videokanal. Den
 öppnas med `T`, `TXT` eller Text-TV-knappen och stängs med samma knapp, Back
@@ -21,7 +21,8 @@ källans villkor uttryckligen har dokumenterats.
 
 Sidgeneratorn skapar alltid 24 rader med exakt 40 tecken. Långa texter bryts
 vid ordgräns och varje färdig rad fylls med blanksteg. Renderaren visar texten
-som vanlig text med TDAText; den tolkar aldrig innehåll som HTML och kan därför
+som vanlig text med VT323, samma pixliga font som huvudklockan. Den tolkar
+aldrig innehåll som HTML och kan därför
 inte skapa horisontell scroll från opålitlig data.
 
 ## Väder och attribution

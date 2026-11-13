@@ -53,6 +53,8 @@ Archives JSON-format eller spelarens interna tillstånd. Det är uppdelat i:
   färsk, gammal och saknad väderdata;
 - `src/components/teletext.ts`, som endast renderar raderna och hanterar den
   tresiffriga sidbufferten.
+- `src/core/time.ts`, som formaterar enhetens absoluta klocka i
+  `Europe/Stockholm` och beräknar nästa minutgräns utan nätverksberoende.
 
 Väderkedjan är medvetet statisk. `scripts/update-weather.mjs` hämtar tre små
 punktsvar från SMHI:s dokumenterade SNOW1G-API och normaliserar dem till
@@ -96,9 +98,15 @@ och rättighetsunderlag.
 ## Kvalitetsgrind
 
 `npm run check` kör lint, enhetstester, ett separat tidszonstest,
-produktionsbygge och Playwright-flödet i den ordningen. Samma kommando används
+produktionsbygge, distributionsbudget och Playwright-matrisen i den ordningen.
+Samma kommando används
 lokalt och i GitHub Actions. Varje genererad manifestfil innehåller både
 publik revision och källrevision, så en rapport kan spåras till exakt indata.
+
+Playwright kör Chromium, Firefox, WebKit och en 1280 × 720-yta som motsvarar en
+webbläsare på TV-box. Fyra stabila Chromium-referenser bevakar start, guide,
+Text-TV och slutskylt. Distributionskontrollen stoppar video i artifactet och
+begränsar total-, JavaScript- och CSS-storlek.
 
 Produktionsbygget kräver att både `public/data/` och SVG-originalen exakt
 motsvarar sina källor. På `main` skapar samma kvalitetsworkflow ett Pages-

@@ -6,7 +6,7 @@
   --color-teletext: #000000;
 
   --font-ui: "TDAText", "Courier New", monospace;
-  --font-teletext: "TDAText", "Courier New", monospace;
+  --font-teletext: "VT323", "Courier New", monospace;
   --font-numeric: "VT323", "Courier New", monospace;
 
   --font-size-xs: clamp(0.72rem, 1.15vw, 0.9rem);

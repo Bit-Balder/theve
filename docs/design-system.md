@@ -8,8 +8,8 @@ färgkoder och specialmått.
 
 | Roll | Font | Användning |
 | --- | --- | --- |
-| TV och Text-TV | TDAText | Menyer, rubriker, brödtext och Text-TV:s 40 × 24-grid |
-| Siffror och teknisk text | VT323 | Kanalnummer, klockor och äldre datortext |
+| TV-gränssnitt | TDAText | Menyer, rubriker och brödtext |
+| Text-TV och teknisk text | VT323 | Text-TV:s 40 × 24-grid, kanalnummer, klockor och äldre datortext |
 
 TDAText kommer från `tinelix/TDAText` och VT323 från användarens Google Fonts
 paket. Båda är oförändrade och licensierade enligt SIL Open Font License 1.1.

@@ -3,10 +3,10 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 10: den fjärrstyrda TV-upplevelsen och Text-TV:n
-från tidigare etapper, plus automatiska kontroller, spårbara katalograpporter
-och publicering först efter ett godkänt bygge. Ingen skarp videokatalog ingår
-ännu.
+Det här repot innehåller etapp 11: en stabiliserad release candidate med
+webbläsarmatris, TV-liknande teststorlek, visuell regression, prestandabudget,
+tillgänglighetskontroller och dokumenterad innehållsgranskning. Ingen skarp
+videokatalog ingår ännu.
 
 ## Förutsättningar
 
@@ -35,6 +35,7 @@ npm run test
 npm run test:e2e
 npm run data:check
 npm run catalog:audit
+npm run quality:audit
 npm run logos:check
 npm run build
 npm run check
@@ -109,6 +110,9 @@ Läs [Text-TV-guiden](docs/teletext.md),
 [spelarens publika API](docs/player-api.md),
 [guiden till schemamotorn](docs/schedule-engine.md),
 [driftmanualen för automatiken](docs/automation.md),
+[kvalitetsmatrisen](docs/stage-11-quality.md),
+[startkatalogens granskningsprotokoll](docs/start-catalog-review.md),
+[kända begränsningar](docs/known-limitations.md),
 [beslutsloggen](docs/decisions.md) och
 [arkitekturgrunden](docs/architecture.md) innan nästa etapp påbörjas.
 
@@ -131,20 +135,24 @@ filer ska inte lagras i huvudbranchen.
 
 ## Typsnitt
 
-- TDAText används för Text-TV och vanlig TV-text.
-- VT323 används för kanalnummer, klockor och teknisk datortext.
+- TDAText används för menyer och vanlig TV-text.
+- VT323 används för Text-TV, kanalnummer, klockor och teknisk datortext.
 
 Båda fontfilerna ligger lokalt i projektet och distribueras enligt SIL Open
 Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
 
 ## Status
 
-Etapp 10 kör samma kvalitetsgrind lokalt och i GitHub Actions. En nattlig
-katalogkontroll uppdaterar generatorerna, jämför godkända Internet
-Archive-licenser med låsta värden och sparar rapport plus genererade data som
-ett spårbart artifact. Ett blockerande fel kan aldrig gå vidare till Pages.
+Etapp 11 kör hela fjärrkontrollflödet i Chromium, Firefox och WebKit samt i en
+TV-liknande Chromium-yta på 1280 × 720. Fyra referensbilder bevakar 4:3-start,
+guide, Text-TV och Barns slutskylt. Bygget har en storleksbudget och får inte
+innehålla videofiler.
 
 Text-TV:s väder visar Stockholmsområdet, Göteborgsområdet och Malmöområdet med
 synlig SMHI-attribution och bearbetningsnotis. Varje område representeras av
 en prognospunkt nära områdets centrum; värdet är inte ett regionalt medelvärde.
+
+Klockan läser enhetens aktuella tid men presenteras alltid i
+`Europe/Stockholm`, samma tidszon som tablån. Text-TV använder samma pixliga
+VT323 som klockan.
 

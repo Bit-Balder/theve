@@ -12,6 +12,7 @@
     "data:check": "node scripts/build-catalog.mjs --check",
     "weather:update": "node scripts/update-weather.mjs",
     "catalog:audit": "node scripts/catalog-audit.mjs",
+    "quality:audit": "node scripts/audit-dist.mjs",
     "logos:build": "node scripts/build-logos.mjs",
     "logos:check": "node scripts/build-logos.mjs --check",
     "build": "npm run data:check && npm run logos:check && tsc -b && vite build",
@@ -19,9 +20,9 @@
     "lint": "biome check src scripts tests e2e data public/data vite.config.ts playwright.config.ts",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "test:timezone": "TZ=Pacific/Honolulu vitest run tests/schedule-compiler.test.mjs tests/schedule-engine.test.ts",
+    "test:timezone": "TZ=Pacific/Honolulu vitest run tests/schedule-compiler.test.mjs tests/schedule-engine.test.ts tests/time.test.ts",
     "test:watch": "vitest",
-    "check": "npm run lint && npm run test && npm run test:timezone && npm run build && npm run test:e2e"
+    "check": "npm run lint && npm run test && npm run test:timezone && npm run build && npm run quality:audit && npm run test:e2e"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.8",

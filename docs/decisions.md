@@ -23,7 +23,7 @@ Senast uppdaterad: 13 november 2026.
 - Theves huvudmärke använder en gul sol och lika höga linjer i gul, korall och
   gräddvit. Kanalernas märken ska vara egna och följa samma system.
 - Verkliga TV-kanalers namn och logotyper används inte som kanalidentiteter.
-- TDAText används för Text-TV och vanlig TV-text. VT323 används för
+- TDAText används för menyer och vanlig TV-text. VT323 används för Text-TV,
   kanalnummer, klockor och äldre datortext.
 - Fontfilerna lagras lokalt och deras SIL Open Font License 1.1 följer med
   projektet.
@@ -81,7 +81,7 @@ Senast uppdaterad: 13 november 2026.
   senaste asynkrona laddningen är alltid de som får uppdatera bilden.
 - `T`, `TXT`, plattformskoden `Teletext` och TV-kod 459 öppnar Text-TV. Tre
   siffror väljer sida; Back återgår till senast valda videokanal.
-- Text-TV består av exakt 40 kolumner och 24 rader och använder TDAText med
+- Text-TV består av exakt 40 kolumner och 24 rader och använder VT323 med
   stöd för å, ä och ö. Sidorna är 100, 300, 301, 400 och 500.
 - Stockholmsområdet, Göteborgsområdet och Malmöområdet är de första
   väderområdena. Varje etikett bygger på en fast prognospunkt nära centrum och
@@ -104,6 +104,16 @@ Senast uppdaterad: 13 november 2026.
   licens eller otillgänglig källa är ett blockerande katalogfel.
 - Genererade manifest och katalograpporter innehåller källrevision och commit,
   så varje körning kan härledas till sin indata.
+- Huvudklockan läser `Date.now()` från enhetens normalt synkroniserade klocka
+  men formaterar alltid visningen i `Europe/Stockholm`. Tablåmotorn jämför samma
+  absoluta epoch mot UTC-slotar och är därför oberoende av enhetens valda
+  tidszon. Ingen separat tidstjänst införs.
+- Kvalitetsmatrisen omfattar Chromium, Firefox, WebKit och en TV-liknande
+  Chromium-yta på 1280 × 720. En fysisk TV eller TV-box är fortsatt en manuell
+  kontrollpunkt för projektägaren.
+- Visuell regression omfattar 4:3-start, programguide, Text-TV och Barns
+  slutskylt. Referenser tas med reducerad rörelse för stabila bilder.
+- CRT-valet sparas lokalt. Reducerad rörelse ger alltid CRT av vid start.
 
 ## Öppet inför senare etapper
 
