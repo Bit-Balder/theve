@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "revision": "6b6e2ed995f1bbef",
+  "revision": "d34deb694cfbb9b2",
   "channels": [
     {
       "id": "tv1",
@@ -127,7 +127,7 @@
       "name": "Barn",
       "kind": "video",
       "audience": "children",
-      "signOffAt": "18:00",
+      "signOffAt": "19:00",
       "profile": "Barnprogram",
       "theme": "yellow",
       "logo": {

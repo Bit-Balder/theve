@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Barn sändningsuppehåll</title>
+  <desc id="desc">Egen analog slutskylt i Theves färger. Barn återkommer klockan 06.00.</desc>
+  <rect width="800" height="600" fill="#000000"/>
+  <rect x="36" y="34" width="728" height="532" fill="#182660" stroke="#F5EACD" stroke-width="4"/>
+  <path d="M36 104 H764 M36 496 H764" stroke="#E97867" stroke-width="10"/>
+  <path d="M36 122 H764 M36 478 H764" stroke="#F4C94B" stroke-width="6"/>
+  <g fill="none" stroke="#F4C94B" stroke-width="10" stroke-linecap="square">
+    <path d="M300 270 A100 100 0 0 1 500 270 M280 270 H520"/>
+    <path d="M400 148 V116 M322 178 L300 156 M478 178 L500 156 M286 220 H252 M514 220 H548"/>
+  </g>
+  <circle cx="360" cy="228" r="5" fill="#F4C94B"/>
+  <circle cx="440" cy="228" r="5" fill="#F4C94B"/>
+  <text x="400" y="350" fill="#F5EACD" font-family="Courier New, monospace" font-size="72" font-weight="700" text-anchor="middle">BARN</text>
+  <text x="400" y="402" fill="#F4C94B" font-family="Courier New, monospace" font-size="28" text-anchor="middle">SÄNDNINGSUPPEHÅLL</text>
+  <text x="400" y="445" fill="#F5EACD" font-family="Courier New, monospace" font-size="24" text-anchor="middle">VI SES IGEN 06.00</text>
+  <g fill="#F5EACD">
+    <rect x="84" y="154" width="16" height="292"/>
+    <rect x="112" y="178" width="16" height="244"/>
+    <rect x="140" y="202" width="16" height="196"/>
+    <rect x="644" y="202" width="16" height="196"/>
+    <rect x="672" y="178" width="16" height="244"/>
+    <rect x="700" y="154" width="16" height="292"/>
+  </g>
+</svg>

@@ -6,6 +6,7 @@ export interface CompiledScheduleSlot {
   readonly type: CompiledSlotType;
   readonly catalogItemId: string | null;
   readonly label: string | null;
+  readonly asset?: string | null;
   readonly startsAtUtc: string;
   readonly endsAtUtc: string;
   readonly durationSeconds: number;

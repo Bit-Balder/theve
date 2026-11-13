@@ -213,6 +213,11 @@ export function validateProjectData(data) {
       );
     }
     for (const slot of template.slots) {
+      if (slot.asset && slot.type === "program") {
+        messages.push(
+          `slot "${template.id}/${slot.id}" får inte koppla grafik till ett program`,
+        );
+      }
       if (slot.type === "program") {
         validateProgramSlot(
           slot,

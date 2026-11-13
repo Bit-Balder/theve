@@ -89,7 +89,7 @@
       "id": "barn-dag-testbild",
       "title": "Barn · Dagens program",
       "channelId": "barn",
-      "durationSeconds": 42900,
+      "durationSeconds": 46500,
       "source": {
         "type": "generated_test_pattern",
         "mediaRef": "theve-pattern://barn"

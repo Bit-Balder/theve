@@ -98,19 +98,23 @@ describe("Etapp 4:s datarör", () => {
     );
   });
 
-  it("växlar Barn från program till godnatt och uppehåll exakt", () => {
+  it("växlar Barn 18.55, 19.00 och 06.00 exakt", () => {
     const schedule = buildPublicData(freshData())["schedule.json"];
 
     expect(
-      getScheduleState(schedule, "barn", Date.parse("2026-11-13T16:54:00Z"))
+      getScheduleState(schedule, "barn", Date.parse("2026-11-13T17:54:00Z"))
         .current?.type,
     ).toBe("program");
     expect(
-      getScheduleState(schedule, "barn", Date.parse("2026-11-13T16:55:00Z"))
+      getScheduleState(schedule, "barn", Date.parse("2026-11-13T17:55:00Z"))
         .current?.type,
     ).toBe("ident");
     expect(
-      getScheduleState(schedule, "barn", Date.parse("2026-11-13T17:00:00Z"))
+      getScheduleState(schedule, "barn", Date.parse("2026-11-13T18:00:00Z"))
+        .current?.type,
+    ).toBe("off_air");
+    expect(
+      getScheduleState(schedule, "barn", Date.parse("2026-11-14T04:59:59Z"))
         .current?.type,
     ).toBe("off_air");
     expect(

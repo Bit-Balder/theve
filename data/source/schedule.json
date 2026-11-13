@@ -120,22 +120,23 @@
           "id": "dag",
           "type": "program",
           "startLocal": "06:00",
-          "durationSeconds": 42900,
+          "durationSeconds": 46500,
           "catalogItemId": "barn-dag-testbild"
         },
         {
           "id": "godnatt",
           "type": "ident",
-          "startLocal": "17:55",
+          "startLocal": "18:55",
           "durationSeconds": 300,
           "label": "Barn önskar god natt"
         },
         {
           "id": "uppehall",
           "type": "off_air",
-          "startLocal": "18:00",
+          "startLocal": "19:00",
           "endLocal": "06:00",
-          "label": "Sändningsuppehåll · analog slutskylt"
+          "label": "Sändningsuppehåll · analog slutskylt",
+          "asset": "assets/cards/barn-off-air.svg"
         }
       ]
     },

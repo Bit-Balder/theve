@@ -57,6 +57,11 @@ Logotyperna byggs i ett separat deterministiskt flöde. Definitionerna i
 att generera fullfärg, gräddvit, svart och kompakt variant. UI-komponenterna
 läser sökväg och `theme` från kanaldata; ingen kanal har en egen komponent.
 
+Planerade sändningsuppehåll använder samma datadrivna väg. En `off_air`-slot
+kan ange en lokal SVG i `asset`. Spelvyn visar då tillgången i stället för
+videoytan, oavsett kanal-ID. Barns kvällsavslut behöver därför varken en
+kanalspecifik UI-komponent eller en Internet Archive-hämtning.
+
 ## Designskal
 
 `TvShell` skapar letterboxytan och styr CRT-läget. `Screen43` håller alltid

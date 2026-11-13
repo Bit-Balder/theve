@@ -373,6 +373,14 @@
   animation: channel-ident-in 760ms steps(8, end) both;
 }
 
+.tv-experience__off-air-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .tv-experience__picture-label {
   max-width: 74%;
   margin: 0;

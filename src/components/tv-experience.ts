@@ -2,6 +2,7 @@ export interface TvExperienceElements {
   readonly root: HTMLElement;
   readonly picture: HTMLElement;
   readonly identLogo: HTMLImageElement;
+  readonly offAirCard: HTMLImageElement;
   readonly pictureLabel: HTMLElement;
   readonly channelBug: HTMLElement;
   readonly channelLogo: HTMLImageElement;
@@ -27,10 +28,14 @@ export function createTvExperience(): TvExperienceElements {
   identLogo.className = "tv-experience__ident-logo";
   identLogo.alt = "";
 
+  const offAirCard = document.createElement("img");
+  offAirCard.className = "tv-experience__off-air-card";
+  offAirCard.hidden = true;
+
   const pictureLabel = document.createElement("p");
   pictureLabel.className = "tv-experience__picture-label";
   pictureLabel.textContent = "RESERVBILD";
-  picture.append(identLogo, pictureLabel);
+  picture.append(identLogo, offAirCard, pictureLabel);
 
   const channelBug = document.createElement("aside");
   channelBug.className = "channel-bug";
@@ -74,6 +79,7 @@ export function createTvExperience(): TvExperienceElements {
     root,
     picture,
     identLogo,
+    offAirCard,
     pictureLabel,
     channelBug,
     channelLogo,

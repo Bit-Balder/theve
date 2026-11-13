@@ -40,6 +40,13 @@ det maskinläsbara kontraktet.
 - Säker yta lämnar 6 procent i sidled och 5,5 procent upptill och nedtill.
 - All primär text och alla kontroller ligger inom den säkra ytan.
 
+## Analog slutskylt
+
+Barns slutskylt är ett eget lokalt 4:3-SVG-original. Den använder endast de
+fem färgtokens, den mjuka gula solen från Barns identitet och raka analoga
+linjer. Bilden skalas med `contain`, hämtar inga externa resurser och förblir
+läsbar även när CRT-effekten är avstängd.
+
 ## Fokus och fjärrkontroll
 
 Grundmenyn och programguiden kan användas med piltangenter, Home, End och

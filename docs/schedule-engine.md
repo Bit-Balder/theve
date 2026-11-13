@@ -144,9 +144,14 @@ klockan ställs om:
   "type": "off_air",
   "startLocal": "19:00",
   "endLocal": "06:00",
-  "label": "Sändningsuppehåll till 06:00"
+  "label": "Sändningsuppehåll till 06:00",
+  "asset": "assets/cards/barn-off-air.svg"
 }
 ```
+
+`asset` är valfri och får bara peka på en lokal SVG under `assets/`. Den ska
+inte anges på en `program`-slot. Spelvyn behandlar fältet generellt och behöver
+inte känna till vilket kanal-ID som använder slutskylten.
 
 ### 4. Bygg och kontrollera
 
