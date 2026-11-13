@@ -602,83 +602,66 @@
   position: absolute;
   inset: 0;
   z-index: 7;
+  display: grid;
+  place-items: center;
   overflow: hidden;
-  padding: clamp(var(--space-3), 3vw, var(--space-6));
+  padding: var(--space-3);
   color: var(--color-cream);
   background: var(--color-teletext);
   outline: none;
   font-family: var(--font-teletext);
 }
 
-.teletext__header {
+.teletext__grid {
   display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: var(--space-4);
-  align-items: baseline;
-  padding-bottom: var(--space-2);
-  color: var(--color-yellow);
-  border-bottom: 0.18rem solid var(--color-coral);
-  font-size: var(--font-size-sm);
+  grid-template-rows: repeat(24, 1fr);
+  width: 40ch;
+  max-width: 100%;
+  height: 24em;
+  max-height: 100%;
+  overflow: hidden;
+  font-size: clamp(0.5rem, 2.5vw, 1.25rem);
+  line-height: 1;
 }
 
-.teletext__context {
-  color: var(--color-cream);
-  font-size: var(--font-size-xs);
-}
-
-.teletext__page {
-  color: var(--color-coral);
-  font-size: var(--font-size-md);
-}
-
-.teletext__title {
-  margin: var(--space-4) 0;
-  color: var(--color-yellow);
-  font-size: var(--font-size-lg);
-  font-weight: 400;
-  letter-spacing: 0.06em;
-}
-
-.teletext__content {
-  display: grid;
-  gap: var(--space-2);
-}
-
-.teletext__content p,
-.teletext__footer {
+.teletext__row {
+  overflow: hidden;
   margin: 0;
-  font-size: var(--font-size-sm);
-  line-height: 1.12;
+  white-space: pre;
 }
 
-.teletext__content p:nth-child(3n + 1) {
+.teletext__row--header {
+  color: var(--color-yellow);
+  background: var(--color-tv-blue);
+}
+
+.teletext__row--title {
   color: var(--color-yellow);
 }
 
-.teletext__content p:nth-child(3n + 2) {
+.teletext__row:nth-child(5n + 5) {
+  color: var(--color-coral);
+}
+
+.teletext__row--footer {
+  color: var(--color-teletext);
+  background: var(--color-yellow);
+}
+
+.teletext[data-status="stale"] .teletext__row--title,
+.teletext[data-status="missing"] .teletext__row--title {
   color: var(--color-coral);
 }
 
 .teletext__input {
   position: absolute;
-  top: 22%;
-  right: var(--space-6);
+  top: 20%;
+  right: 12%;
   padding: var(--space-2) var(--space-3);
   color: var(--color-yellow);
   background: var(--color-tv-blue);
   box-shadow: var(--focus-ring);
   font-size: var(--font-size-lg);
-}
-
-.teletext__footer {
-  position: absolute;
-  right: var(--space-6);
-  bottom: var(--space-4);
-  left: var(--space-6);
-  padding-top: var(--space-2);
-  color: var(--color-teletext);
-  background: var(--color-yellow);
-  text-align: center;
 }
 
 @keyframes crt-drift {
@@ -773,14 +756,6 @@
 
   .channel-guide__logo {
     width: 2.5rem;
-  }
-
-  .teletext__header {
-    gap: var(--space-2);
-  }
-
-  .teletext__content {
-    gap: var(--space-1);
   }
 }
 

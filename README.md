@@ -3,10 +3,9 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 8: Barn visar en godnattvinjett 18.55, går över
-till en egen analog slutskylt 19.00 och återupptar sändningen 06.00. De nio
-fastställda videokanalerna och separat Text-TV finns kvar. Ingen skarp
-videokatalog ingår ännu.
+Det här repot innehåller etapp 9: en fjärrstyrd Text-TV i ett fast 40 × 24-grid
+med väder från SMHI, tablå från samma schema som programguiden och tydliga
+lägen för gammal eller saknad data. Ingen skarp videokatalog ingår ännu.
 
 ## Förutsättningar
 
@@ -60,6 +59,14 @@ SVG-originalen genereras från en gemensam konstruktion med:
 npm run logos:build
 ```
 
+SMHI-snapshoten uppdateras manuellt med följande kommando. Etapp 10 kopplar
+senare samma generator till GitHub Actions.
+
+```sh
+npm run weather:update
+npm run data:build
+```
+
 Endast schemalagda objekt med godkänd rättighets- och familjestatus når
 `public/data/`.
 
@@ -92,7 +99,8 @@ docs/                  beslut och arkitektur
 .github/workflows/     gemensam kvalitetskontroll
 ```
 
-Läs [Barns kvällsavslut](docs/barn-signoff.md),
+Läs [Text-TV-guiden](docs/teletext.md),
+[Barns kvällsavslut](docs/barn-signoff.md),
 [fjärrkontrollens knappkarta](docs/remote-control.md),
 [manualen för kanalidentiteter](docs/channel-identities.md),
 [spelarens publika API](docs/player-api.md),
@@ -127,8 +135,9 @@ Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
 
 ## Status
 
-Etapp 8 låter tablådatan styra Barns kvällsavslut: ordinarie innehåll till
-18.55, godnattvinjett till 19.00, lokal analog slutskylt under
-sändningsuppehållet och återstart 06.00. Kanalbyte och återgång till Barn
-behåller rätt läge. Nästa etapp fördjupar Text-TV.
+Etapp 9 levererar sidorna 100, 300, 301, 400 och 500 i ett läsbart 40 × 24-grid.
+Vädret visar Stockholm, Göteborg och Malmö med synlig SMHI-attribution och
+bearbetningsnotis. Sida 400 använder samma publicerade schema som guiden.
+Gammal eller saknad väderdata märks tydligt och visas inte som aktuell. Nästa
+etapp automatiserar kontroller, generatorer och publicering.
 

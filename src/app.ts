@@ -23,6 +23,7 @@ import {
   type CompiledScheduleSlot,
   getScheduleState,
 } from "./core/schedule-engine";
+import { createTeletextPage } from "./core/teletext";
 
 export interface StartViewModel {
   readonly eyebrow: string;
@@ -135,7 +136,6 @@ export function mountStartView(
   );
   const tv = createTvExperience();
   const backStack = new OverlayBackStack();
-  const teletext = createTeletext();
   const startScreen = document.createElement("div");
   startScreen.className = "start-screen";
 
@@ -147,6 +147,20 @@ export function mountStartView(
   let selectionRevision = 0;
   let bannerTimer: ReturnType<typeof setTimeout> | null = null;
   let scheduleTimer: ReturnType<typeof setTimeout> | null = null;
+  const teletext = createTeletext({
+    getPage: (number, channelName) => {
+      if (!publicData) {
+        throw new Error("Text-TV kan inte öppnas innan kanaldata har lästs.");
+      }
+      return createTeletextPage(number, {
+        channelName,
+        channels: publicData.channels,
+        schedule: publicData.schedule,
+        weather: publicData.weather,
+        nowEpochMs: Date.now(),
+      });
+    },
+  });
 
   const closeGuide = () => {
     guide.close();

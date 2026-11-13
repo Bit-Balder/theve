@@ -30,11 +30,13 @@ export function loadProjectData(projectRoot) {
     catalog: readJson(join(sourceRoot, "catalog.json")),
     rights: readJson(join(sourceRoot, "rights.json")),
     schedule: readJson(join(sourceRoot, "schedule.json")),
+    weather: readJson(join(sourceRoot, "weather.json")),
     schemas: {
       channels: readJson(join(schemaRoot, "channels.schema.json")),
       catalog: readJson(join(schemaRoot, "catalog.schema.json")),
       rights: readJson(join(schemaRoot, "rights.schema.json")),
       schedule: readJson(join(schemaRoot, "schedule.schema.json")),
+      weather: readJson(join(schemaRoot, "weather.schema.json")),
     },
   };
 }
@@ -67,7 +69,7 @@ function validateSchemas(data) {
   addFormats(ajv);
   const messages = [];
 
-  for (const name of ["channels", "catalog", "rights", "schedule"]) {
+  for (const name of ["channels", "catalog", "rights", "schedule", "weather"]) {
     const validate = ajv.compile(data.schemas[name]);
     if (!validate(data[name])) {
       messages.push(...formatSchemaErrors(name, validate.errors));
@@ -146,6 +148,9 @@ export function validateProjectData(data) {
   const templateSlotIds = data.schedule.templates.flatMap((template) =>
     template.slots.map((slot) => `${template.id}/${slot.id}`),
   );
+  const weatherLocationIds = data.weather.locations.map(
+    (location) => location.id,
+  );
 
   for (const duplicate of collectDuplicates(channelIds)) {
     messages.push(`kanal-id "${duplicate}" är inte unikt`);
@@ -171,10 +176,33 @@ export function validateProjectData(data) {
   for (const duplicate of collectDuplicates(templateSlotIds)) {
     messages.push(`slot-id "${duplicate}" är inte unikt`);
   }
+  for (const duplicate of collectDuplicates(weatherLocationIds)) {
+    messages.push(`väderort-id "${duplicate}" är inte unikt`);
+  }
   if (
     new Date(`${data.schedule.horizon.startDate}T00:00:00Z`).getUTCDay() !== 1
   ) {
     messages.push("tablåhorisontens startdatum måste vara en måndag");
+  }
+  if (
+    Date.parse(data.weather.fetchedAt) >= Date.parse(data.weather.validUntil)
+  ) {
+    messages.push(
+      "vädersnapshotens giltighet måste sluta efter hämtningstiden",
+    );
+  }
+  for (const location of data.weather.locations) {
+    for (let index = 1; index < location.forecasts.length; index += 1) {
+      if (
+        Date.parse(location.forecasts[index - 1].validAt) >=
+        Date.parse(location.forecasts[index].validAt)
+      ) {
+        messages.push(
+          `väderprognosen för "${location.id}" måste ligga i stigande tidsordning`,
+        );
+        break;
+      }
+    }
   }
 
   const channelsById = new Map(
@@ -294,6 +322,7 @@ export function buildPublicData(data) {
     channels,
     items,
     schedule,
+    weather: data.weather,
   };
   const revision = createRevision(revisionSource);
 
@@ -305,6 +334,7 @@ export function buildPublicData(data) {
         channels: channels.length,
         catalogItems: items.length,
         scheduleSlots: schedule.slots.length,
+        weatherLocations: data.weather.locations.length,
       },
       scheduleHorizon: schedule.horizon,
     },
@@ -321,6 +351,12 @@ export function buildPublicData(data) {
     "schedule.json": {
       ...schedule,
       revision,
+    },
+    "teletext.json": {
+      schemaVersion: "1.0.0",
+      revision,
+      grid: { columns: 40, rows: 24 },
+      weather: data.weather,
     },
   };
 }

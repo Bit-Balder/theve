@@ -1,4 +1,4 @@
-# Fjärrkontroll, programguide och Text-TV · etapp 7
+# Fjärrkontroll, programguide och Text-TV · etapp 9
 
 Alla primära funktioner fungerar utan mus. Webbläsaren använder vanliga
 tangentbordshändelser som grund och översätter kända alternativa TV-koder till
@@ -63,6 +63,11 @@ kanal 01–09 och syns inte i guiden. `T`, `TXT` eller Text-TV-knappen öppnar
 sida 100. Tre siffror väljer sida 100, 300, 301, 400 eller 500. Escape eller
 Back stänger tjänsten och återställer fokus till TV-ytan.
 
+Sida 300 visar väderöversikt, 301 visar timprognos för valda orter, 400 visar
+aktuell tablå och 500 är Barnens sida. Alla sidor har exakt 40 × 24 tecken.
+Sidbufferten visas medan tre siffror matas in och sidan byts direkt efter den
+tredje siffran.
+
 ## Automatiska kontroller
 
 `npm run test:e2e` startar Theve lokalt och kör följande i Chromium:
@@ -74,7 +79,8 @@ Back stänger tjänsten och återställer fokus till TV-ytan.
 5. Guide och stängning med Escape.
 6. Kontroll att fokus återgår till TV-ytan och att framtida program saknar
    startknapp.
-7. Text-TV, tresiffrigt sidval och Back till senast valda kanal.
+7. Text-TV, exakt 40 × 24-grid, sidorna 100/300/301/400/500 och Back till
+   senast valda kanal.
 8. Barn före 18.55, godnattvinjett 18.55, slutskylt 19.00 och morgonprogram
    06.00 utan omladdning.
 9. Kanalbyte under uppehållet och återgång till Barn med slutskylten kvar.

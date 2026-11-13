@@ -8,7 +8,7 @@ färgkoder och specialmått.
 
 | Roll | Font | Användning |
 | --- | --- | --- |
-| TV och Text-TV | TDAText | Menyer, rubriker, brödtext och framtida Text-TV |
+| TV och Text-TV | TDAText | Menyer, rubriker, brödtext och Text-TV:s 40 × 24-grid |
 | Siffror och teknisk text | VT323 | Kanalnummer, klockor och äldre datortext |
 
 TDAText kommer från `tinelix/TDAText` och VT323 från användarens Google Fonts
@@ -46,6 +46,14 @@ Barns slutskylt är ett eget lokalt 4:3-SVG-original. Den använder endast de
 fem färgtokens, den mjuka gula solen från Barns identitet och raka analoga
 linjer. Bilden skalas med `contain`, hämtar inga externa resurser och förblir
 läsbar även när CRT-effekten är avstängd.
+
+## Text-TV
+
+Text-TV använder ett fast rutnät med 40 tecken och 24 rader inom 4:3-ytan.
+Varje rad fylls eller klipps av den rena sidgeneratorn; horisontell scroll och
+HTML från externa källor är inte tillåten. Svart är bakgrund, gräddvit är
+brödtext, gul markerar rubrik och sidfot, korall markerar varning och TV-blå
+används i huvudraden. Gammal eller saknad data får korall rubrik.
 
 ## Fokus och fjärrkontroll
 
