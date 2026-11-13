@@ -10,8 +10,9 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   await page.goto("/");
 
   await expect(
-    page.getByText("ETAPP 10 · AUTOMATIK OCH PUBLICERING"),
+    page.getByText("ETAPP 11 · KVALITET OCH KOMPATIBILITET"),
   ).toBeVisible();
+  await expect(page.locator(".topbar__clock")).toHaveText("14:05");
   await expect(page.getByRole("button", { name: /starta tv/i })).toBeFocused();
   await page.keyboard.press("Enter");
 

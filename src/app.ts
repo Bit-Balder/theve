@@ -24,13 +24,13 @@ import {
   getScheduleState,
 } from "./core/schedule-engine";
 import { createTeletextPage } from "./core/teletext";
+import { formatTheveClock, millisecondsUntilNextMinute } from "./core/time";
 
 export interface StartViewModel {
   readonly eyebrow: string;
   readonly title: string;
   readonly tagline: string;
   readonly stage: string;
-  readonly timeLabel: string;
   readonly instruction: string;
 }
 
@@ -40,7 +40,6 @@ export function createStartViewModel(): StartViewModel {
     title: project.name,
     tagline: project.tagline,
     stage: project.stage,
-    timeLabel: "20:45",
     instruction: "ANVÄND PILARNA OCH ENTER",
   };
 }
@@ -147,6 +146,7 @@ export function mountStartView(
   let selectionRevision = 0;
   let bannerTimer: ReturnType<typeof setTimeout> | null = null;
   let scheduleTimer: ReturnType<typeof setTimeout> | null = null;
+  let clockTimer: ReturnType<typeof setTimeout> | null = null;
   const teletext = createTeletext({
     getPage: (number, channelName) => {
       if (!publicData) {
@@ -417,8 +417,21 @@ export function mountStartView(
 
   const clock = document.createElement("p");
   clock.className = "topbar__clock numeric-text";
-  clock.setAttribute("aria-label", `Formprov klockan ${viewModel.timeLabel}`);
-  clock.textContent = viewModel.timeLabel;
+  clock.title = "Svensk tid · Europe/Stockholm";
+  const updateClock = () => {
+    const nowEpochMs = Date.now();
+    const time = formatTheveClock(nowEpochMs);
+    clock.textContent = time;
+    clock.setAttribute("aria-label", `Svensk tid ${time}`);
+    if (clockTimer) {
+      clearTimeout(clockTimer);
+    }
+    clockTimer = setTimeout(
+      updateClock,
+      millisecondsUntilNextMinute(nowEpochMs) + 25,
+    );
+  };
+  updateClock();
   topbar.append(clock);
 
   const content = document.createElement("div");
@@ -460,11 +473,16 @@ export function mountStartView(
   menuStatus.setAttribute("aria-live", "polite");
   menuStatus.textContent = viewModel.instruction;
 
+  const initialCrtMode = shell.dataset.crt === "off" ? "off" : "subtle";
   const menu = createFocusMenu({
     items: [
       { id: "start", label: "STARTA TV", hint: "ENTER" },
       { id: "focus", label: "VISA FOKUSPROV", hint: "PIL NED" },
-      { id: "crt", label: "CRT · DISKRET", hint: "PÅ" },
+      {
+        id: "crt",
+        label: initialCrtMode === "subtle" ? "CRT · DISKRET" : "CRT · AV",
+        hint: initialCrtMode === "subtle" ? "PÅ" : "AV",
+      },
     ],
     onAction: (action, button) => {
       if (action === "start") {

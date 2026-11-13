@@ -41,4 +41,9 @@ describe("designsystemets CSS-kontrakt", () => {
       /prefers-reduced-motion[\s\S]*animation:\s*none/,
     );
   });
+
+  it("använder samma pixliga VT323 för Text-TV som för klockan", () => {
+    expect(tokensCss).toContain('--font-teletext: "VT323"');
+    expect(tokensCss).toContain('--font-numeric: "VT323"');
+  });
 });

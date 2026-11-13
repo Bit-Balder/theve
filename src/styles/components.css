@@ -620,7 +620,7 @@
   height: 24em;
   max-height: 100%;
   overflow: hidden;
-  font-size: clamp(0.5rem, 2.5vw, 1.25rem);
+  font-size: clamp(0.5rem, min(3.2vw, 4vh), 1.45rem);
   line-height: 1;
 }
 
