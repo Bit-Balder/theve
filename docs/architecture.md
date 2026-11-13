@@ -15,6 +15,7 @@ TypeScript utan ramverk eller serverberoende.
 - `data/source/` innehåller granskad källdata som aldrig publiceras direkt.
 - `scripts/` validerar och genererar deterministisk publik data.
 - `public/data/` innehåller endast data som klarat publiceringsgrinden.
+- `public/assets/logos/` innehåller genererade SVG-original och manifest.
 - `tests/` innehåller tester för ren logik och kontrakt.
 - `e2e/` kör kärnflödet i Chromium med samma tangenttryckningar som en enkel
   fjärrkontroll.
@@ -47,6 +48,14 @@ Archives JSON-format eller spelarens interna tillstånd. Det är uppdelat i:
   kanalvalet fritt från DOM;
 - `overlay-back-stack.ts`, som stänger senaste överlägget först;
 - `channel-guide.ts`, som äger roving tabindex och fokusåterställning.
+- `teletext.ts`, som äger sidorna 100, 300, 301, 400 och 500 och sin egen
+  tresiffriga navigering.
+
+Logotyperna byggs i ett separat deterministiskt flöde. Definitionerna i
+`scripts/lib/logo-system.mjs` innehåller kanalens motiv, ordmärke och accent.
+`scripts/build-logos.mjs` använder samma viewBox, säkra yta och linjerytm för
+att generera fullfärg, gräddvit, svart och kompakt variant. UI-komponenterna
+läser sökväg och `theme` från kanaldata; ingen kanal har en egen komponent.
 
 ## Designskal
 
@@ -74,7 +83,8 @@ och rättighetsunderlag.
 produktionsbygge och Playwright-flödet i den ordningen. Samma kommando används
 lokalt och i GitHub Actions.
 
-Produktionsbygget kräver att `public/data/` exakt motsvarar källdatan. På
+Produktionsbygget kräver att både `public/data/` och SVG-originalen exakt
+motsvarar sina källor. På
 `main` publicerar en separat Pages-workflow den färdiga `dist/`-mappen via ett
 GitHub Pages-artifact; byggfiler checkas inte in i huvudbranchen.
 

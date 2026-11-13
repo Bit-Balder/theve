@@ -4,6 +4,7 @@ import {
 } from "./components/channel-guide";
 import { createFocusMenu } from "./components/focus-menu";
 import { createScreen43 } from "./components/screen43";
+import { createTeletext } from "./components/teletext";
 import { createTvExperience } from "./components/tv-experience";
 import { createTvShell, setCrtMode } from "./components/tv-shell";
 import {
@@ -55,21 +56,12 @@ function createGuideEntries(
   nowEpochMs: number,
 ): readonly ChannelGuideEntry[] {
   return data.channels.map((channel) => {
-    if (channel.kind === "info") {
-      return {
-        channelId: channel.id,
-        number: channel.number,
-        name: channel.name,
-        now: "THEVE INFORMATION",
-        next: "KANALÖVERSIKT",
-      };
-    }
-
     const state = getScheduleState(data.schedule, channel.id, nowEpochMs);
     return {
       channelId: channel.id,
       number: channel.number,
       name: channel.name,
+      logoSrc: channel.logo.compact,
       now: state.current
         ? slotTitle(state.current)
         : (state.reserveMessage ?? "RESERVBILD"),
@@ -83,28 +75,11 @@ function createBrand(): HTMLElement {
   brand.className = "brand";
   brand.setAttribute("aria-label", "Theve");
 
-  const sun = document.createElement("span");
-  sun.className = "brand__sun";
-  sun.setAttribute("aria-hidden", "true");
-
-  const lockup = document.createElement("span");
-  lockup.className = "brand__lockup";
-
-  const wordmark = document.createElement("span");
-  wordmark.className = "brand__wordmark";
-  wordmark.textContent = project.name;
-
-  const lines = document.createElement("span");
-  lines.className = "brand__lines";
-  lines.setAttribute("aria-hidden", "true");
-  for (const tone of ["yellow", "coral", "cream"] as const) {
-    const line = document.createElement("span");
-    line.className = `brand__line brand__line--${tone}`;
-    lines.append(line);
-  }
-
-  lockup.append(wordmark, lines);
-  brand.append(sun, lockup);
+  const logo = document.createElement("img");
+  logo.className = "brand__logo";
+  logo.src = "assets/logos/theve.svg";
+  logo.alt = "Theve";
+  brand.append(logo);
 
   return brand;
 }
@@ -160,6 +135,7 @@ export function mountStartView(
   );
   const tv = createTvExperience();
   const backStack = new OverlayBackStack();
+  const teletext = createTeletext();
   const startScreen = document.createElement("div");
   startScreen.className = "start-screen";
 
@@ -175,6 +151,11 @@ export function mountStartView(
   const closeGuide = () => {
     guide.close();
     backStack.remove("guide");
+  };
+
+  const closeTeletext = () => {
+    teletext.close();
+    backStack.remove("teletext");
   };
 
   const guide = createChannelGuide({
@@ -271,19 +252,19 @@ export function mountStartView(
     currentChannelId = channel.id;
     tv.root.dataset.channelId = channel.id;
     tv.picture.dataset.channelId = channel.id;
-    tv.channelNumber.textContent = String(channel.number).padStart(2, "0");
-    tv.channelName.textContent = channel.name;
+    tv.picture.dataset.theme = channel.theme;
+    tv.picture.dataset.state = "reserve";
+    tv.channelBug.dataset.theme = channel.theme;
+    tv.channelLogo.src = channel.logo.compact;
+    tv.channelLogo.alt = `${channel.name}, kanal ${channel.number}`;
+    tv.identLogo.src = channel.logo.fullColor;
+    tv.identLogo.alt = `${channel.name} kanalidentitet`;
+    tv.identLogo.classList.remove("tv-experience__ident-logo--entering");
+    void tv.identLogo.offsetWidth;
+    tv.identLogo.classList.add("tv-experience__ident-logo--entering");
     tv.status.textContent = `KANAL ${channel.number} · ${channel.name}`;
     media.hidden = true;
     tv.picture.hidden = false;
-
-    if (channel.kind === "info") {
-      playback.stop();
-      tv.pictureLabel.textContent = "THEVE · KANALÖVERSIKT";
-      showBanner("THEVE INFORMATION", "PROGRAMGUIDE");
-      scheduleNextBoundary(channel.id, null, null, Date.now());
-      return;
-    }
 
     const nowEpochMs = Date.now();
     const scheduleState = getScheduleState(
@@ -307,6 +288,7 @@ export function mountStartView(
 
     if (!scheduleState.current) {
       playback.stop();
+      tv.picture.dataset.state = "reserve";
       tv.pictureLabel.textContent =
         scheduleState.reserveMessage ?? "RESERVBILD";
       return;
@@ -314,9 +296,12 @@ export function mountStartView(
 
     if (scheduleState.current.type !== "program") {
       playback.stop();
+      tv.picture.dataset.state = scheduleState.current.type;
       tv.pictureLabel.textContent = slotTitle(scheduleState.current);
       return;
     }
+
+    tv.picture.dataset.state = "program";
 
     const catalogItem = publicData.catalogItems.find(
       (item) => item.id === scheduleState.current?.catalogItemId,
@@ -358,6 +343,21 @@ export function mountStartView(
     guide.open(createGuideEntries(publicData, Date.now()), currentChannelId);
   }
 
+  function openTeletext(): void {
+    if (!publicData || !currentChannelId || teletext.isOpen()) {
+      return;
+    }
+    const channel = publicData.channels.find(
+      (candidate) => candidate.id === currentChannelId,
+    );
+    if (!channel) {
+      return;
+    }
+    directNumber.clear();
+    backStack.push({ id: "teletext", close: teletext.close });
+    teletext.open(channel.name);
+  }
+
   async function startTv(): Promise<void> {
     if (started || starting) {
       return;
@@ -368,9 +368,7 @@ export function mountStartView(
 
     try {
       publicData = await getPublicData();
-      const firstChannel =
-        publicData.channels.find((channel) => channel.kind === "video") ??
-        publicData.channels[0];
+      const firstChannel = publicData.channels[0];
       if (!firstChannel) {
         throw new Error("Kanaldata saknas.");
       }
@@ -475,7 +473,8 @@ export function mountStartView(
   controls.append(menuTitle, menu, menuStatus);
   content.append(intro, controls);
   startScreen.append(topbar, content, createFocusProof());
-  safeArea.append(startScreen, tv.root, guide.element);
+  tv.txtButton.addEventListener("click", openTeletext);
+  safeArea.append(startScreen, tv.root, guide.element, teletext.element);
   screen.append(media, safeArea);
   shell.append(screen);
   root.replaceChildren(shell);
@@ -486,6 +485,18 @@ export function mountStartView(
     }
     const action = normalizeRemoteInput(event);
     if (!action) {
+      return;
+    }
+
+    if (teletext.isOpen()) {
+      event.preventDefault();
+      if (action.type === "digit") {
+        teletext.pushDigit(action.digit);
+      } else if (action.type === "back" || action.type === "teletext") {
+        if (!backStack.back()) {
+          closeTeletext();
+        }
+      }
       return;
     }
 
@@ -509,6 +520,10 @@ export function mountStartView(
     if (action.type === "guide") {
       directNumber.clear();
       openGuide();
+      return;
+    }
+    if (action.type === "teletext") {
+      openTeletext();
       return;
     }
     if (action.type === "back") {

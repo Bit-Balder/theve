@@ -99,53 +99,10 @@
   gap: var(--space-3);
 }
 
-.brand__sun {
-  position: relative;
-  width: clamp(1.8rem, 4vw, 3.2rem);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--color-yellow);
-  box-shadow:
-    0 -1.05em 0 -0.78em var(--color-yellow),
-    0 1.05em 0 -0.78em var(--color-yellow),
-    -1.05em 0 0 -0.78em var(--color-yellow),
-    1.05em 0 0 -0.78em var(--color-yellow);
-}
-
-.brand__lockup {
-  display: grid;
-  gap: clamp(0.1rem, 0.25vw, 0.2rem);
-}
-
-.brand__lines {
-  display: grid;
-  gap: clamp(0.08rem, 0.18vw, 0.14rem);
-}
-
-.brand__line {
-  width: 100%;
-  height: clamp(0.08rem, 0.16vw, 0.13rem);
-  border-radius: 999px;
-}
-
-.brand__line--yellow {
-  background: var(--color-yellow);
-}
-
-.brand__line--coral {
-  background: var(--color-coral);
-}
-
-.brand__line--cream {
-  background: var(--color-cream);
-}
-
-.brand__wordmark {
-  color: var(--color-cream);
-  font-size: var(--font-size-lg);
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-transform: uppercase;
+.brand__logo {
+  display: block;
+  width: clamp(9rem, 22vw, 16rem);
+  height: auto;
 }
 
 .topbar__clock {
@@ -337,8 +294,11 @@
 .tv-experience__picture {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   border: 0.12rem solid color-mix(in srgb, var(--color-cream) 45%, transparent);
   background:
@@ -356,44 +316,61 @@
     var(--color-tv-blue);
 }
 
-.tv-experience__picture[data-channel-id="barnkanalen"] {
-  background: repeating-linear-gradient(
-    135deg,
-    var(--color-yellow) 0 8%,
-    var(--color-cream) 8% 16%,
-    var(--color-coral) 16% 24%
-  );
+.tv-experience__picture[data-theme="yellow"] {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-yellow) 18%, transparent) 0 25%,
+      transparent 25% 75%,
+      color-mix(in srgb, var(--color-coral) 20%, transparent) 75%
+    ),
+    var(--color-tv-blue);
 }
 
-.tv-experience__picture[data-channel-id="tecknat"] {
+.tv-experience__picture[data-theme="coral"] {
   background:
     radial-gradient(
-      circle at 30% 35%,
-      var(--color-yellow) 0 13%,
-      transparent 13.5%
+      circle at 24% 28%,
+      color-mix(in srgb, var(--color-coral) 80%, transparent) 0 11%,
+      transparent 11.5%
     ),
-    linear-gradient(155deg, var(--color-coral) 0 47%, var(--color-tv-blue) 48%);
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--color-coral) 28%, var(--color-tv-blue)) 0 47%,
+      var(--color-tv-blue) 48%
+    );
 }
 
-.tv-experience__picture[data-channel-id="natur-tv"] {
+.tv-experience__picture[data-theme="cream"] {
   background:
     linear-gradient(
       165deg,
       transparent 0 42%,
-      var(--color-cream) 43% 52%,
+      color-mix(in srgb, var(--color-cream) 34%, transparent) 43% 52%,
       transparent 53%
     ),
-    color-mix(in srgb, var(--color-tv-blue), var(--color-yellow) 18%);
+    var(--color-tv-blue);
 }
 
-.tv-experience__picture[data-channel-id="retro-tv"] {
+.tv-experience__picture[data-state="off_air"] {
   background:
     repeating-linear-gradient(
       0deg,
-      transparent 0 10%,
-      color-mix(in srgb, var(--color-coral) 42%, transparent) 10% 20%
+      color-mix(in srgb, var(--color-cream) 12%, transparent) 0 1px,
+      transparent 1px 4px
     ),
     var(--color-teletext);
+}
+
+.tv-experience__ident-logo {
+  display: block;
+  width: min(62%, 24rem);
+  height: auto;
+  transform-origin: 50% 50%;
+}
+
+.tv-experience__ident-logo--entering {
+  animation: channel-ident-in 760ms steps(8, end) both;
 }
 
 .tv-experience__picture-label {
@@ -414,24 +391,16 @@
   top: var(--space-4);
   right: var(--space-4);
   z-index: 2;
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  color: var(--color-teletext);
-  background: var(--color-yellow);
-  box-shadow: 0.24rem 0.24rem 0 var(--color-coral);
+  width: clamp(5.8rem, 15vw, 9rem);
+  padding: var(--space-1) var(--space-2);
+  background: color-mix(in srgb, var(--color-teletext) 82%, transparent);
+  box-shadow: 0.18rem 0.18rem 0 var(--color-coral);
 }
 
-.channel-bug__number {
-  font-size: var(--font-size-lg);
-  line-height: 0.7;
-}
-
-.channel-bug__name {
-  font-size: var(--font-size-xs);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+.channel-bug__logo {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .program-banner {
@@ -491,7 +460,7 @@
   position: absolute;
   right: var(--space-4);
   bottom: var(--space-2);
-  left: var(--space-4);
+  left: calc(var(--space-4) + 4.3rem);
   z-index: 2;
   margin: 0;
   overflow: hidden;
@@ -501,6 +470,20 @@
   line-height: 1.2;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.txt-button {
+  position: absolute;
+  bottom: var(--space-2);
+  left: var(--space-4);
+  z-index: 3;
+  min-width: 3.4rem;
+  padding: var(--space-1) var(--space-2);
+  color: var(--color-teletext);
+  background: var(--color-coral);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.08em;
+  line-height: 1;
 }
 
 .channel-guide {
@@ -582,6 +565,12 @@
   text-transform: uppercase;
 }
 
+.channel-guide__logo {
+  flex: 0 0 auto;
+  width: clamp(2.8rem, 5vw, 4rem);
+  height: auto;
+}
+
 .channel-guide__number {
   flex: 0 0 auto;
   font-size: var(--font-size-md);
@@ -601,6 +590,89 @@
   color: color-mix(in srgb, currentColor 70%, var(--color-coral));
 }
 
+.teletext {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  overflow: hidden;
+  padding: clamp(var(--space-3), 3vw, var(--space-6));
+  color: var(--color-cream);
+  background: var(--color-teletext);
+  outline: none;
+  font-family: var(--font-teletext);
+}
+
+.teletext__header {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: var(--space-4);
+  align-items: baseline;
+  padding-bottom: var(--space-2);
+  color: var(--color-yellow);
+  border-bottom: 0.18rem solid var(--color-coral);
+  font-size: var(--font-size-sm);
+}
+
+.teletext__context {
+  color: var(--color-cream);
+  font-size: var(--font-size-xs);
+}
+
+.teletext__page {
+  color: var(--color-coral);
+  font-size: var(--font-size-md);
+}
+
+.teletext__title {
+  margin: var(--space-4) 0;
+  color: var(--color-yellow);
+  font-size: var(--font-size-lg);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+}
+
+.teletext__content {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.teletext__content p,
+.teletext__footer {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.12;
+}
+
+.teletext__content p:nth-child(3n + 1) {
+  color: var(--color-yellow);
+}
+
+.teletext__content p:nth-child(3n + 2) {
+  color: var(--color-coral);
+}
+
+.teletext__input {
+  position: absolute;
+  top: 22%;
+  right: var(--space-6);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-yellow);
+  background: var(--color-tv-blue);
+  box-shadow: var(--focus-ring);
+  font-size: var(--font-size-lg);
+}
+
+.teletext__footer {
+  position: absolute;
+  right: var(--space-6);
+  bottom: var(--space-4);
+  left: var(--space-6);
+  padding-top: var(--space-2);
+  color: var(--color-teletext);
+  background: var(--color-yellow);
+  text-align: center;
+}
+
 @keyframes crt-drift {
   0%,
   100% {
@@ -609,6 +681,23 @@
 
   50% {
     transform: translateY(var(--crt-line-size));
+  }
+}
+
+@keyframes channel-ident-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-8%) scale(0.92);
+  }
+
+  72% {
+    opacity: 1;
+    transform: translateX(1.5%) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
   }
 }
 
@@ -673,6 +762,18 @@
     min-height: 2.35rem;
     padding-block: var(--space-1);
   }
+
+  .channel-guide__logo {
+    width: 2.5rem;
+  }
+
+  .teletext__header {
+    gap: var(--space-2);
+  }
+
+  .teletext__content {
+    gap: var(--space-1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -683,5 +784,9 @@
 
   .program-banner {
     transition: none;
+  }
+
+  .tv-experience__ident-logo--entering {
+    animation: none;
   }
 }

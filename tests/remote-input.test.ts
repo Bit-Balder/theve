@@ -7,11 +7,13 @@ describe("plattformens fjärradapter", () => {
     ["ArrowUp", undefined, "channel_up"],
     ["ChannelDown", undefined, "channel_down"],
     ["Guide", undefined, "guide"],
+    ["T", undefined, "teletext"],
     ["BrowserBack", undefined, "back"],
     ["OK", undefined, "confirm"],
     ["", 427, "channel_up"],
     ["", 428, "channel_down"],
     ["", 458, "guide"],
+    ["", 459, "teletext"],
     ["", 461, "back"],
   ])("översätter %s/%s till %s", (key, keyCode, expected) => {
     expect(normalizeRemoteInput({ key, keyCode })?.type).toBe(expected);

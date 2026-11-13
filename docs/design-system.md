@@ -21,6 +21,18 @@ De fem färgtokens är TV-blå, gul, korall, gräddvit och Text-TV-svart. Exakta
 värden definieras en gång i `src/styles/tokens.css`. Toner skapas med
 genomskinlighet eller `color-mix`, inte med nya hexvärden.
 
+## Logotyper
+
+Theves masterlogotyp och kanalernas märken använder samma grid. Fullstor
+viewBox är `0 0 320 96`; kompakt kanalbugg använder `0 0 240 72`. Säker yta är
+fem procent. De tre färglinjerna är tre enheter höga, har fem enheters mellanrum
+och ligger på samma vertikala position i alla fullstora märken.
+
+Fullfärg och gräddvit används mot TV-blå eller svart. Svart variant används
+mot gräddvit eller gul. Minsta rekommenderade bredd är 128 pixlar för full
+logotyp och 72 pixlar för kanalbugg. Se `public/assets/logos/manifest.json` för
+det maskinläsbara kontraktet.
+
 ## TV-yta och säker yta
 
 - `TvShell` centrerar TV-ytan mot svart letterbox.
@@ -53,8 +65,7 @@ säker yta, läsbar text och synlig fokusmarkering.
 
 ## Kända avgränsningar
 
-- CSS-symbolen för Theve är ett formprov; slutlig SVG-logotyp hör till etapp 7.
-- Kanalernas CSS-mönster är reservbilder och formprov. Slutliga märken och
-  kanalidentiteter hör till etapp 7.
+- Kanalvinjetterna har ett kort gemensamt insteg och ett stillastående slutläge.
+  Ljud och längre rörelsesekvenser ingår inte ännu.
 - Fysisk TV eller TV-box väljs och provas i en senare etapp. Etapp 2 provas i
   TV-liknande 16:10- och 4:3-viewporter.

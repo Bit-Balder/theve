@@ -3,9 +3,9 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 6: ett komplett fjärrstyrt kärnflöde i en stabil
-4:3-yta, med linjär schemamotor, feltålig spelare, kanalbyte, direktnummer och
-programguide. Ingen skarp videokatalog eller slutlig kanalidentitet ingår ännu.
+Det här repot innehåller etapp 7: nio fastställda videokanaler, ett gemensamt
+SVG-system för Theve och kanalernas identiteter samt separat Text-TV. Ingen
+skarp videokatalog ingår ännu.
 
 ## Förutsättningar
 
@@ -33,6 +33,7 @@ npm run lint
 npm run test
 npm run test:e2e
 npm run data:check
+npm run logos:check
 npm run build
 npm run check
 ```
@@ -50,6 +51,12 @@ Källdata finns i `data/source/`. Bygg om den publicerbara katalogen efter en
 
 ```sh
 npm run data:build
+```
+
+SVG-originalen genereras från en gemensam konstruktion med:
+
+```sh
+npm run logos:build
 ```
 
 Endast schemalagda objekt med godkänd rättighets- och familjestatus når
@@ -76,7 +83,8 @@ src/
   styles/             gemensamma tokens och basstilar
 data/                  scheman och granskad källdata
 public/data/           deterministiskt genererad publik data
-scripts/               validering och katalogbygge
+public/assets/logos/   SVG-original, varianter och logotypmanifest
+scripts/               validering, katalog- och logotypbygge
 tests/                 automatiska tester
 e2e/                   tangentbordsdrivet webbläsarflöde
 docs/                  beslut och arkitektur
@@ -84,6 +92,7 @@ docs/                  beslut och arkitektur
 ```
 
 Läs [fjärrkontrollens knappkarta](docs/remote-control.md),
+[manualen för kanalidentiteter](docs/channel-identities.md),
 [spelarens publika API](docs/player-api.md),
 [guiden till schemamotorn](docs/schedule-engine.md),
 [beslutsloggen](docs/decisions.md) och
@@ -116,8 +125,8 @@ Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
 
 ## Status
 
-Etapp 6 etablerar kanal upp/ned, direktnummer med synlig sifferbuffert,
-kanalbugg, tillfällig programbanner, nu/nästa-guide, roving tabindex, Back-stack
-och alternativa fjärrkoder. Nästa steg är etapp 7: slutliga logotyper och
-kanalidentiteter.
+Etapp 7 fastställer kanal 01–09 som TV1–TV7, Barn och Natur. Theve och varje
+kanal har fullfärg, gräddvit, svart och kompakt SVG-variant från en gemensam
+mall. Text-TV öppnas med TXT/T och visas inte som kanal 0. Nästa etapp
+fördjupar och gränstestar Barns kvällsavslut.
 

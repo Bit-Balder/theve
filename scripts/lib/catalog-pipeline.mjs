@@ -153,6 +153,12 @@ export function validateProjectData(data) {
   for (const duplicate of collectDuplicates(channelNumbers)) {
     messages.push(`kanalnummer "${duplicate}" är inte unikt`);
   }
+  const sortedChannelNumbers = [...channelNumbers].sort(
+    (left, right) => left - right,
+  );
+  if (sortedChannelNumbers.join(",") !== "1,2,3,4,5,6,7,8,9") {
+    messages.push("kanalplanen måste innehålla exakt kanal 01–09");
+  }
   for (const duplicate of collectDuplicates(catalogIds)) {
     messages.push(`katalog-id "${duplicate}" är inte unikt`);
   }

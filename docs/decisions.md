@@ -1,6 +1,6 @@
 # Beslutslogg
 
-Senast uppdaterad: 12 november 2026.
+Senast uppdaterad: 13 november 2026.
 
 ## Fastställt
 
@@ -29,8 +29,16 @@ Senast uppdaterad: 12 november 2026.
   projektet.
 - Diskret CRT-brus är på som standard. Reducerad rörelse stänger av den
   rörliga effekten.
-- Startutbudets arbetsnamn är Theve 0, Barnkanalen, Tecknat, Natur TV och
-  Retro TV. Slutliga kanalidentiteter fastställs i etapp 7.
+- Kanalplanen är 01–09: TV1–TV7, Barn och Natur. Text-TV är inte kanal 0.
+- TV1–TV7 har profilerna nyheter och kultur, politik och samhälle, serier,
+  nöje och musik, film, tecknat samt true crime. Barn och Natur behåller sol-
+  respektive naturmotivet.
+- Barn sänder ordinarie innehåll 06.00–17.55, visar godnattvinjett 17.55–18.00
+  och har sändningsuppehåll med analog slutskylt 18.00–06.00.
+- Theve och varje kanal använder en gemensam SVG-grid och fyra varianter:
+  fullfärg, gräddvit, svart och kompakt kanalbugg. Märkena är egna original.
+- `theme` och logotypsökvägar kommer från kanaldata. Endast motiv, ordmärke och
+  accent varierar mellan kanalerna.
 - Tillgänglighet, rättighetsstatus och familjestatus är separata fält. Endast
   schemalagda objekt med gröna godkännanden genereras för publicering.
 - GitHub Pages publiceras med GitHub Actions från ett byggartifact, inte från
@@ -68,13 +76,11 @@ Senast uppdaterad: 12 november 2026.
   text och kan inte startas i förtid.
 - Fokus återgår till TV-ytan när ett överlägg stängs. Senaste kanalvalet och
   senaste asynkrona laddningen är alltid de som får uppdatera bilden.
+- `T`, `TXT`, plattformskoden `Teletext` och TV-kod 459 öppnar Text-TV. Tre
+  siffror väljer sida; Back återgår till senast valda videokanal.
 
 ## Öppet inför senare etapper
 
-- Slutliga kanalnamn och vilka fyra videokanaler som ingår i startutbudet.
 - Vilka orter som visas i Text-TV-vädret.
 - Vilken fysisk TV eller TV-box som används för manuell acceptanstest.
-
-Den nuvarande CSS-baserade Theve-symbolen är ett formprov. Slutlig
-masterlogotyp och kanalidentiteter tas fram i etapp 7.
 

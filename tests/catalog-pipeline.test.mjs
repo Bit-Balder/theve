@@ -6,6 +6,7 @@ import {
   loadProjectData,
   validateProjectData,
 } from "../scripts/lib/catalog-pipeline.mjs";
+import { getScheduleState } from "../src/core/schedule-engine.ts";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 
@@ -13,9 +14,9 @@ function freshData() {
   return structuredClone(loadProjectData(projectRoot));
 }
 
-function retroProgramSlot(data) {
+function programSlot(data, channelId) {
   return data.schedule.templates.find(
-    (template) => template.channelId === "retro-tv",
+    (template) => template.channelId === channelId,
   ).slots[0];
 }
 
@@ -26,9 +27,9 @@ describe("Etapp 4:s datarör", () => {
 
     expect(second).toEqual(first);
     expect(first["manifest.json"].counts).toEqual({
-      channels: 5,
-      catalogItems: 4,
-      scheduleSlots: 448,
+      channels: 9,
+      catalogItems: 9,
+      scheduleSlots: 616,
     });
   });
 
@@ -37,26 +38,27 @@ describe("Etapp 4:s datarör", () => {
     data.schedule.templates[0].slots[0].catalogItemId = "saknat-program";
 
     expect(() => validateProjectData(data)).toThrow(
-      'slot "barnkanalen-daglig/morgon" hänvisar till okänt katalogobjekt "saknat-program"',
+      'slot "tv1-daglig/dygn" hänvisar till okänt katalogobjekt "saknat-program"',
     );
   });
 
   it("stoppar review_required från publicerad tablå", () => {
     const data = freshData();
-    retroProgramSlot(data).catalogItemId = "retro-arkiv-kandidat";
+    programSlot(data, "tv7").catalogItemId = "tv7-arkiv-kandidat";
+    programSlot(data, "tv7").durationSeconds = 1800;
 
     expect(() => buildPublicData(data)).toThrow(
-      'slot "retro-tv-daglig/kvall" får inte publiceras: rättighetsstatus är "review_required"',
+      'slot "tv7-daglig/dygn" får inte publiceras: rättighetsstatus är "review_required"',
     );
   });
 
   it("stoppar rejected från publicerad tablå", () => {
     const data = freshData();
-    retroProgramSlot(data).catalogItemId = "avvisat-rattighetsexempel";
-    retroProgramSlot(data).durationSeconds = 600;
+    programSlot(data, "tv5").catalogItemId = "tv5-avvisat-rattighetsexempel";
+    programSlot(data, "tv5").durationSeconds = 600;
 
     expect(() => buildPublicData(data)).toThrow(
-      'slot "retro-tv-daglig/kvall" får inte publiceras: rättighetsstatus är "rejected"',
+      'slot "tv5-daglig/dygn" får inte publiceras: rättighetsstatus är "rejected"',
     );
   });
 
@@ -65,7 +67,7 @@ describe("Etapp 4:s datarör", () => {
     data.catalog.items[0].availabilityStatus = "unavailable";
 
     expect(() => buildPublicData(data)).toThrow(
-      'slot "barnkanalen-daglig/morgon" får inte publiceras: tillgänglighet är "unavailable"',
+      'slot "tv1-daglig/dygn" får inte publiceras: tillgänglighet är "unavailable"',
     );
   });
 
@@ -74,28 +76,17 @@ describe("Etapp 4:s datarör", () => {
     data.channels.channels[2].number = data.channels.channels[1].number;
 
     expect(() => validateProjectData(data)).toThrow(
-      'kanalnummer "1" är inte unikt',
+      'kanalnummer "2" är inte unikt',
     );
   });
 
-  it("tillåter flera veckomallar för samma kanal", () => {
+  it("kräver den fastställda kanalplanen 01–09", () => {
     const data = freshData();
-    data.schedule.templates.push({
-      id: "retro-tv-lordagsvinjett",
-      channelId: "retro-tv",
-      daysOfWeek: [6],
-      slots: [
-        {
-          id: "lordagsvinjett",
-          type: "ident",
-          startLocal: "19:55",
-          durationSeconds: 300,
-          label: "Lördagskväll på Retro TV",
-        },
-      ],
-    });
+    data.channels.channels[8].number = 8;
 
-    expect(() => validateProjectData(data)).not.toThrow();
+    expect(() => validateProjectData(data)).toThrow(
+      "kanalplanen måste innehålla exakt kanal 01–09",
+    );
   });
 
   it("kräver att tablåhorisonten börjar på en måndag", () => {
@@ -105,6 +96,27 @@ describe("Etapp 4:s datarör", () => {
     expect(() => validateProjectData(data)).toThrow(
       "tablåhorisontens startdatum måste vara en måndag",
     );
+  });
+
+  it("växlar Barn från program till godnatt och uppehåll exakt", () => {
+    const schedule = buildPublicData(freshData())["schedule.json"];
+
+    expect(
+      getScheduleState(schedule, "barn", Date.parse("2026-11-13T16:54:00Z"))
+        .current?.type,
+    ).toBe("program");
+    expect(
+      getScheduleState(schedule, "barn", Date.parse("2026-11-13T16:55:00Z"))
+        .current?.type,
+    ).toBe("ident");
+    expect(
+      getScheduleState(schedule, "barn", Date.parse("2026-11-13T17:00:00Z"))
+        .current?.type,
+    ).toBe("off_air");
+    expect(
+      getScheduleState(schedule, "barn", Date.parse("2026-11-14T05:00:00Z"))
+        .current?.type,
+    ).toBe("program");
   });
 
   it("validerar obligatoriska schemafält", () => {
