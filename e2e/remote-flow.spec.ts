@@ -9,7 +9,7 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   });
   await page.goto("/");
 
-  await expect(page.getByText("ETAPP 7 · KANALIDENTITETER")).toBeVisible();
+  await expect(page.getByText("ETAPP 8 · BARNS KVÄLLSAVSLUT")).toBeVisible();
   await expect(page.getByRole("button", { name: /starta tv/i })).toBeFocused();
   await page.keyboard.press("Enter");
 
@@ -69,4 +69,68 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   await page.keyboard.press("Escape");
   await expect(teletext).toBeHidden();
   await expect(tv).toBeFocused();
+});
+
+test("Barn följer 18.55, 19.00 och 06.00 utan omladdning", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    let currentNow = Date.parse("2026-11-13T17:54:00.000Z");
+    let realAnchor = performance.now();
+    Date.now = () => currentNow + performance.now() - realAnchor;
+    Object.defineProperty(window, "__setTheveNow", {
+      value: (iso: string) => {
+        currentNow = Date.parse(iso);
+        realAnchor = performance.now();
+      },
+    });
+  });
+  const setNow = async (iso: string) => {
+    await page.evaluate((next) => {
+      (
+        window as typeof window & {
+          __setTheveNow: (value: string) => void;
+        }
+      ).__setTheveNow(next);
+    }, iso);
+  };
+  const retuneBarn = async () => {
+    await page.keyboard.press("ArrowUp");
+    await page.keyboard.press("ArrowDown");
+  };
+
+  await page.goto("/");
+  await page.keyboard.press("Enter");
+  const tv = page.getByRole("region", { name: "Theve sändning" });
+
+  await page.keyboard.press("8");
+  await expect(tv).toHaveAttribute("data-channel-id", "barn", {
+    timeout: 2_000,
+  });
+  await expect(page.getByText("Barn · Dagens program").first()).toBeVisible();
+
+  await setNow("2026-11-13T17:54:59.500Z");
+  await retuneBarn();
+  await expect(page.getByText("Barn önskar god natt").first()).toBeVisible();
+
+  await setNow("2026-11-13T17:59:59.500Z");
+  await retuneBarn();
+  const endCard = page.locator(".tv-experience__off-air-card");
+  await expect(endCard).toBeVisible();
+  await expect(endCard).toHaveAttribute(
+    "src",
+    "assets/cards/barn-off-air.svg",
+  );
+  await expect(page.locator(".player-surface")).toBeHidden();
+
+  await page.keyboard.press("ArrowUp");
+  await expect(tv).toHaveAttribute("data-channel-id", "natur");
+  await page.keyboard.press("ArrowDown");
+  await expect(tv).toHaveAttribute("data-channel-id", "barn");
+  await expect(endCard).toBeVisible();
+
+  await setNow("2026-11-14T04:59:59.500Z");
+  await retuneBarn();
+  await expect(endCard).toBeHidden();
+  await expect(page.getByText("Barn · Dagens program").first()).toBeVisible();
 });

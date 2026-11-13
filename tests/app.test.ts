@@ -7,7 +7,7 @@ describe("Theves startvy", () => {
     const viewModel = createStartViewModel();
 
     expect(viewModel.title).toBe("Theve");
-    expect(viewModel.stage).toContain("ETAPP 7");
+    expect(viewModel.stage).toContain("ETAPP 8");
     expect(viewModel.instruction).toContain("PILARNA");
     expect(viewModel.tagline).toContain("linjär TV");
   });

@@ -33,8 +33,11 @@ Senast uppdaterad: 13 november 2026.
 - TV1–TV7 har profilerna nyheter och kultur, politik och samhälle, serier,
   nöje och musik, film, tecknat samt true crime. Barn och Natur behåller sol-
   respektive naturmotivet.
-- Barn sänder ordinarie innehåll 06.00–17.55, visar godnattvinjett 17.55–18.00
-  och har sändningsuppehåll med analog slutskylt 18.00–06.00.
+- Barn sänder ordinarie innehåll 06.00–18.55, visar godnattvinjett 18.55–19.00
+  och har sändningsuppehåll med analog slutskylt 19.00–06.00.
+- Barns slutskylt är ett eget lokalt SVG-original. Dess sökväg ligger på
+  kanalens `off_air`-slot, så spelvyn behöver ingen kanalspecifik regel eller
+  nätanslutning för att visa uppehållet.
 - Theve och varje kanal använder en gemensam SVG-grid och fyra varianter:
   fullfärg, gräddvit, svart och kompakt kanalbugg. Märkena är egna original.
 - `theme` och logotypsökvägar kommer från kanaldata. Endast motiv, ordmärke och

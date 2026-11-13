@@ -3,9 +3,10 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 7: nio fastställda videokanaler, ett gemensamt
-SVG-system för Theve och kanalernas identiteter samt separat Text-TV. Ingen
-skarp videokatalog ingår ännu.
+Det här repot innehåller etapp 8: Barn visar en godnattvinjett 18.55, går över
+till en egen analog slutskylt 19.00 och återupptar sändningen 06.00. De nio
+fastställda videokanalerna och separat Text-TV finns kvar. Ingen skarp
+videokatalog ingår ännu.
 
 ## Förutsättningar
 
@@ -83,7 +84,7 @@ src/
   styles/             gemensamma tokens och basstilar
 data/                  scheman och granskad källdata
 public/data/           deterministiskt genererad publik data
-public/assets/logos/   SVG-original, varianter och logotypmanifest
+public/assets/         lokala logotyper och Barns slutskylt
 scripts/               validering, katalog- och logotypbygge
 tests/                 automatiska tester
 e2e/                   tangentbordsdrivet webbläsarflöde
@@ -91,7 +92,8 @@ docs/                  beslut och arkitektur
 .github/workflows/     gemensam kvalitetskontroll
 ```
 
-Läs [fjärrkontrollens knappkarta](docs/remote-control.md),
+Läs [Barns kvällsavslut](docs/barn-signoff.md),
+[fjärrkontrollens knappkarta](docs/remote-control.md),
 [manualen för kanalidentiteter](docs/channel-identities.md),
 [spelarens publika API](docs/player-api.md),
 [guiden till schemamotorn](docs/schedule-engine.md),
@@ -125,8 +127,8 @@ Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
 
 ## Status
 
-Etapp 7 fastställer kanal 01–09 som TV1–TV7, Barn och Natur. Theve och varje
-kanal har fullfärg, gräddvit, svart och kompakt SVG-variant från en gemensam
-mall. Text-TV öppnas med TXT/T och visas inte som kanal 0. Nästa etapp
-fördjupar och gränstestar Barns kvällsavslut.
+Etapp 8 låter tablådatan styra Barns kvällsavslut: ordinarie innehåll till
+18.55, godnattvinjett till 19.00, lokal analog slutskylt under
+sändningsuppehållet och återstart 06.00. Kanalbyte och återgång till Barn
+behåller rätt läge. Nästa etapp fördjupar Text-TV.
 

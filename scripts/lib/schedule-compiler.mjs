@@ -68,6 +68,7 @@ export function compileWeeklySchedule(source) {
           type: definition.type,
           catalogItemId: definition.catalogItemId ?? null,
           label: definition.label ?? null,
+          ...(definition.asset ? { asset: definition.asset } : {}),
           startsAtUtc: start.toInstant().toString(),
           endsAtUtc: end.toInstant().toString(),
           durationSeconds,

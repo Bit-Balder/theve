@@ -46,9 +46,9 @@ const pages: Readonly<Record<string, TeletextPage>> = {
     number: "400",
     title: "BARN OCH FAMILJ",
     rows: [
-      "BARN SÄNDER 06.00–18.00",
-      "17.55  GODNATTVINJETT",
-      "18.00  SÄNDNINGSUPPEHÅLL",
+      "BARN SÄNDER 06.00–19.00",
+      "18.55  GODNATTVINJETT",
+      "19.00  SÄNDNINGSUPPEHÅLL",
       "06.00  MORGONSÄNDNING",
     ],
   },

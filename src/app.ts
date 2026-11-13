@@ -259,6 +259,9 @@ export function mountStartView(
     tv.channelLogo.alt = `${channel.name}, kanal ${channel.number}`;
     tv.identLogo.src = channel.logo.fullColor;
     tv.identLogo.alt = `${channel.name} kanalidentitet`;
+    tv.identLogo.hidden = false;
+    tv.offAirCard.hidden = true;
+    tv.pictureLabel.hidden = false;
     tv.identLogo.classList.remove("tv-experience__ident-logo--entering");
     void tv.identLogo.offsetWidth;
     tv.identLogo.classList.add("tv-experience__ident-logo--entering");
@@ -297,6 +300,14 @@ export function mountStartView(
     if (scheduleState.current.type !== "program") {
       playback.stop();
       tv.picture.dataset.state = scheduleState.current.type;
+      if (scheduleState.current.asset) {
+        tv.offAirCard.src = scheduleState.current.asset;
+        tv.offAirCard.alt = slotTitle(scheduleState.current);
+        tv.offAirCard.hidden = false;
+        tv.identLogo.hidden = true;
+        tv.pictureLabel.hidden = true;
+        return;
+      }
       tv.pictureLabel.textContent = slotTitle(scheduleState.current);
       return;
     }

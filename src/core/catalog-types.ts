@@ -56,6 +56,7 @@ export interface WeeklyScheduleSlot {
   readonly endLocal?: string;
   readonly catalogItemId?: string;
   readonly label?: string;
+  readonly asset?: string;
 }
 
 export interface WeeklyScheduleTemplate {

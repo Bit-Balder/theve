@@ -1,4 +1,4 @@
-# Datamodell · etapp 7
+# Datamodell · etapp 8
 
 Etapp 3 skiljer källdata från data som får publiceras. Källdata granskas och
 valideras; endast godkända objekt skrivs till `public/data/`.
@@ -23,7 +23,7 @@ kanallistan.
 
 Varje kanalrad innehåller profil, målgrupp, accenttema och sökvägar till fyra
 SVG-varianter. `theme` får endast vara `yellow`, `coral` eller `cream` och
-kopplas till gemensamma CSS-tokens. Barn har `signOffAt: "18:00"`; den faktiska
+kopplas till gemensamma CSS-tokens. Barn har `signOffAt: "19:00"`; den faktiska
 godnattvinjetten och slutskylten beskrivs i tablån.
 
 ## Statusfält
@@ -56,7 +56,8 @@ UTC-start, UTC-slut, svenskt UTC-offset och en revisionsnyckel. Slottyperna är:
 
 - `program`, som måste hänvisa till ett godkänt katalogobjekt;
 - `ident`, för kanalvinjett eller analog slutskylt;
-- `off_air`, för ett planerat sändningsuppehåll.
+- `off_air`, för ett planerat sändningsuppehåll. En sådan slot kan peka på en
+  egen lokal SVG i `asset`, exempelvis Barns analoga slutskylt.
 
 ## Provobjekt
 
