@@ -224,6 +224,17 @@ export function validateProjectData(data) {
     if (!rightsByItemId.has(item.id)) {
       messages.push(`katalogobjekt "${item.id}" saknar rättighetsrad`);
     }
+    const rights = rightsByItemId.get(item.id);
+    if (
+      item.source.type === "internet_archive" &&
+      rights?.status === "approved" &&
+      rights.publicationAllowed &&
+      !rights.licenseUrl
+    ) {
+      messages.push(
+        `godkänt Internet Archive-objekt "${item.id}" saknar låst licenseUrl`,
+      );
+    }
   }
 
   for (const entry of data.rights.entries) {
@@ -317,6 +328,13 @@ export function buildPublicData(data) {
     })),
   };
 
+  const sourceRevision = createRevision({
+    channels: data.channels,
+    catalog: data.catalog,
+    rights: data.rights,
+    schedule: data.schedule,
+    weather: data.weather,
+  });
   const revisionSource = {
     schemaVersion: "2.0.0",
     channels,
@@ -330,6 +348,7 @@ export function buildPublicData(data) {
     "manifest.json": {
       schemaVersion: "2.0.0",
       revision,
+      sourceRevision,
       counts: {
         channels: channels.length,
         catalogItems: items.length,

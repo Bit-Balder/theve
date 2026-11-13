@@ -9,7 +9,9 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   });
   await page.goto("/");
 
-  await expect(page.getByText("ETAPP 9 · TEXT-TV")).toBeVisible();
+  await expect(
+    page.getByText("ETAPP 10 · AUTOMATIK OCH PUBLICERING"),
+  ).toBeVisible();
   await expect(page.getByRole("button", { name: /starta tv/i })).toBeFocused();
   await page.keyboard.press("Enter");
 
@@ -77,7 +79,7 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   await page.keyboard.press("0");
   await page.keyboard.press("1");
   await expect(teletext).toHaveAttribute("data-page-number", "301");
-  await expect(teletext.getByText("GÖTEBORG")).toBeVisible();
+  await expect(teletext.getByText("GÖTEBORGSOMRÅDET")).toBeVisible();
   await page.keyboard.press("4");
   await page.keyboard.press("0");
   await page.keyboard.press("0");

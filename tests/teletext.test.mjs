@@ -51,9 +51,9 @@ describe("Text-TV", () => {
     expect(overview.status).toBe("ready");
     expect(text).toContain("SMHI");
     expect(text).toContain("BEARBETAD AV THEVE");
-    expect(text).toContain("STOCKHOLM");
-    expect(text).toContain("GÖTEBORG");
-    expect(text).toContain("MALMÖ");
+    expect(text).toContain("STOCKHOLMSOMRÅDET");
+    expect(text).toContain("GÖTEBORGSOMRÅDET");
+    expect(text).toContain("MALMÖOMRÅDET");
   });
 
   it("döljer prognosvärden när snapshoten är gammal eller saknas", () => {

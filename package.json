@@ -11,6 +11,7 @@
     "data:build": "node scripts/build-catalog.mjs",
     "data:check": "node scripts/build-catalog.mjs --check",
     "weather:update": "node scripts/update-weather.mjs",
+    "catalog:audit": "node scripts/catalog-audit.mjs",
     "logos:build": "node scripts/build-logos.mjs",
     "logos:check": "node scripts/build-logos.mjs --check",
     "build": "npm run data:check && npm run logos:check && tsc -b && vite build",

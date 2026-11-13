@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "revision": "1032d777e89bb10c",
+  "revision": "f697f52c70de3d0e",
   "grid": {
     "columns": 40,
     "rows": 24
@@ -21,7 +21,7 @@
     "locations": [
       {
         "id": "stockholm",
-        "name": "Stockholm",
+        "name": "Stockholmsområdet",
         "longitude": 18.0686,
         "latitude": 59.3293,
         "sourceUrl": "https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/18.0686/lat/59.3293/data.json?timeseries=8&parameters=air_temperature,wind_speed,precipitation_amount_mean,symbol_code",
@@ -86,7 +86,7 @@
       },
       {
         "id": "goteborg",
-        "name": "Göteborg",
+        "name": "Göteborgsområdet",
         "longitude": 11.9746,
         "latitude": 57.7089,
         "sourceUrl": "https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/11.9746/lat/57.7089/data.json?timeseries=8&parameters=air_temperature,wind_speed,precipitation_amount_mean,symbol_code",
@@ -151,7 +151,7 @@
       },
       {
         "id": "malmo",
-        "name": "Malmö",
+        "name": "Malmöområdet",
         "longitude": 13.0038,
         "latitude": 55.605,
         "sourceUrl": "https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/13.0038/lat/55.605/data.json?timeseries=8&parameters=air_temperature,wind_speed,precipitation_amount_mean,symbol_code",

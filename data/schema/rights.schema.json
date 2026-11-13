@@ -46,6 +46,10 @@
           "publicationAllowed": {
             "type": "boolean"
           },
+          "licenseUrl": {
+            "type": ["string", "null"],
+            "format": "uri"
+          },
           "notes": {
             "type": "string"
           }

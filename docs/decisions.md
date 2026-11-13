@@ -83,8 +83,10 @@ Senast uppdaterad: 13 november 2026.
   siffror väljer sida; Back återgår till senast valda videokanal.
 - Text-TV består av exakt 40 kolumner och 24 rader och använder TDAText med
   stöd för å, ä och ö. Sidorna är 100, 300, 301, 400 och 500.
-- Stockholm, Göteborg och Malmö är första väderorterna. Familjens hemort kan
-  läggas till som en fjärde datapost när den har bekräftats.
+- Stockholmsområdet, Göteborgsområdet och Malmöområdet är de första
+  väderområdena. Varje etikett bygger på en fast prognospunkt nära centrum och
+  ska inte beskrivas som ett regionalt medelvärde. Familjens hemområde kan
+  läggas till som en fjärde datapost när det har bekräftats.
 - Väder kommer från SMHI:s dokumenterade SNOW1G-API under CC BY 4.0. Theve
   visar både `Källa: SMHI öppna data` och att urval och avrundning är en
   bearbetning av Theve.
@@ -93,6 +95,15 @@ Senast uppdaterad: 13 november 2026.
   inga prognosvärden presenteras som aktuella.
 - Text-TV-sida 400 räknas från samma kompilerade schema och samma klocka som
   programguiden. Nyhetssidor aktiveras inte utan dokumenterade källvillkor.
+- Den nattliga kontrollen körs 03.17 svensk tid, en bit från hel timme. Den har
+  endast läsrättighet, gör ingen commit och publicerar inget till Pages.
+- Pages-publicering ligger efter hela kvalitetsgrinden i samma workflow. En
+  pull request testas men publiceras aldrig; endast en godkänd revision på
+  `main` kan skapa och publicera ett Pages-artifact.
+- Godkända Internet Archive-objekt måste ha en låst `licenseUrl`. Ändrad
+  licens eller otillgänglig källa är ett blockerande katalogfel.
+- Genererade manifest och katalograpporter innehåller källrevision och commit,
+  så varje körning kan härledas till sin indata.
 
 ## Öppet inför senare etapper
 
