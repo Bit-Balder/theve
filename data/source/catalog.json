@@ -2,34 +2,106 @@
   "schemaVersion": "1.0.0",
   "items": [
     {
-      "id": "barnmorgon-testbild",
-      "title": "Barnmorgon · testbild",
-      "channelId": "barnkanalen",
-      "durationSeconds": 900,
+      "id": "tv1-nyheter-kultur-testbild",
+      "title": "TV1 · Nyheter och kultur",
+      "channelId": "tv1",
+      "durationSeconds": 86400,
       "source": {
         "type": "generated_test_pattern",
-        "mediaRef": "theve-pattern://barnmorgon"
+        "mediaRef": "theve-pattern://tv1"
       },
       "availabilityStatus": "available",
       "familyStatus": "approved"
     },
     {
-      "id": "tecknat-formprov",
-      "title": "Tecknat · formprov",
-      "channelId": "tecknat",
-      "durationSeconds": 900,
+      "id": "tv2-politik-samhalle-testbild",
+      "title": "TV2 · Politik och samhälle",
+      "channelId": "tv2",
+      "durationSeconds": 86400,
       "source": {
         "type": "generated_test_pattern",
-        "mediaRef": "theve-pattern://tecknat"
+        "mediaRef": "theve-pattern://tv2"
       },
       "availabilityStatus": "available",
       "familyStatus": "approved"
     },
     {
-      "id": "nordisk-natur-testbild",
-      "title": "Nordisk natur · testbild",
-      "channelId": "natur-tv",
-      "durationSeconds": 900,
+      "id": "tv3-serier-testbild",
+      "title": "TV3 · Serier",
+      "channelId": "tv3",
+      "durationSeconds": 86400,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://tv3"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved"
+    },
+    {
+      "id": "tv4-noje-musik-testbild",
+      "title": "TV4 · Nöje och musik",
+      "channelId": "tv4",
+      "durationSeconds": 86400,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://tv4"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved"
+    },
+    {
+      "id": "tv5-film-testbild",
+      "title": "TV5 · Filmklassiker",
+      "channelId": "tv5",
+      "durationSeconds": 86400,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://tv5"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved"
+    },
+    {
+      "id": "tv6-tecknat-testbild",
+      "title": "TV6 · Tecknat",
+      "channelId": "tv6",
+      "durationSeconds": 86400,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://tv6"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved"
+    },
+    {
+      "id": "tv7-true-crime-testbild",
+      "title": "TV7 · True crime",
+      "channelId": "tv7",
+      "durationSeconds": 86400,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://tv7"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved"
+    },
+    {
+      "id": "barn-dag-testbild",
+      "title": "Barn · Dagens program",
+      "channelId": "barn",
+      "durationSeconds": 42900,
+      "source": {
+        "type": "generated_test_pattern",
+        "mediaRef": "theve-pattern://barn"
+      },
+      "availabilityStatus": "available",
+      "familyStatus": "approved"
+    },
+    {
+      "id": "natur-djur-testbild",
+      "title": "Natur · Natur och djur",
+      "channelId": "natur",
+      "durationSeconds": 86400,
       "source": {
         "type": "generated_test_pattern",
         "mediaRef": "theve-pattern://natur"
@@ -38,21 +110,9 @@
       "familyStatus": "approved"
     },
     {
-      "id": "retro-testbild",
-      "title": "Retro TV · testbild",
-      "channelId": "retro-tv",
-      "durationSeconds": 900,
-      "source": {
-        "type": "generated_test_pattern",
-        "mediaRef": "theve-pattern://retro"
-      },
-      "availabilityStatus": "available",
-      "familyStatus": "approved"
-    },
-    {
-      "id": "retro-arkiv-kandidat",
-      "title": "Retroarkiv · kandidat",
-      "channelId": "retro-tv",
+      "id": "tv7-arkiv-kandidat",
+      "title": "TV7 · Arkivkandidat",
+      "channelId": "tv7",
       "durationSeconds": 1800,
       "source": {
         "type": "internet_archive",
@@ -62,9 +122,9 @@
       "familyStatus": "review_required"
     },
     {
-      "id": "avvisat-rattighetsexempel",
-      "title": "Avvisat rättighetsexempel",
-      "channelId": "retro-tv",
+      "id": "tv5-avvisat-rattighetsexempel",
+      "title": "TV5 · Avvisat rättighetsexempel",
+      "channelId": "tv5",
       "durationSeconds": 600,
       "source": {
         "type": "local_test",

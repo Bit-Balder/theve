@@ -1,15 +1,16 @@
 export interface TvExperienceElements {
   readonly root: HTMLElement;
   readonly picture: HTMLElement;
+  readonly identLogo: HTMLImageElement;
   readonly pictureLabel: HTMLElement;
   readonly channelBug: HTMLElement;
-  readonly channelNumber: HTMLElement;
-  readonly channelName: HTMLElement;
+  readonly channelLogo: HTMLImageElement;
   readonly banner: HTMLElement;
   readonly bannerProgram: HTMLElement;
   readonly bannerNext: HTMLElement;
   readonly numberBuffer: HTMLElement;
   readonly status: HTMLElement;
+  readonly txtButton: HTMLButtonElement;
 }
 
 export function createTvExperience(): TvExperienceElements {
@@ -22,20 +23,22 @@ export function createTvExperience(): TvExperienceElements {
   const picture = document.createElement("div");
   picture.className = "tv-experience__picture";
 
+  const identLogo = document.createElement("img");
+  identLogo.className = "tv-experience__ident-logo";
+  identLogo.alt = "";
+
   const pictureLabel = document.createElement("p");
   pictureLabel.className = "tv-experience__picture-label";
   pictureLabel.textContent = "RESERVBILD";
-  picture.append(pictureLabel);
+  picture.append(identLogo, pictureLabel);
 
   const channelBug = document.createElement("aside");
   channelBug.className = "channel-bug";
   channelBug.setAttribute("aria-label", "Aktuell kanal");
 
-  const channelNumber = document.createElement("span");
-  channelNumber.className = "channel-bug__number numeric-text";
-  const channelName = document.createElement("span");
-  channelName.className = "channel-bug__name";
-  channelBug.append(channelNumber, channelName);
+  const channelLogo = document.createElement("img");
+  channelLogo.className = "channel-bug__logo";
+  channelBug.append(channelLogo);
 
   const banner = document.createElement("aside");
   banner.className = "program-banner";
@@ -56,21 +59,29 @@ export function createTvExperience(): TvExperienceElements {
   status.className = "tv-experience__status";
   status.setAttribute("role", "status");
   status.setAttribute("aria-live", "polite");
-  status.textContent = "PIL UPP/NED · KANAL  ·  G · GUIDE  ·  0–9 · DIREKT";
+  status.textContent =
+    "PIL UPP/NED · KANAL  ·  G · GUIDE  ·  T · TEXT-TV  ·  0–9 · DIREKT";
 
-  root.append(picture, channelBug, banner, numberBuffer, status);
+  const txtButton = document.createElement("button");
+  txtButton.type = "button";
+  txtButton.className = "txt-button focus-control";
+  txtButton.textContent = "TXT";
+  txtButton.setAttribute("aria-label", "Öppna Text-TV");
+
+  root.append(picture, channelBug, banner, numberBuffer, txtButton, status);
 
   return {
     root,
     picture,
+    identLogo,
     pictureLabel,
     channelBug,
-    channelNumber,
-    channelName,
+    channelLogo,
     banner,
     bannerProgram,
     bannerNext,
     numberBuffer,
     status,
+    txtButton,
   };
 }

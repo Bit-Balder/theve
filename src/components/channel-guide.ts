@@ -4,6 +4,7 @@ export interface ChannelGuideEntry {
   readonly channelId: string;
   readonly number: number;
   readonly name: string;
+  readonly logoSrc: string;
   readonly now: string;
   readonly next: string;
 }
@@ -107,12 +108,16 @@ export function createChannelGuide(
 
         const channel = document.createElement("span");
         channel.className = "channel-guide__channel";
+        const logo = document.createElement("img");
+        logo.className = "channel-guide__logo";
+        logo.src = entry.logoSrc;
+        logo.alt = "";
         const number = document.createElement("span");
         number.className = "channel-guide__number numeric-text";
         number.textContent = String(entry.number).padStart(2, "0");
         const name = document.createElement("span");
         name.textContent = entry.name;
-        channel.append(number, name);
+        channel.append(logo, number, name);
 
         const now = document.createElement("span");
         now.className = "channel-guide__now";

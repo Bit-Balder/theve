@@ -1,4 +1,4 @@
-# Fjärrkontroll och programguide · etapp 6
+# Fjärrkontroll, programguide och Text-TV · etapp 7
 
 Alla primära funktioner fungerar utan mus. Webbläsaren använder vanliga
 tangentbordshändelser som grund och översätter kända alternativa TV-koder till
@@ -13,6 +13,7 @@ samma lilla uppsättning handlingar.
 | Kanal ned | Pil ned | ChannelDown, PageDown, keyCode 428 |
 | Direktnummer | 0–9 | Digit0–9, Numpad0–9 |
 | Programguide | G | Guide, keyCode 458 |
+| Text-TV | T eller TXT | Teletext, keyCode 459 |
 | Back/stäng | Escape eller Backspace | BrowserBack, GoBack, Back, keyCode 461 |
 | Bekräfta | Enter | OK, Select, Accept |
 
@@ -55,6 +56,13 @@ pågår vid den aktuella tiden.
 överlägget först och varje överlägg ansvarar för att återställa tidigare fokus.
 Detta kan återanvändas av kommande meny- och informationslager.
 
+## Text-TV
+
+Text-TV visas ovanpå den kanal som tittaren redan har valt. Den finns inte i
+kanal 01–09 och syns inte i guiden. `T`, `TXT` eller Text-TV-knappen öppnar
+sida 100. Tre siffror väljer sida 100, 300, 301, 400 eller 500. Escape eller
+Back stänger tjänsten och återställer fokus till TV-ytan.
+
 ## Automatiska kontroller
 
 `npm run test:e2e` startar Theve lokalt och kör följande i Chromium:
@@ -66,3 +74,4 @@ Detta kan återanvändas av kommande meny- och informationslager.
 5. Guide och stängning med Escape.
 6. Kontroll att fokus återgår till TV-ytan och att framtida program saknar
    startknapp.
+7. Text-TV, tresiffrigt sidval och Back till senast valda kanal.

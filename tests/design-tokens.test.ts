@@ -27,6 +27,13 @@ describe("designsystemets CSS-kontrakt", () => {
     expect(componentsCss).not.toMatch(/#[0-9a-f]{3,8}/i);
   });
 
+  it("byter kanalidentitet via data-tema utan kanalspecifik CSS", () => {
+    expect(componentsCss).toContain('[data-theme="yellow"]');
+    expect(componentsCss).toContain('[data-theme="coral"]');
+    expect(componentsCss).toContain('[data-theme="cream"]');
+    expect(componentsCss).not.toContain("data-channel-id");
+  });
+
   it("har 4:3-token och stänger av rörligt CRT-brus vid reducerad rörelse", () => {
     expect(tokensCss).toContain("--screen-ratio: 4 / 3");
     expect(componentsCss).toContain("prefers-reduced-motion: reduce");

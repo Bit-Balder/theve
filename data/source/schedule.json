@@ -7,86 +7,150 @@
   },
   "templates": [
     {
-      "id": "barnkanalen-daglig",
-      "channelId": "barnkanalen",
+      "id": "tv1-daglig",
+      "channelId": "tv1",
       "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
       "slots": [
         {
-          "id": "morgon",
+          "id": "dygn",
+          "type": "program",
+          "startLocal": "00:00",
+          "endLocal": "00:00",
+          "durationSeconds": 86400,
+          "catalogItemId": "tv1-nyheter-kultur-testbild"
+        }
+      ]
+    },
+    {
+      "id": "tv2-daglig",
+      "channelId": "tv2",
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "dygn",
+          "type": "program",
+          "startLocal": "00:00",
+          "endLocal": "00:00",
+          "durationSeconds": 86400,
+          "catalogItemId": "tv2-politik-samhalle-testbild"
+        }
+      ]
+    },
+    {
+      "id": "tv3-daglig",
+      "channelId": "tv3",
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "dygn",
+          "type": "program",
+          "startLocal": "00:00",
+          "endLocal": "00:00",
+          "durationSeconds": 86400,
+          "catalogItemId": "tv3-serier-testbild"
+        }
+      ]
+    },
+    {
+      "id": "tv4-daglig",
+      "channelId": "tv4",
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "dygn",
+          "type": "program",
+          "startLocal": "00:00",
+          "endLocal": "00:00",
+          "durationSeconds": 86400,
+          "catalogItemId": "tv4-noje-musik-testbild"
+        }
+      ]
+    },
+    {
+      "id": "tv5-daglig",
+      "channelId": "tv5",
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "dygn",
+          "type": "program",
+          "startLocal": "00:00",
+          "endLocal": "00:00",
+          "durationSeconds": 86400,
+          "catalogItemId": "tv5-film-testbild"
+        }
+      ]
+    },
+    {
+      "id": "tv6-daglig",
+      "channelId": "tv6",
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "dygn",
+          "type": "program",
+          "startLocal": "00:00",
+          "endLocal": "00:00",
+          "durationSeconds": 86400,
+          "catalogItemId": "tv6-tecknat-testbild"
+        }
+      ]
+    },
+    {
+      "id": "tv7-daglig",
+      "channelId": "tv7",
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "dygn",
+          "type": "program",
+          "startLocal": "00:00",
+          "endLocal": "00:00",
+          "durationSeconds": 86400,
+          "catalogItemId": "tv7-true-crime-testbild"
+        }
+      ]
+    },
+    {
+      "id": "barn-daglig",
+      "channelId": "barn",
+      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
+      "slots": [
+        {
+          "id": "dag",
           "type": "program",
           "startLocal": "06:00",
-          "durationSeconds": 900,
-          "catalogItemId": "barnmorgon-testbild"
+          "durationSeconds": 42900,
+          "catalogItemId": "barn-dag-testbild"
         },
         {
-          "id": "slutvinjett",
+          "id": "godnatt",
           "type": "ident",
-          "startLocal": "18:55",
+          "startLocal": "17:55",
           "durationSeconds": 300,
-          "label": "Barnkanalen stänger för kvällen"
+          "label": "Barn önskar god natt"
         },
         {
-          "id": "natt",
+          "id": "uppehall",
           "type": "off_air",
-          "startLocal": "19:00",
+          "startLocal": "18:00",
           "endLocal": "06:00",
-          "label": "Sändningsuppehåll till 06:00"
+          "label": "Sändningsuppehåll · analog slutskylt"
         }
       ]
     },
     {
-      "id": "tecknat-daglig",
-      "channelId": "tecknat",
+      "id": "natur-daglig",
+      "channelId": "natur",
       "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
       "slots": [
         {
-          "id": "morgon",
+          "id": "dygn",
           "type": "program",
-          "startLocal": "07:00",
-          "durationSeconds": 900,
-          "catalogItemId": "tecknat-formprov"
-        },
-        {
-          "id": "kvallsident",
-          "type": "ident",
-          "startLocal": "21:55",
-          "durationSeconds": 300,
-          "label": "Tecknat önskar god natt"
-        },
-        {
-          "id": "natt",
-          "type": "off_air",
-          "startLocal": "22:00",
-          "endLocal": "07:00",
-          "label": "Sändningsuppehåll till 07:00"
-        }
-      ]
-    },
-    {
-      "id": "natur-tv-daglig",
-      "channelId": "natur-tv",
-      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
-      "slots": [
-        {
-          "id": "morgon",
-          "type": "program",
-          "startLocal": "08:00",
-          "durationSeconds": 900,
-          "catalogItemId": "nordisk-natur-testbild"
-        }
-      ]
-    },
-    {
-      "id": "retro-tv-daglig",
-      "channelId": "retro-tv",
-      "daysOfWeek": [1, 2, 3, 4, 5, 6, 7],
-      "slots": [
-        {
-          "id": "kvall",
-          "type": "program",
-          "startLocal": "20:00",
-          "durationSeconds": 900,
-          "catalogItemId": "retro-testbild"
+          "startLocal": "00:00",
+          "endLocal": "00:00",
+          "durationSeconds": 86400,
+          "catalogItemId": "natur-djur-testbild"
         }
       ]
     }

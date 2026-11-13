@@ -9,9 +9,18 @@ export interface Channel {
   readonly id: string;
   readonly number: number;
   readonly name: string;
-  readonly kind: "info" | "video";
-  readonly audience: "children" | "family" | "general";
+  readonly kind: "video";
+  readonly audience: "children" | "family" | "general" | "adult";
   readonly signOffAt: string | null;
+  readonly profile: string;
+  readonly theme: "yellow" | "coral" | "cream";
+  readonly logo: {
+    readonly fullColor: string;
+    readonly cream: string;
+    readonly black: string;
+    readonly compact: string;
+    readonly viewBox: "0 0 320 96";
+  };
 }
 
 export interface CatalogItem {

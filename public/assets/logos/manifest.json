@@ -1,0 +1,360 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedBy": "scripts/build-logos.mjs",
+  "palette": {
+    "blue": "#182660",
+    "yellow": "#F4C94B",
+    "coral": "#E97867",
+    "cream": "#F5EACD",
+    "black": "#000000"
+  },
+  "construction": {
+    "safeAreaPercent": 5,
+    "lineHeight": 3,
+    "lineGap": 5,
+    "mainViewBox": "0 0 320 96",
+    "compactViewBox": "0 0 240 72"
+  },
+  "logos": [
+    {
+      "id": "theve",
+      "name": "Theve",
+      "motif": "sunrise",
+      "accent": "yellow",
+      "variants": {
+        "fullColor": "theve.svg",
+        "cream": "theve-cream.svg",
+        "black": "theve-black.svg",
+        "compact": "theve-bug.svg"
+      },
+      "allowedBackgrounds": {
+        "fullColor": [
+          "tv-blue",
+          "black"
+        ],
+        "cream": [
+          "tv-blue",
+          "black"
+        ],
+        "black": [
+          "cream",
+          "yellow"
+        ],
+        "compact": [
+          "tv-blue",
+          "black"
+        ]
+      },
+      "minimumWidthPx": {
+        "fullColor": 128,
+        "compact": 72
+      }
+    },
+    {
+      "id": "tv1",
+      "name": "TV1",
+      "motif": "sunrise",
+      "accent": "yellow",
+      "variants": {
+        "fullColor": "tv1.svg",
+        "cream": "tv1-cream.svg",
+        "black": "tv1-black.svg",
+        "compact": "tv1-bug.svg"
+      },
+      "allowedBackgrounds": {
+        "fullColor": [
+          "tv-blue",
+          "black"
+        ],
+        "cream": [
+          "tv-blue",
+          "black"
+        ],
+        "black": [
+          "cream",
+          "yellow"
+        ],
+        "compact": [
+          "tv-blue",
+          "black"
+        ]
+      },
+      "minimumWidthPx": {
+        "fullColor": 128,
+        "compact": 72
+      }
+    },
+    {
+      "id": "tv2",
+      "name": "TV2",
+      "motif": "pillars",
+      "accent": "cream",
+      "variants": {
+        "fullColor": "tv2.svg",
+        "cream": "tv2-cream.svg",
+        "black": "tv2-black.svg",
+        "compact": "tv2-bug.svg"
+      },
+      "allowedBackgrounds": {
+        "fullColor": [
+          "tv-blue",
+          "black"
+        ],
+        "cream": [
+          "tv-blue",
+          "black"
+        ],
+        "black": [
+          "cream",
+          "yellow"
+        ],
+        "compact": [
+          "tv-blue",
+          "black"
+        ]
+      },
+      "minimumWidthPx": {
+        "fullColor": 128,
+        "compact": 72
+      }
+    },
+    {
+      "id": "tv3",
+      "name": "TV3",
+      "motif": "screen",
+      "accent": "coral",
+      "variants": {
+        "fullColor": "tv3.svg",
+        "cream": "tv3-cream.svg",
+        "black": "tv3-black.svg",
+        "compact": "tv3-bug.svg"
+      },
+      "allowedBackgrounds": {
+        "fullColor": [
+          "tv-blue",
+          "black"
+        ],
+        "cream": [
+          "tv-blue",
+          "black"
+        ],
+        "black": [
+          "cream",
+          "yellow"
+        ],
+        "compact": [
+          "tv-blue",
+          "black"
+        ]
+      },
+      "minimumWidthPx": {
+        "fullColor": 128,
+        "compact": 72
+      }
+    },
+    {
+      "id": "tv4",
+      "name": "TV4",
+      "motif": "rhythm",
+      "accent": "yellow",
+      "variants": {
+        "fullColor": "tv4.svg",
+        "cream": "tv4-cream.svg",
+        "black": "tv4-black.svg",
+        "compact": "tv4-bug.svg"
+      },
+      "allowedBackgrounds": {
+        "fullColor": [
+          "tv-blue",
+          "black"
+        ],
+        "cream": [
+          "tv-blue",
+          "black"
+        ],
+        "black": [
+          "cream",
+          "yellow"
+        ],
+        "compact": [
+          "tv-blue",
+          "black"
+        ]
+      },
+      "minimumWidthPx": {
+        "fullColor": 128,
+        "compact": 72
+      }
+    },
+    {
+      "id": "tv5",
+      "name": "TV5",
+      "motif": "film",
+      "accent": "cream",
+      "variants": {
+        "fullColor": "tv5.svg",
+        "cream": "tv5-cream.svg",
+        "black": "tv5-black.svg",
+        "compact": "tv5-bug.svg"
+      },
+      "allowedBackgrounds": {
+        "fullColor": [
+          "tv-blue",
+          "black"
+        ],
+        "cream": [
+          "tv-blue",
+          "black"
+        ],
+        "black": [
+          "cream",
+          "yellow"
+        ],
+        "compact": [
+          "tv-blue",
+          "black"
+        ]
+      },
+      "minimumWidthPx": {
+        "fullColor": 128,
+        "compact": 72
+      }
+    },
+    {
+      "id": "tv6",
+      "name": "TV6",
+      "motif": "animation",
+      "accent": "coral",
+      "variants": {
+        "fullColor": "tv6.svg",
+        "cream": "tv6-cream.svg",
+        "black": "tv6-black.svg",
+        "compact": "tv6-bug.svg"
+      },
+      "allowedBackgrounds": {
+        "fullColor": [
+          "tv-blue",
+          "black"
+        ],
+        "cream": [
+          "tv-blue",
+          "black"
+        ],
+        "black": [
+          "cream",
+          "yellow"
+        ],
+        "compact": [
+          "tv-blue",
+          "black"
+        ]
+      },
+      "minimumWidthPx": {
+        "fullColor": 128,
+        "compact": 72
+      }
+    },
+    {
+      "id": "tv7",
+      "name": "TV7",
+      "motif": "search",
+      "accent": "cream",
+      "variants": {
+        "fullColor": "tv7.svg",
+        "cream": "tv7-cream.svg",
+        "black": "tv7-black.svg",
+        "compact": "tv7-bug.svg"
+      },
+      "allowedBackgrounds": {
+        "fullColor": [
+          "tv-blue",
+          "black"
+        ],
+        "cream": [
+          "tv-blue",
+          "black"
+        ],
+        "black": [
+          "cream",
+          "yellow"
+        ],
+        "compact": [
+          "tv-blue",
+          "black"
+        ]
+      },
+      "minimumWidthPx": {
+        "fullColor": 128,
+        "compact": 72
+      }
+    },
+    {
+      "id": "barn",
+      "name": "Barn",
+      "motif": "barn-sun",
+      "accent": "yellow",
+      "variants": {
+        "fullColor": "barn.svg",
+        "cream": "barn-cream.svg",
+        "black": "barn-black.svg",
+        "compact": "barn-bug.svg"
+      },
+      "allowedBackgrounds": {
+        "fullColor": [
+          "tv-blue",
+          "black"
+        ],
+        "cream": [
+          "tv-blue",
+          "black"
+        ],
+        "black": [
+          "cream",
+          "yellow"
+        ],
+        "compact": [
+          "tv-blue",
+          "black"
+        ]
+      },
+      "minimumWidthPx": {
+        "fullColor": 128,
+        "compact": 72
+      }
+    },
+    {
+      "id": "natur",
+      "name": "Natur",
+      "motif": "nature",
+      "accent": "yellow",
+      "variants": {
+        "fullColor": "natur.svg",
+        "cream": "natur-cream.svg",
+        "black": "natur-black.svg",
+        "compact": "natur-bug.svg"
+      },
+      "allowedBackgrounds": {
+        "fullColor": [
+          "tv-blue",
+          "black"
+        ],
+        "cream": [
+          "tv-blue",
+          "black"
+        ],
+        "black": [
+          "cream",
+          "yellow"
+        ],
+        "compact": [
+          "tv-blue",
+          "black"
+        ]
+      },
+      "minimumWidthPx": {
+        "fullColor": 128,
+        "compact": 72
+      }
+    }
+  ]
+}

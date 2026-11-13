@@ -1,4 +1,4 @@
-# Datamodell · etapp 4
+# Datamodell · etapp 7
 
 Etapp 3 skiljer källdata från data som får publiceras. Källdata granskas och
 valideras; endast godkända objekt skrivs till `public/data/`.
@@ -15,15 +15,16 @@ valideras; endast godkända objekt skrivs till `public/data/`.
 Publika filer genereras deterministiskt till `public/data/`. Varje fil har
 schema- och revisionsnummer. Samma källfiler ger alltid samma revision.
 
-## Startkanaler
+## Kanalplan
 
-- Kanal 0: Theve 0, informationskanal.
-- Kanal 1: Barnkanalen, med analog slutid 19:00.
-- Kanal 2: Tecknat.
-- Kanal 3: Natur TV.
-- Kanal 4: Retro TV.
+Kanalplanen innehåller exakt nio videokanaler: TV1–TV7, Barn och Natur på
+nummer 01–09. Text-TV är en funktion ovanpå den valda kanalen och ingår inte i
+kanallistan.
 
-Namnen är arbetsnamn tills kanalidentiteterna fastställs i etapp 7.
+Varje kanalrad innehåller profil, målgrupp, accenttema och sökvägar till fyra
+SVG-varianter. `theme` får endast vara `yellow`, `coral` eller `cream` och
+kopplas till gemensamma CSS-tokens. Barn har `signOffAt: "18:00"`; den faktiska
+godnattvinjetten och slutskylten beskrivs i tablån.
 
 ## Statusfält
 
@@ -59,8 +60,8 @@ UTC-start, UTC-slut, svenskt UTC-offset och en revisionsnyckel. Slottyperna är:
 
 ## Provobjekt
 
-De fyra gröna objekten är egenskapade, genererade testmönster utan video eller
-externt material. Den gula Internet Archive-raden är endast ett kandidatfall
+De nio gröna objekten är egenskapade kanalidentiteter och genererade testmönster
+utan video eller externt material. Den gula Internet Archive-raden är endast ett kandidatfall
 och saknar riktig identifierare tills rättigheter har granskats. Det röda
 objektet är ett uttryckligt blockeringstest.
 
@@ -72,6 +73,7 @@ källan. Följande fel stoppar alltid publicering:
 
 - saknade obligatoriska fält;
 - dubbla kanalnummer, mall-ID, objekt-ID eller slot-ID inom en mall;
+- en kanalplan som avviker från exakt 01–09;
 - okända kanal- eller programreferenser;
 - överlappande slotar på samma kanal;
 - `review_required` eller `rejected` i en schemalagd slot;

@@ -1,46 +1,159 @@
 {
   "schemaVersion": "1.0.0",
-  "revision": "8c33d92f8d842d5a",
+  "revision": "6b6e2ed995f1bbef",
   "channels": [
     {
-      "id": "theve-info",
-      "number": 0,
-      "name": "Theve 0",
-      "kind": "info",
-      "audience": "family",
-      "signOffAt": null
-    },
-    {
-      "id": "barnkanalen",
+      "id": "tv1",
       "number": 1,
-      "name": "Barnkanalen",
-      "kind": "video",
-      "audience": "children",
-      "signOffAt": "19:00"
-    },
-    {
-      "id": "tecknat",
-      "number": 2,
-      "name": "Tecknat",
-      "kind": "video",
-      "audience": "children",
-      "signOffAt": null
-    },
-    {
-      "id": "natur-tv",
-      "number": 3,
-      "name": "Natur TV",
-      "kind": "video",
-      "audience": "family",
-      "signOffAt": null
-    },
-    {
-      "id": "retro-tv",
-      "number": 4,
-      "name": "Retro TV",
+      "name": "TV1",
       "kind": "video",
       "audience": "general",
-      "signOffAt": null
+      "signOffAt": null,
+      "profile": "Nyheter och kultur",
+      "theme": "yellow",
+      "logo": {
+        "fullColor": "assets/logos/tv1.svg",
+        "cream": "assets/logos/tv1-cream.svg",
+        "black": "assets/logos/tv1-black.svg",
+        "compact": "assets/logos/tv1-bug.svg",
+        "viewBox": "0 0 320 96"
+      }
+    },
+    {
+      "id": "tv2",
+      "number": 2,
+      "name": "TV2",
+      "kind": "video",
+      "audience": "general",
+      "signOffAt": null,
+      "profile": "Politik och samhälle",
+      "theme": "cream",
+      "logo": {
+        "fullColor": "assets/logos/tv2.svg",
+        "cream": "assets/logos/tv2-cream.svg",
+        "black": "assets/logos/tv2-black.svg",
+        "compact": "assets/logos/tv2-bug.svg",
+        "viewBox": "0 0 320 96"
+      }
+    },
+    {
+      "id": "tv3",
+      "number": 3,
+      "name": "TV3",
+      "kind": "video",
+      "audience": "general",
+      "signOffAt": null,
+      "profile": "Serier",
+      "theme": "coral",
+      "logo": {
+        "fullColor": "assets/logos/tv3.svg",
+        "cream": "assets/logos/tv3-cream.svg",
+        "black": "assets/logos/tv3-black.svg",
+        "compact": "assets/logos/tv3-bug.svg",
+        "viewBox": "0 0 320 96"
+      }
+    },
+    {
+      "id": "tv4",
+      "number": 4,
+      "name": "TV4",
+      "kind": "video",
+      "audience": "general",
+      "signOffAt": null,
+      "profile": "Nöje och musik",
+      "theme": "yellow",
+      "logo": {
+        "fullColor": "assets/logos/tv4.svg",
+        "cream": "assets/logos/tv4-cream.svg",
+        "black": "assets/logos/tv4-black.svg",
+        "compact": "assets/logos/tv4-bug.svg",
+        "viewBox": "0 0 320 96"
+      }
+    },
+    {
+      "id": "tv5",
+      "number": 5,
+      "name": "TV5",
+      "kind": "video",
+      "audience": "general",
+      "signOffAt": null,
+      "profile": "Film",
+      "theme": "cream",
+      "logo": {
+        "fullColor": "assets/logos/tv5.svg",
+        "cream": "assets/logos/tv5-cream.svg",
+        "black": "assets/logos/tv5-black.svg",
+        "compact": "assets/logos/tv5-bug.svg",
+        "viewBox": "0 0 320 96"
+      }
+    },
+    {
+      "id": "tv6",
+      "number": 6,
+      "name": "TV6",
+      "kind": "video",
+      "audience": "family",
+      "signOffAt": null,
+      "profile": "Tecknat",
+      "theme": "coral",
+      "logo": {
+        "fullColor": "assets/logos/tv6.svg",
+        "cream": "assets/logos/tv6-cream.svg",
+        "black": "assets/logos/tv6-black.svg",
+        "compact": "assets/logos/tv6-bug.svg",
+        "viewBox": "0 0 320 96"
+      }
+    },
+    {
+      "id": "tv7",
+      "number": 7,
+      "name": "TV7",
+      "kind": "video",
+      "audience": "adult",
+      "signOffAt": null,
+      "profile": "True crime",
+      "theme": "cream",
+      "logo": {
+        "fullColor": "assets/logos/tv7.svg",
+        "cream": "assets/logos/tv7-cream.svg",
+        "black": "assets/logos/tv7-black.svg",
+        "compact": "assets/logos/tv7-bug.svg",
+        "viewBox": "0 0 320 96"
+      }
+    },
+    {
+      "id": "barn",
+      "number": 8,
+      "name": "Barn",
+      "kind": "video",
+      "audience": "children",
+      "signOffAt": "18:00",
+      "profile": "Barnprogram",
+      "theme": "yellow",
+      "logo": {
+        "fullColor": "assets/logos/barn.svg",
+        "cream": "assets/logos/barn-cream.svg",
+        "black": "assets/logos/barn-black.svg",
+        "compact": "assets/logos/barn-bug.svg",
+        "viewBox": "0 0 320 96"
+      }
+    },
+    {
+      "id": "natur",
+      "number": 9,
+      "name": "Natur",
+      "kind": "video",
+      "audience": "family",
+      "signOffAt": null,
+      "profile": "Natur och djur",
+      "theme": "yellow",
+      "logo": {
+        "fullColor": "assets/logos/natur.svg",
+        "cream": "assets/logos/natur-cream.svg",
+        "black": "assets/logos/natur-black.svg",
+        "compact": "assets/logos/natur-bug.svg",
+        "viewBox": "0 0 320 96"
+      }
     }
   ]
 }

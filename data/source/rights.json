@@ -2,58 +2,103 @@
   "schemaVersion": "1.0.0",
   "entries": [
     {
-      "catalogItemId": "barnmorgon-testbild",
+      "catalogItemId": "tv1-nyheter-kultur-testbild",
       "status": "approved",
-      "basis": "Egenskapat genererat testmönster utan externt material",
+      "basis": "Egenskapat genererat kanaloriginal utan externt material",
       "evidenceUrl": null,
-      "reviewedAt": "2026-11-12",
+      "reviewedAt": "2026-11-13",
       "publicationAllowed": true,
-      "notes": "Grönt exempel för datamodell och test. Ingen video ingår."
+      "notes": "Egen SVG-identitet och testbild. Ingen video ingår."
     },
     {
-      "catalogItemId": "tecknat-formprov",
+      "catalogItemId": "tv2-politik-samhalle-testbild",
       "status": "approved",
-      "basis": "Egenskapat genererat testmönster utan externt material",
+      "basis": "Egenskapat genererat kanaloriginal utan externt material",
       "evidenceUrl": null,
-      "reviewedAt": "2026-11-12",
+      "reviewedAt": "2026-11-13",
       "publicationAllowed": true,
-      "notes": "Grönt exempel för datamodell och test. Ingen video ingår."
+      "notes": "Egen SVG-identitet och testbild. Ingen video ingår."
     },
     {
-      "catalogItemId": "nordisk-natur-testbild",
+      "catalogItemId": "tv3-serier-testbild",
       "status": "approved",
-      "basis": "Egenskapat genererat testmönster utan externt material",
+      "basis": "Egenskapat genererat kanaloriginal utan externt material",
       "evidenceUrl": null,
-      "reviewedAt": "2026-11-12",
+      "reviewedAt": "2026-11-13",
       "publicationAllowed": true,
-      "notes": "Grönt exempel för datamodell och test. Ingen video ingår."
+      "notes": "Egen SVG-identitet och testbild. Ingen video ingår."
     },
     {
-      "catalogItemId": "retro-testbild",
+      "catalogItemId": "tv4-noje-musik-testbild",
       "status": "approved",
-      "basis": "Egenskapat genererat testmönster utan externt material",
+      "basis": "Egenskapat genererat kanaloriginal utan externt material",
       "evidenceUrl": null,
-      "reviewedAt": "2026-11-12",
+      "reviewedAt": "2026-11-13",
       "publicationAllowed": true,
-      "notes": "Grönt exempel för schemamotorn. Ingen video ingår."
+      "notes": "Egen SVG-identitet och testbild. Ingen video ingår."
     },
     {
-      "catalogItemId": "retro-arkiv-kandidat",
+      "catalogItemId": "tv5-film-testbild",
+      "status": "approved",
+      "basis": "Egenskapat genererat kanaloriginal utan externt material",
+      "evidenceUrl": null,
+      "reviewedAt": "2026-11-13",
+      "publicationAllowed": true,
+      "notes": "Egen SVG-identitet och testbild. Ingen video ingår."
+    },
+    {
+      "catalogItemId": "tv6-tecknat-testbild",
+      "status": "approved",
+      "basis": "Egenskapat genererat kanaloriginal utan externt material",
+      "evidenceUrl": null,
+      "reviewedAt": "2026-11-13",
+      "publicationAllowed": true,
+      "notes": "Egen SVG-identitet och testbild. Ingen video ingår."
+    },
+    {
+      "catalogItemId": "tv7-true-crime-testbild",
+      "status": "approved",
+      "basis": "Egenskapat genererat kanaloriginal utan externt material",
+      "evidenceUrl": null,
+      "reviewedAt": "2026-11-13",
+      "publicationAllowed": true,
+      "notes": "Egen SVG-identitet och testbild. Ingen video ingår."
+    },
+    {
+      "catalogItemId": "barn-dag-testbild",
+      "status": "approved",
+      "basis": "Egenskapat genererat kanaloriginal utan externt material",
+      "evidenceUrl": null,
+      "reviewedAt": "2026-11-13",
+      "publicationAllowed": true,
+      "notes": "Egen SVG-identitet och testbild. Ingen video ingår."
+    },
+    {
+      "catalogItemId": "natur-djur-testbild",
+      "status": "approved",
+      "basis": "Egenskapat genererat kanaloriginal utan externt material",
+      "evidenceUrl": null,
+      "reviewedAt": "2026-11-13",
+      "publicationAllowed": true,
+      "notes": "Egen SVG-identitet och testbild. Ingen video ingår."
+    },
+    {
+      "catalogItemId": "tv7-arkiv-kandidat",
       "status": "review_required",
       "basis": "Internet Archive-kandidat utan granskat rättighetsunderlag",
       "evidenceUrl": null,
       "reviewedAt": null,
       "publicationAllowed": false,
-      "notes": "Gult exempel. Får inte nå publicerad katalog."
+      "notes": "Får inte nå publicerad katalog innan projektägaren godkänt materialet."
     },
     {
-      "catalogItemId": "avvisat-rattighetsexempel",
+      "catalogItemId": "tv5-avvisat-rattighetsexempel",
       "status": "rejected",
       "basis": "Avvisat testfall utan publiceringsunderlag",
       "evidenceUrl": null,
-      "reviewedAt": "2026-11-12",
+      "reviewedAt": "2026-11-13",
       "publicationAllowed": false,
-      "notes": "Rött exempel. Får inte nå publicerad katalog."
+      "notes": "Får inte nå publicerad katalog."
     }
   ]
 }

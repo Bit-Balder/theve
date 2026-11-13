@@ -1,16 +1,16 @@
 {
   "schemaVersion": "2.0.0",
-  "revision": "8c33d92f8d842d5a",
+  "revision": "6b6e2ed995f1bbef",
   "counts": {
-    "channels": 5,
-    "catalogItems": 4,
-    "scheduleSlots": 448
+    "channels": 9,
+    "catalogItems": 9,
+    "scheduleSlots": 616
   },
   "scheduleHorizon": {
     "startLocalDate": "2026-10-19",
     "endLocalDateExclusive": "2026-12-14",
     "weeks": 8,
     "startsAtUtc": "2026-10-18T22:00:00Z",
-    "endsAtUtc": "2026-12-14T06:00:00Z"
+    "endsAtUtc": "2026-12-14T05:00:00Z"
   }
 }
