@@ -4,12 +4,12 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   page,
 }) => {
   await page.addInitScript(() => {
-    const fixedNow = Date.parse("2026-11-12T05:05:00.000Z");
+    const fixedNow = Date.parse("2026-11-13T13:05:00.000Z");
     Date.now = () => fixedNow;
   });
   await page.goto("/");
 
-  await expect(page.getByText("ETAPP 8 · BARNS KVÄLLSAVSLUT")).toBeVisible();
+  await expect(page.getByText("ETAPP 9 · TEXT-TV")).toBeVisible();
   await expect(page.getByRole("button", { name: /starta tv/i })).toBeFocused();
   await page.keyboard.press("Enter");
 
@@ -62,10 +62,32 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   const teletext = page.getByRole("dialog", { name: "Theve Text-TV" });
   await expect(teletext).toBeVisible();
   await expect(teletext.getByText("THEVE TEXT-TV").first()).toBeVisible();
+  await expect(teletext.locator(".teletext__row")).toHaveCount(24);
+  const widths = await teletext.locator(".teletext__row").evaluateAll((rows) =>
+    rows.map((row) => Array.from(row.textContent ?? "").length),
+  );
+  expect(widths.every((width) => width === 40)).toBe(true);
+  await page.keyboard.press("3");
+  await page.keyboard.press("0");
+  await page.keyboard.press("0");
+  await expect(teletext).toHaveAttribute("data-page-number", "300");
+  await expect(teletext.getByText("VÄDERÖVERSIKT")).toBeVisible();
+  await expect(teletext.getByText(/KÄLLA: SMHI ÖPPNA DATA/)).toBeVisible();
+  await page.keyboard.press("3");
+  await page.keyboard.press("0");
+  await page.keyboard.press("1");
+  await expect(teletext).toHaveAttribute("data-page-number", "301");
+  await expect(teletext.getByText("GÖTEBORG")).toBeVisible();
   await page.keyboard.press("4");
   await page.keyboard.press("0");
   await page.keyboard.press("0");
-  await expect(teletext.getByText("BARN OCH FAMILJ")).toBeVisible();
+  await expect(teletext).toHaveAttribute("data-page-number", "400");
+  await expect(teletext.getByText("TV-TABLÅ JUST NU")).toBeVisible();
+  await page.keyboard.press("5");
+  await page.keyboard.press("0");
+  await page.keyboard.press("0");
+  await expect(teletext).toHaveAttribute("data-page-number", "500");
+  await expect(teletext.getByText("Å Ä Ö · SVENSKA TECKEN")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(teletext).toBeHidden();
   await expect(tv).toBeFocused();
@@ -102,6 +124,7 @@ test("Barn följer 18.55, 19.00 och 06.00 utan omladdning", async ({
   await page.goto("/");
   await page.keyboard.press("Enter");
   const tv = page.getByRole("region", { name: "Theve sändning" });
+  await expect(tv).toBeFocused();
 
   await page.keyboard.press("8");
   await expect(tv).toHaveAttribute("data-channel-id", "barn", {

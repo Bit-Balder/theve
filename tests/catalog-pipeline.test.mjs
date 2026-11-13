@@ -30,7 +30,9 @@ describe("Etapp 4:s datarör", () => {
       channels: 9,
       catalogItems: 9,
       scheduleSlots: 616,
+      weatherLocations: 3,
     });
+    expect(first["teletext.json"].grid).toEqual({ columns: 40, rows: 24 });
   });
 
   it("stoppar en okänd programreferens med begripligt fel", () => {
@@ -128,5 +130,14 @@ describe("Etapp 4:s datarör", () => {
     delete data.catalog.items[0].title;
 
     expect(() => validateProjectData(data)).toThrow(/catalog\/items\/0.*title/);
+  });
+
+  it("stoppar väderdata med omvänd giltighetstid", () => {
+    const data = freshData();
+    data.weather.validUntil = data.weather.fetchedAt;
+
+    expect(() => validateProjectData(data)).toThrow(
+      "vädersnapshotens giltighet måste sluta efter hämtningstiden",
+    );
   });
 });

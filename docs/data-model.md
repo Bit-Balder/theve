@@ -1,4 +1,4 @@
-# Datamodell · etapp 8
+# Datamodell · etapp 9
 
 Etapp 3 skiljer källdata från data som får publiceras. Källdata granskas och
 valideras; endast godkända objekt skrivs till `public/data/`.
@@ -11,9 +11,22 @@ valideras; endast godkända objekt skrivs till `public/data/`.
 | Katalog | `data/source/catalog.json` | `data/schema/catalog.schema.json` |
 | Rättigheter | `data/source/rights.json` | `data/schema/rights.schema.json` |
 | Veckotablå | `data/source/schedule.json` | `data/schema/schedule.schema.json` |
+| SMHI-väder | `data/source/weather.json` | `data/schema/weather.schema.json` |
 
 Publika filer genereras deterministiskt till `public/data/`. Varje fil har
 schema- och revisionsnummer. Samma källfiler ger alltid samma revision.
+
+## Text-TV och väder
+
+`weather.json` innehåller källnamn, dataset, licens, hämtningstid,
+giltighetstid, orter och normaliserade prognospunkter. Bygget validerar att
+ort-ID är unika, tiderna ligger i stigande ordning och snapshoten har en
+giltighetstid efter hämtningen.
+
+`public/data/teletext.json` innehåller endast den validerade snapshoten, ett
+40 × 24-kontrakt och samma revision som övrig publik data. Webbläsaren hämtar
+inte SMHI direkt. Om filen saknas fortsätter TV:n att fungera och vädersidorna
+visar ett tydligt saknat-data-läge.
 
 ## Kanalplan
 

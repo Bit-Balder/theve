@@ -81,9 +81,20 @@ Senast uppdaterad: 13 november 2026.
   senaste asynkrona laddningen är alltid de som får uppdatera bilden.
 - `T`, `TXT`, plattformskoden `Teletext` och TV-kod 459 öppnar Text-TV. Tre
   siffror väljer sida; Back återgår till senast valda videokanal.
+- Text-TV består av exakt 40 kolumner och 24 rader och använder TDAText med
+  stöd för å, ä och ö. Sidorna är 100, 300, 301, 400 och 500.
+- Stockholm, Göteborg och Malmö är första väderorterna. Familjens hemort kan
+  läggas till som en fjärde datapost när den har bekräftats.
+- Väder kommer från SMHI:s dokumenterade SNOW1G-API under CC BY 4.0. Theve
+  visar både `Källa: SMHI öppna data` och att urval och avrundning är en
+  bearbetning av Theve.
+- Väder hämtas till en versionsstyrd snapshot och aldrig direkt från
+  webbläsaren. Utgången eller saknad snapshot ger ett uttryckligt tillstånd och
+  inga prognosvärden presenteras som aktuella.
+- Text-TV-sida 400 räknas från samma kompilerade schema och samma klocka som
+  programguiden. Nyhetssidor aktiveras inte utan dokumenterade källvillkor.
 
 ## Öppet inför senare etapper
 
-- Vilka orter som visas i Text-TV-vädret.
 - Vilken fysisk TV eller TV-box som används för manuell acceptanstest.
 

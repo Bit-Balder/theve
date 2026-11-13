@@ -1,0 +1,211 @@
+{
+  "schemaVersion": "1.0.0",
+  "source": {
+    "name": "SMHI",
+    "dataset": "SNOW1G",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "termsUrl": "https://www.smhi.se/data/om-smhis-data/villkor-for-anvandning",
+    "attribution": "Källa: SMHI öppna data",
+    "modificationNotice": "Bearbetad av Theve: urval och avrundning"
+  },
+  "fetchedAt": "2026-11-13T12:49:00Z",
+  "validUntil": "2026-11-13T20:00:00Z",
+  "locations": [
+    {
+      "id": "stockholm",
+      "name": "Stockholm",
+      "longitude": 18.0686,
+      "latitude": 59.3293,
+      "sourceUrl": "https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/18.0686/lat/59.3293/data.json?timeseries=8&parameters=air_temperature,wind_speed,precipitation_amount_mean,symbol_code",
+      "forecasts": [
+        {
+          "validAt": "2026-11-13T13:00:00Z",
+          "temperatureC": 3,
+          "windMps": 6.4,
+          "precipitationMm": 0.2,
+          "symbolCode": 18
+        },
+        {
+          "validAt": "2026-11-13T14:00:00Z",
+          "temperatureC": 3,
+          "windMps": 8,
+          "precipitationMm": 0.1,
+          "symbolCode": 18
+        },
+        {
+          "validAt": "2026-11-13T15:00:00Z",
+          "temperatureC": 2.4,
+          "windMps": 7.1,
+          "precipitationMm": 0.2,
+          "symbolCode": 18
+        },
+        {
+          "validAt": "2026-11-13T16:00:00Z",
+          "temperatureC": 2,
+          "windMps": 6.6,
+          "precipitationMm": 0,
+          "symbolCode": 18
+        },
+        {
+          "validAt": "2026-11-13T17:00:00Z",
+          "temperatureC": 1.6,
+          "windMps": 6,
+          "precipitationMm": 0,
+          "symbolCode": 6
+        },
+        {
+          "validAt": "2026-11-13T18:00:00Z",
+          "temperatureC": 1.4,
+          "windMps": 5.9,
+          "precipitationMm": 0,
+          "symbolCode": 6
+        },
+        {
+          "validAt": "2026-11-13T19:00:00Z",
+          "temperatureC": 1,
+          "windMps": 6,
+          "precipitationMm": 0,
+          "symbolCode": 6
+        },
+        {
+          "validAt": "2026-11-13T20:00:00Z",
+          "temperatureC": 0.8,
+          "windMps": 5.6,
+          "precipitationMm": 0,
+          "symbolCode": 6
+        }
+      ]
+    },
+    {
+      "id": "goteborg",
+      "name": "Göteborg",
+      "longitude": 11.9746,
+      "latitude": 57.7089,
+      "sourceUrl": "https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/11.9746/lat/57.7089/data.json?timeseries=8&parameters=air_temperature,wind_speed,precipitation_amount_mean,symbol_code",
+      "forecasts": [
+        {
+          "validAt": "2026-11-13T13:00:00Z",
+          "temperatureC": 4.8,
+          "windMps": 5.7,
+          "precipitationMm": 0,
+          "symbolCode": 2
+        },
+        {
+          "validAt": "2026-11-13T14:00:00Z",
+          "temperatureC": 4.7,
+          "windMps": 4.8,
+          "precipitationMm": 0,
+          "symbolCode": 2
+        },
+        {
+          "validAt": "2026-11-13T15:00:00Z",
+          "temperatureC": 4.3,
+          "windMps": 2.8,
+          "precipitationMm": 0,
+          "symbolCode": 3
+        },
+        {
+          "validAt": "2026-11-13T16:00:00Z",
+          "temperatureC": 3.8,
+          "windMps": 3,
+          "precipitationMm": 0,
+          "symbolCode": 2
+        },
+        {
+          "validAt": "2026-11-13T17:00:00Z",
+          "temperatureC": 3.3,
+          "windMps": 2.6,
+          "precipitationMm": 0,
+          "symbolCode": 3
+        },
+        {
+          "validAt": "2026-11-13T18:00:00Z",
+          "temperatureC": 3,
+          "windMps": 2.6,
+          "precipitationMm": 0,
+          "symbolCode": 1
+        },
+        {
+          "validAt": "2026-11-13T19:00:00Z",
+          "temperatureC": 3.1,
+          "windMps": 2.5,
+          "precipitationMm": 0,
+          "symbolCode": 1
+        },
+        {
+          "validAt": "2026-11-13T20:00:00Z",
+          "temperatureC": 3.3,
+          "windMps": 3.1,
+          "precipitationMm": 0,
+          "symbolCode": 1
+        }
+      ]
+    },
+    {
+      "id": "malmo",
+      "name": "Malmö",
+      "longitude": 13.0038,
+      "latitude": 55.605,
+      "sourceUrl": "https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/13.0038/lat/55.605/data.json?timeseries=8&parameters=air_temperature,wind_speed,precipitation_amount_mean,symbol_code",
+      "forecasts": [
+        {
+          "validAt": "2026-11-13T13:00:00Z",
+          "temperatureC": 7.5,
+          "windMps": 9.2,
+          "precipitationMm": 0,
+          "symbolCode": 2
+        },
+        {
+          "validAt": "2026-11-13T14:00:00Z",
+          "temperatureC": 7.3,
+          "windMps": 9.2,
+          "precipitationMm": 0,
+          "symbolCode": 3
+        },
+        {
+          "validAt": "2026-11-13T15:00:00Z",
+          "temperatureC": 7.1,
+          "windMps": 9.5,
+          "precipitationMm": 0,
+          "symbolCode": 4
+        },
+        {
+          "validAt": "2026-11-13T16:00:00Z",
+          "temperatureC": 7.1,
+          "windMps": 9.4,
+          "precipitationMm": 0,
+          "symbolCode": 4
+        },
+        {
+          "validAt": "2026-11-13T17:00:00Z",
+          "temperatureC": 6.8,
+          "windMps": 9.5,
+          "precipitationMm": 0,
+          "symbolCode": 4
+        },
+        {
+          "validAt": "2026-11-13T18:00:00Z",
+          "temperatureC": 6.8,
+          "windMps": 9.3,
+          "precipitationMm": 0,
+          "symbolCode": 4
+        },
+        {
+          "validAt": "2026-11-13T19:00:00Z",
+          "temperatureC": 6.7,
+          "windMps": 9.2,
+          "precipitationMm": 0,
+          "symbolCode": 1
+        },
+        {
+          "validAt": "2026-11-13T20:00:00Z",
+          "temperatureC": 6.7,
+          "windMps": 8.8,
+          "precipitationMm": 0,
+          "symbolCode": 1
+        }
+      ]
+    }
+  ]
+}

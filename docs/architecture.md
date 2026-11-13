@@ -42,14 +42,23 @@ Spelarkedjan är också uppdelad:
 Kanal- och guideflödet konsumerar dessa API:er utan att känna till Internet
 Archives JSON-format eller spelarens interna tillstånd. Det är uppdelat i:
 
-- `public-tv-data.ts`, som laddar fyra filer med samma revision;
+- `public-tv-data.ts`, som laddar fem filer med samma revision och behandlar
+  Text-TV-snapshoten som valfri så att videokanalerna överlever saknad data;
 - `remote-input.ts`, som normaliserar tangentbord och alternativa TV-koder;
 - `channel-navigation.ts` och `direct-number-buffer.ts`, som håller
   kanalvalet fritt från DOM;
 - `overlay-back-stack.ts`, som stänger senaste överlägget först;
 - `channel-guide.ts`, som äger roving tabindex och fokusåterställning.
-- `teletext.ts`, som äger sidorna 100, 300, 301, 400 och 500 och sin egen
-  tresiffriga navigering.
+- `src/core/teletext.ts`, som bygger 40 × 24-sidor, bryter text och skiljer på
+  färsk, gammal och saknad väderdata;
+- `src/components/teletext.ts`, som endast renderar raderna och hanterar den
+  tresiffriga sidbufferten.
+
+Väderkedjan är medvetet statisk. `scripts/update-weather.mjs` hämtar tre små
+punktsvar från SMHI:s dokumenterade SNOW1G-API och normaliserar dem till
+`data/source/weather.json`. Det vanliga databyggsteget validerar och publicerar
+snapshoten utan nätverksanrop. Etapp 10 kan därför schemalägga exakt samma
+generator utan att klienten eller Text-TV-komponenten ändras.
 
 Logotyperna byggs i ett separat deterministiskt flöde. Definitionerna i
 `scripts/lib/logo-system.mjs` innehåller kanalens motiv, ordmärke och accent.
