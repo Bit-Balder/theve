@@ -32,6 +32,7 @@ describe("Etapp 4:s datarör", () => {
       scheduleSlots: 616,
       weatherLocations: 3,
     });
+    expect(first["manifest.json"].sourceRevision).toMatch(/^[a-f0-9]{16}$/);
     expect(first["teletext.json"].grid).toEqual({ columns: 40, rows: 24 });
   });
 
@@ -61,6 +62,25 @@ describe("Etapp 4:s datarör", () => {
 
     expect(() => buildPublicData(data)).toThrow(
       'slot "tv5-daglig/dygn" får inte publiceras: rättighetsstatus är "rejected"',
+    );
+  });
+
+  it("kräver en låst licens för godkända Internet Archive-objekt", () => {
+    const data = freshData();
+    const item = data.catalog.items.find(
+      ({ id }) => id === "tv7-arkiv-kandidat",
+    );
+    item.availabilityStatus = "available";
+    item.familyStatus = "approved";
+    const rights = data.rights.entries.find(
+      ({ catalogItemId }) => catalogItemId === item.id,
+    );
+    rights.status = "approved";
+    rights.publicationAllowed = true;
+    rights.reviewedAt = "2026-11-13";
+
+    expect(() => validateProjectData(data)).toThrow(
+      'godkänt Internet Archive-objekt "tv7-arkiv-kandidat" saknar låst licenseUrl',
     );
   });
 

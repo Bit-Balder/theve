@@ -1,4 +1,4 @@
-# Text-TV · etapp 9
+# Text-TV · etapp 10
 
 Theves Text-TV är ett informationslager ovanpå senast valda videokanal. Den
 öppnas med `T`, `TXT` eller Text-TV-knappen och stängs med samma knapp, Back
@@ -26,8 +26,10 @@ inte skapa horisontell scroll från opålitlig data.
 
 ## Väder och attribution
 
-Första orterna är Stockholm, Göteborg och Malmö. Familjens hemort kan läggas
-till senare i `data/source/weather.json`.
+Första områdena är Stockholmsområdet, Göteborgsområdet och Malmöområdet.
+Familjens hemområde kan läggas till senare i `data/source/weather.json`.
+Varje område använder en fast prognospunkt nära centrum. Det är en lättläst
+Text-TV-etikett, inte ett påstående om ett regionalt medelvärde.
 
 Väderkällan är SMHI:s öppna SNOW1G-prognos. Data används enligt CC BY 4.0.
 Sidorna visar både `Källa: SMHI öppna data` och `Bearbetad av Theve: urval och
@@ -45,7 +47,8 @@ npm run check
 ```
 
 Generatorn gör tre små punktanrop och sparar normaliserad data. Webbläsaren
-kontaktar aldrig SMHI direkt. Schemalagd uppdatering hör till etapp 10.
+kontaktar aldrig SMHI direkt. GitHub Actions kör samma uppdatering nattligen
+och sparar resultat samt rapport som artifact utan att publicera automatiskt.
 
 ## Tablå
 

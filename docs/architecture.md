@@ -57,8 +57,10 @@ Archives JSON-format eller spelarens interna tillstånd. Det är uppdelat i:
 Väderkedjan är medvetet statisk. `scripts/update-weather.mjs` hämtar tre små
 punktsvar från SMHI:s dokumenterade SNOW1G-API och normaliserar dem till
 `data/source/weather.json`. Det vanliga databyggsteget validerar och publicerar
-snapshoten utan nätverksanrop. Etapp 10 kan därför schemalägga exakt samma
-generator utan att klienten eller Text-TV-komponenten ändras.
+snapshoten utan nätverksanrop. Områdesnamnen representerar varsin fast punkt
+nära centrum och är därför inte regionala medelvärden. Den nattliga kontrollen
+kan köra exakt samma generator utan att klienten eller Text-TV-komponenten
+ändras.
 
 Logotyperna byggs i ett separat deterministiskt flöde. Definitionerna i
 `scripts/lib/logo-system.mjs` innehåller kanalens motiv, ordmärke och accent.
@@ -95,10 +97,13 @@ och rättighetsunderlag.
 
 `npm run check` kör lint, enhetstester, ett separat tidszonstest,
 produktionsbygge och Playwright-flödet i den ordningen. Samma kommando används
-lokalt och i GitHub Actions.
+lokalt och i GitHub Actions. Varje genererad manifestfil innehåller både
+publik revision och källrevision, så en rapport kan spåras till exakt indata.
 
 Produktionsbygget kräver att både `public/data/` och SVG-originalen exakt
-motsvarar sina källor. På
-`main` publicerar en separat Pages-workflow den färdiga `dist/`-mappen via ett
-GitHub Pages-artifact; byggfiler checkas inte in i huvudbranchen.
+motsvarar sina källor. På `main` skapar samma kvalitetsworkflow ett Pages-
+artifact först efter godkänd kontroll och publicerar det därefter; byggfiler
+checkas inte in i huvudbranchen. Den nattliga katalogkontrollen har endast
+lästillgång till repot och laddar upp sin rapport som artifact utan att
+publicera eller göra commit.
 

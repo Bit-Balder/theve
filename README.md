@@ -3,9 +3,10 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 9: en fjärrstyrd Text-TV i ett fast 40 × 24-grid
-med väder från SMHI, tablå från samma schema som programguiden och tydliga
-lägen för gammal eller saknad data. Ingen skarp videokatalog ingår ännu.
+Det här repot innehåller etapp 10: den fjärrstyrda TV-upplevelsen och Text-TV:n
+från tidigare etapper, plus automatiska kontroller, spårbara katalograpporter
+och publicering först efter ett godkänt bygge. Ingen skarp videokatalog ingår
+ännu.
 
 ## Förutsättningar
 
@@ -33,6 +34,7 @@ npm run lint
 npm run test
 npm run test:e2e
 npm run data:check
+npm run catalog:audit
 npm run logos:check
 npm run build
 npm run check
@@ -59,8 +61,9 @@ SVG-originalen genereras från en gemensam konstruktion med:
 npm run logos:build
 ```
 
-SMHI-snapshoten uppdateras manuellt med följande kommando. Etapp 10 kopplar
-senare samma generator till GitHub Actions.
+SMHI-snapshoten kan uppdateras manuellt med följande kommando. Samma generator
+körs även nattligen av GitHub Actions utan att skriva tillbaka till repot eller
+publicera resultatet.
 
 ```sh
 npm run weather:update
@@ -105,6 +108,7 @@ Läs [Text-TV-guiden](docs/teletext.md),
 [manualen för kanalidentiteter](docs/channel-identities.md),
 [spelarens publika API](docs/player-api.md),
 [guiden till schemamotorn](docs/schedule-engine.md),
+[driftmanualen för automatiken](docs/automation.md),
 [beslutsloggen](docs/decisions.md) och
 [arkitekturgrunden](docs/architecture.md) innan nästa etapp påbörjas.
 
@@ -120,10 +124,10 @@ granskas separat i kommande innehållsetapper.
 
 ## GitHub Pages
 
-Välj `Settings` → `Pages` → `Source` → `GitHub Actions`. Workflowen
-`Deploy Pages` bygger, kontrollerar och publicerar `dist/` efter en godkänd
-push till `main`. Använd inte `Deploy from a branch`; byggda filer ska inte
-lagras i huvudbranchen.
+Välj `Settings` → `Pages` → `Source` → `GitHub Actions`. Workflowen `Quality`
+kontrollerar först hela projektet och publicerar därefter samma godkända
+revision när den finns på `main`. Använd inte `Deploy from a branch`; byggda
+filer ska inte lagras i huvudbranchen.
 
 ## Typsnitt
 
@@ -135,9 +139,12 @@ Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
 
 ## Status
 
-Etapp 9 levererar sidorna 100, 300, 301, 400 och 500 i ett läsbart 40 × 24-grid.
-Vädret visar Stockholm, Göteborg och Malmö med synlig SMHI-attribution och
-bearbetningsnotis. Sida 400 använder samma publicerade schema som guiden.
-Gammal eller saknad väderdata märks tydligt och visas inte som aktuell. Nästa
-etapp automatiserar kontroller, generatorer och publicering.
+Etapp 10 kör samma kvalitetsgrind lokalt och i GitHub Actions. En nattlig
+katalogkontroll uppdaterar generatorerna, jämför godkända Internet
+Archive-licenser med låsta värden och sparar rapport plus genererade data som
+ett spårbart artifact. Ett blockerande fel kan aldrig gå vidare till Pages.
+
+Text-TV:s väder visar Stockholmsområdet, Göteborgsområdet och Malmöområdet med
+synlig SMHI-attribution och bearbetningsnotis. Varje område representeras av
+en prognospunkt nära områdets centrum; värdet är inte ett regionalt medelvärde.
 

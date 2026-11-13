@@ -1,4 +1,4 @@
-# Datamodell · etapp 9
+# Datamodell · etapp 10
 
 Etapp 3 skiljer källdata från data som får publiceras. Källdata granskas och
 valideras; endast godkända objekt skrivs till `public/data/`.
@@ -14,13 +14,17 @@ valideras; endast godkända objekt skrivs till `public/data/`.
 | SMHI-väder | `data/source/weather.json` | `data/schema/weather.schema.json` |
 
 Publika filer genereras deterministiskt till `public/data/`. Varje fil har
-schema- och revisionsnummer. Samma källfiler ger alltid samma revision.
+schema- och revisionsnummer. Manifestet har dessutom en `sourceRevision` som
+omfattar all källdata, även blockerade katalogposter. Samma källfiler ger
+alltid samma revisioner.
 
 ## Text-TV och väder
 
 `weather.json` innehåller källnamn, dataset, licens, hämtningstid,
-giltighetstid, orter och normaliserade prognospunkter. Bygget validerar att
-ort-ID är unika, tiderna ligger i stigande ordning och snapshoten har en
+giltighetstid, områden och normaliserade prognospunkter. Stockholmsområdet,
+Göteborgsområdet och Malmöområdet representeras av en fast punkt nära centrum,
+inte av ett regionalt medelvärde. Bygget validerar att områdes-ID är unika,
+tiderna ligger i stigande ordning och snapshoten har en
 giltighetstid efter hämtningen.
 
 `public/data/teletext.json` innehåller endast den validerade snapshoten, ett
@@ -57,6 +61,10 @@ när objektet både är schemalagt och har klarat rättighets- och familjegrinde
 
 `familyStatus` är en separat familjegranskning och måste också vara
 `approved`. En tillgänglig fil blir alltså aldrig automatiskt godkänd.
+Ett godkänt Internet Archive-objekt måste dessutom ha exakt `licenseUrl`
+låst i rättighetsjournalen. Den nattliga kontrollen jämför värdet med aktuell
+metadata och blockerar rapporten om licensen har ändrats eller källan inte
+längre svarar.
 
 ## Tablå
 
@@ -93,6 +101,7 @@ källan. Följande fel stoppar alltid publicering:
 - `review_required` eller `rejected` i en schemalagd slot;
 - ej godkänd publicering eller familjestatus;
 - otillgänglig källa i en schemalagd slot.
+- godkänt Internet Archive-objekt utan låst `licenseUrl`.
 
 ## Arbetsflöde för nytt innehåll
 
