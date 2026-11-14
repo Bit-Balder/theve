@@ -13,7 +13,7 @@ export interface CachedForecast {
 
 export function describeWeatherError(error: unknown): string {
   if (error instanceof Error) {
-    const httpMatch = error.message.match(/^SMHI svarade HTTP (\\d{3})\\.$/);
+    const httpMatch = error.message.match(/^SMHI svarade HTTP (\d{3})\.$/);
     if (httpMatch) return `SMHI SVARADE HTTP ${httpMatch[1]}`;
     if (error.name === "TimeoutError" || error.name === "AbortError") {
       return "SMHI SVARADE INTE I TID";
