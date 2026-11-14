@@ -11,6 +11,9 @@ export const TELETEXT_PAGE_NUMBERS = [
   "100",
   "300",
   "301",
+  "302",
+  "303",
+  "304",
   "400",
   "500",
 ] as const;
@@ -61,6 +64,10 @@ export interface TeletextPageContext {
   readonly schedule: CompiledSchedule;
   readonly weather: WeatherSnapshot | null;
   readonly nowEpochMs: number;
+  readonly selectedMunicipalityName?: string;
+  readonly selectedWeather?: WeatherLocation | null;
+  readonly localWeatherStatus?: "loading" | "error" | "ready";
+  readonly isSelectedFavorite?: boolean;
 }
 
 function characters(value: string): string[] {
@@ -175,7 +182,10 @@ function createStartPage(context: TeletextPageContext): TeletextPage {
       "THEVE TEXT-TV",
       [
         "300  VÄDERÖVERSIKT",
-        "301  VÄDER FÖR VALDA ORTER",
+        "301  VÄLJ LÄN OCH KOMMUN",
+        "302  DINA VÄDERFAVORITER",
+        "303  TIMPROGNOS FÖR DIN KOMMUN",
+        "304  VÄDERÖVERSIKT SVERIGE",
         "400  TV-TABLÅ JUST NU",
         "500  BARNENS SIDA",
         "",
@@ -235,16 +245,19 @@ function weatherUnavailableRows(
   ];
 }
 
-function createWeatherOverview(context: TeletextPageContext): TeletextPage {
+function createWeatherOverview(
+  context: TeletextPageContext,
+  number = "300",
+): TeletextPage {
   const status = weatherState(context.weather, context.nowEpochMs);
   const weather = context.weather;
   if (status !== "ready" || !weather) {
     return {
-      number: "300",
+      number,
       title: "VÄDER",
       status,
       rows: pageRows(
-        "300",
+        number,
         "VÄDER",
         weatherUnavailableRows(status, weather),
         context.nowEpochMs,
@@ -266,11 +279,11 @@ function createWeatherOverview(context: TeletextPageContext): TeletextPage {
     ];
   });
   return {
-    number: "300",
+    number,
     title: "VÄDERÖVERSIKT",
     status,
     rows: pageRows(
-      "300",
+      number,
       "VÄDERÖVERSIKT",
       [
         ...locationRows,
@@ -334,6 +347,93 @@ function createWeatherLocations(context: TeletextPageContext): TeletextPage {
   };
 }
 
+function localRows(context: TeletextPageContext): readonly string[] {
+  const name = (context.selectedMunicipalityName ?? "").toUpperCase();
+  if (!context.selectedWeather) {
+    return [
+      name,
+      context.localWeatherStatus === "error"
+        ? "KUNDE INTE HÄMTA VÄDER FRÅN SMHI"
+        : "HÄMTAR LOKAL VÄDERPROGNOS",
+      "",
+      "301  VÄLJ EN ANNAN KOMMUN",
+      "302  SPARADE FAVORITER",
+    ];
+  }
+  const forecast = currentForecast(context.selectedWeather, context.nowEpochMs);
+  if (!forecast) {
+    return [
+      name,
+      "VÄDERPROGNOSEN ÄR INAKTUELL",
+      "301 VÄLJ ANNAN KOMMUN",
+    ];
+  }
+  return [
+    name,
+    "",
+    "TEMPERATUR " + Math.round(forecast.temperatureC) + "°C",
+    "VIND " + forecast.windMps.toFixed(1) + " M/S",
+    "NEDERBÖRD " + forecast.precipitationMm.toFixed(1) + " MM",
+    "",
+    "ENTER " + (context.isSelectedFavorite ? "TA BORT FAVORIT" : "SPARA FAVORIT"),
+    "301  VÄLJ LÄN OCH KOMMUN",
+    "302  DINA FAVORITER",
+    "303  TIMPROGNOS",
+    "304  SVERIGEÖVERSIKT",
+    "",
+    "KÄLLA: SMHI ÖPPNA DATA",
+    "BEARBETAD AV THEVE",
+  ];
+}
+
+function createLocalWeather(context: TeletextPageContext): TeletextPage {
+  const status = context.selectedWeather && currentForecast(
+    context.selectedWeather,
+    context.nowEpochMs,
+  ) ? "ready" : "missing";
+  return {
+    number: "300",
+    title: "DITT LOKALA VÄDER",
+    status,
+    rows: pageRows(
+      "300",
+      "DITT LOKALA VÄDER",
+      localRows(context),
+      context.nowEpochMs,
+    ),
+  };
+}
+
+function createHourlyWeather(context: TeletextPageContext): TeletextPage {
+  const location = context.selectedWeather;
+  const forecasts = (location?.forecasts ?? [])
+    .filter((forecast) => Date.parse(forecast.validAt) >= context.nowEpochMs)
+    .slice(0, 8);
+  const status = forecasts.length > 0 ? "ready" : "missing";
+  return {
+    number: "303",
+    title: "TIMPROGNOS",
+    status,
+    rows: pageRows(
+      "303",
+      "TIMPROGNOS",
+      [
+        (location?.name ?? "INGEN KOMMUN VALD").toUpperCase(),
+        "",
+        ...forecasts.map((forecast) =>
+          formatTime(Date.parse(forecast.validAt)) + "  " +
+          Math.round(forecast.temperatureC) + "°C  " +
+          forecast.windMps.toFixed(1) + " M/S",
+        ),
+        ...(forecasts.length === 0 ? ["301  VÄLJ LÄN OCH KOMMUN"] : []),
+        "",
+        "KÄLLA SMHI · BEARBETAD AV THEVE",
+      ],
+      context.nowEpochMs,
+    ),
+  };
+}
+
 function createSchedulePage(context: TeletextPageContext): TeletextPage {
   const rows = context.channels.map((channel) => {
     const state = getScheduleState(
@@ -390,8 +490,22 @@ export function createTeletextPage(
   context: TeletextPageContext,
 ): TeletextPage {
   if (number === "100") return createStartPage(context);
-  if (number === "300") return createWeatherOverview(context);
+  if (number === "300") {
+    return context.selectedMunicipalityName
+      ? createLocalWeather(context)
+      : createWeatherOverview(context);
+  }
   if (number === "301") return createWeatherLocations(context);
+  if (number === "302") {
+    return {
+      number: "302",
+      title: "VÄDERFAVORITER",
+      status: "ready",
+      rows: pageRows("302", "VÄDERFAVORITER", ["301  VÄLJ KOMMUN"], context.nowEpochMs),
+    };
+  }
+  if (number === "303") return createHourlyWeather(context);
+  if (number === "304") return createWeatherOverview(context, "304");
   if (number === "400") return createSchedulePage(context);
   if (number === "500") return createChildrenPage(context);
   return {
