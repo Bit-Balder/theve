@@ -2,7 +2,7 @@ name: Theve programgranskning
 
 on:
   issues:
-    types: [opened]
+    types: [opened, reopened]
 
 permissions:
   contents: write
@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   review:
-    if: startsWith(github.event.issue.body, 'THEVE_REVIEW_V1')
+    if: startsWith(github.event.issue.body, 'THEVE_REVIEW_V2')
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -59,6 +59,7 @@ jobs:
           THEVE_REVIEW_AUTHOR: ${{ github.event.issue.user.login }}
           THEVE_REVIEW_ISSUE: ${{ github.event.issue.number }}
           THEVE_REVIEW_DATE: ${{ github.event.issue.created_at }}
+          THEVE_PRIVATE_RIGHTS_RECORDS: ${{ secrets.THEVE_PRIVATE_RIGHTS_RECORDS }}
         run: node scripts/apply-editorial-review.mjs
 
       - name: Bygg om och kontrollera källdata
