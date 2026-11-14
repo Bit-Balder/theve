@@ -1,9 +1,9 @@
 import type { TeletextPage } from "../core/teletext";
 import {
-  type Municipality,
-  REGIONS,
-  municipalitiesInRegion,
   findMunicipality,
+  type Municipality,
+  municipalitiesInRegion,
+  REGIONS,
 } from "../core/weather-places";
 
 export interface TeletextOptions {
@@ -106,26 +106,39 @@ export function createTeletext(options: TeletextOptions): TeletextController {
     const start = page * VISIBLE_OPTIONS;
     const slice = choices.slice(start, start + VISIBLE_OPTIONS);
     const title =
-      listMode === "regions" ? "VÄLJ LÄN" :
-      listMode === "municipalities" ? selectedRegion.toUpperCase() :
-      "DINA VÄDERFAVORITER";
+      listMode === "regions"
+        ? "VÄLJ LÄN"
+        : listMode === "municipalities"
+          ? selectedRegion.toUpperCase()
+          : "DINA VÄDERFAVORITER";
     const rows = [
       padded("THEVE TEXT-TV                  " + pageNumber),
       padded(title),
       padded("PIL UPP/NED VÄLJ  ENTER BEKRÄFTA"),
       padded(""),
       ...slice.map((name, index) =>
-        padded((start + index === selectedIndex ? "> " : "  ") + name.toUpperCase()),
+        padded(
+          (start + index === selectedIndex ? "> " : "  ") + name.toUpperCase(),
+        ),
       ),
     ];
     while (rows.length < ROWS - 1) rows.push(padded(""));
-    rows.push(padded(
-      choices.length === 0
-        ? "INGA FAVORITER. 301 VÄLJ KOMMUN"
-        : "SIDA " + (page + 1) + "/" + Math.ceil(choices.length / VISIBLE_OPTIONS) +
-          "  BACK TILLBAKA",
-    ));
-    showRows(rows, "ready", choices.length > 0 ? 4 + selectedIndex - start : -1);
+    rows.push(
+      padded(
+        choices.length === 0
+          ? "INGA FAVORITER. 301 VÄLJ KOMMUN"
+          : "SIDA " +
+              (page + 1) +
+              "/" +
+              Math.ceil(choices.length / VISIBLE_OPTIONS) +
+              "  BACK TILLBAKA",
+      ),
+    );
+    showRows(
+      rows,
+      "ready",
+      choices.length > 0 ? 4 + selectedIndex - start : -1,
+    );
   }
 
   function renderPage(number: string): void {
@@ -212,7 +225,8 @@ export function createTeletext(options: TeletextOptions): TeletextController {
     move(direction) {
       const choices = currentChoices();
       if (choices.length === 0) return;
-      selectedIndex = (selectedIndex + direction + choices.length) % choices.length;
+      selectedIndex =
+        (selectedIndex + direction + choices.length) % choices.length;
       renderList();
     },
     confirm: choose,
