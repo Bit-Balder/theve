@@ -14,9 +14,12 @@ export interface CachedForecast {
 export function smhiPointUrl(municipality: Municipality): string {
   return (
     "https://opendata-download-metfcst.smhi.se/api/category/snow1g/" +
-    "version/1/geotype/point/lon/" + municipality.longitude +
-    "/lat/" + municipality.latitude +
-    "/data.json?timeseries=8&parameters=" + PARAMETERS
+    "version/1/geotype/point/lon/" +
+    municipality.longitude +
+    "/lat/" +
+    municipality.latitude +
+    "/data.json?timeseries=8&parameters=" +
+    PARAMETERS
   );
 }
 
@@ -28,12 +31,16 @@ export function readCachedForecast(
     const value = localStorage.getItem(STORAGE_PREFIX + municipality.id);
     if (!value) return null;
     const parsed = JSON.parse(value) as CachedForecast;
-    if (!parsed.location || !Array.isArray(parsed.location.forecasts)) return null;
+    if (!parsed.location || !Array.isArray(parsed.location.forecasts))
+      return null;
     if (nowEpochMs - Date.parse(parsed.fetchedAt) > CACHE_AGE_MS) return null;
     if (nowEpochMs < Date.parse(parsed.fetchedAt)) return null;
-    if (!parsed.location.forecasts.some(
-      (forecast) => Date.parse(forecast.validAt) >= nowEpochMs,
-    )) return null;
+    if (
+      !parsed.location.forecasts.some(
+        (forecast) => Date.parse(forecast.validAt) >= nowEpochMs,
+      )
+    )
+      return null;
     return parsed;
   } catch {
     return null;
@@ -54,7 +61,7 @@ export async function fetchMunicipalityWeather(
   if (!response.ok) {
     throw new Error("SMHI svarade HTTP " + response.status + ".");
   }
-  const snapshot = await response.json() as {
+  const snapshot = (await response.json()) as {
     timeSeries?: {
       time: string;
       data: {
@@ -77,7 +84,8 @@ export async function fetchMunicipalityWeather(
       precipitationMm: item.data.precipitation_amount_mean,
       symbolCode: item.data.symbol_code,
     }));
-  if (forecasts.length === 0) throw new Error("SMHI skickade inga prognosvärden.");
+  if (forecasts.length === 0)
+    throw new Error("SMHI skickade inga prognosvärden.");
   const result: CachedForecast = {
     fetchedAt: new Date().toISOString(),
     location: {
@@ -90,7 +98,10 @@ export async function fetchMunicipalityWeather(
     },
   };
   try {
-    localStorage.setItem(STORAGE_PREFIX + municipality.id, JSON.stringify(result));
+    localStorage.setItem(
+      STORAGE_PREFIX + municipality.id,
+      JSON.stringify(result),
+    );
   } catch {
     // Prognosen går att visa utan lokal cache.
   }
