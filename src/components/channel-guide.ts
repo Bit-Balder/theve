@@ -112,12 +112,8 @@ export function createChannelGuide(
         logo.className = "channel-guide__logo";
         logo.src = entry.logoSrc;
         logo.alt = "";
-        const number = document.createElement("span");
-        number.className = "channel-guide__number numeric-text";
-        number.textContent = String(entry.number).padStart(2, "0");
-        const name = document.createElement("span");
-        name.textContent = entry.name;
-        channel.append(logo, number, name);
+        // The compact logo already contains the channel name and number.
+        channel.append(logo);
 
         const now = document.createElement("span");
         now.className = "channel-guide__now";
