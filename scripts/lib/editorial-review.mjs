@@ -191,7 +191,7 @@ export function applyReviewRequest({
       reviewedAt,
     });
 
-    if (request.decision !== "approved") {
+    if (request.decision === "rejected") {
       if (existingRights.has(itemId)) {
         existingRights.set(itemId, {
           ...existingRights.get(itemId),
