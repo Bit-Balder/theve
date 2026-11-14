@@ -28,7 +28,7 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   await page.goto("/");
 
   await expect(
-    page.getByText("ETAPP 11 · KVALITET OCH KOMPATIBILITET"),
+    page.getByText("ETAPP 11 - KVALITET OCH KOMPATIBILITET"),
   ).toBeVisible();
   await expect(page.locator(".topbar__clock")).toHaveText("14:05");
   await expect(page.getByRole("button", { name: /starta tv/i })).toBeFocused();
@@ -37,7 +37,7 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   const tv = page.getByRole("region", { name: "Theve sändning" });
   await expect(tv).toBeVisible();
   await expect(tv).toHaveAttribute("data-channel-id", "tv1");
-  await expect(page.getByText("TV1 · Nyheter och kultur").first()).toBeVisible();
+  await expect(page.getByText("TV1 - Nyheter och kultur").first()).toBeVisible();
   await expect(page.locator(".channel-bug__logo")).toHaveAttribute(
     "src",
     "assets/logos/tv1-bug.svg",
@@ -166,7 +166,7 @@ test("Barn följer 18.55, 19.00 och 06.00 utan omladdning", async ({
   await expect(tv).toHaveAttribute("data-channel-id", "barn", {
     timeout: 2_000,
   });
-  await expect(page.getByText("Barn · Dagens program").first()).toBeVisible();
+  await expect(page.getByText("Barn - Dagens program").first()).toBeVisible();
 
   await setNow("2026-11-13T17:54:59.500Z");
   await retuneBarn();
@@ -191,5 +191,5 @@ test("Barn följer 18.55, 19.00 och 06.00 utan omladdning", async ({
   await setNow("2026-11-14T04:59:59.500Z");
   await retuneBarn();
   await expect(endCard).toBeHidden();
-  await expect(page.getByText("Barn · Dagens program").first()).toBeVisible();
+  await expect(page.getByText("Barn - Dagens program").first()).toBeVisible();
 });
