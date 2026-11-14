@@ -6,6 +6,10 @@ describe("plattformens fjärradapter", () => {
   it.each([
     ["ArrowUp", undefined, "channel_up"],
     ["ChannelDown", undefined, "channel_down"],
+    ["ArrowLeft", undefined, "left"],
+    ["ArrowRight", undefined, "right"],
+    ["", 37, "left"],
+    ["", 39, "right"],
     ["Guide", undefined, "guide"],
     ["T", undefined, "teletext"],
     ["I", undefined, "info"],
