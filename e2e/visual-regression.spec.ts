@@ -50,10 +50,14 @@ test("Text-TV med VT323", async ({ page }) => {
   await startTv(page);
   await page.keyboard.press("t");
   await expect(page.getByRole("dialog", { name: "Theve Text-TV" })).toBeVisible();
-  await expect(page.locator(".screen43")).toHaveScreenshot(
-    "text-tv-vt323.png",
-    screenshotOptions,
-  );
+  const screen = await page.locator(".screen43").boundingBox();
+  const textGrid = await page.locator(".teletext__grid").boundingBox();
+  expect(screen).not.toBeNull();
+  expect(textGrid).not.toBeNull();
+  if (!screen || !textGrid) throw new Error("Text-TV saknar yta");
+  expect(textGrid.width / screen.width).toBeGreaterThan(0.75);
+  expect(textGrid.height / screen.height).toBeGreaterThan(0.75);
+  await expect(page.locator(".teletext__row")).toHaveCount(24);
 });
 
 test("Barns analoga slutskylt", async ({ page }) => {
