@@ -314,26 +314,28 @@ export function formatReport(report) {
   const lines = [
     "# Internet Archive — sökrapport",
     "",
-    "Körning: " + report.startedAt,
-    "Nya kandidater: " + report.added,
-    "Totala kandidater: " + report.totalCandidates,
-    "Kontrollerade arkivposter: " + report.metadataChecked,
-    "Dubbletter: " + report.duplicates,
-    "Fel: " + report.errors.length,
+    `Körning: ${report.startedAt}`,
+    `Nya kandidater: ${report.added}`,
+    `Totala kandidater: ${report.totalCandidates}`,
+    `Kontrollerade arkivposter: ${report.metadataChecked}`,
+    `Dubbletter: ${report.duplicates}`,
+    `Fel: ${report.errors.length}`,
     "",
     "## Genomförda sökningar",
     "",
   ];
   for (const search of report.searched) {
     lines.push(
+      `- ${search.id} (kanal ${search.channel}, sida ${search.page}): ${search.found} träffar`,
+    );
   }
   lines.push("", "## Bortfiltrerade", "");
   for (const [reason, count] of Object.entries(report.skipped)) {
-    lines.push("- " + reason + ": " + count);
+    lines.push(`- ${reason}: ${count}`);
   }
   lines.push("", "## Fel", "");
   for (const error of report.errors) {
-    lines.push("- " + (error.search || error.identifier) + ": " + error.error);
+    lines.push(`- ${error.search || error.identifier}: ${error.error}`);
   }
   lines.push("", "Ingen kandidat är automatiskt godkänd för publicering.", "");
   return lines.join("\n");
