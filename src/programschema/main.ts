@@ -24,14 +24,12 @@ interface ReviewRecord {
   decision: Decision;
 }
 interface ReviewRequest {
-  version: 1;
+  version: 2;
   identifiers: string[];
   decision: Decision;
   channelId: string | null;
   groupLabel: string;
   notes: string;
-  basis: string;
-  evidenceUrl: string | null;
   confirmedScope: true;
   confirmedRightsForAll: boolean;
 }
@@ -45,6 +43,7 @@ const REVIEWS_URL =
   REPO +
   "/main/data/editorial/reviews.json";
 const MAX_BATCH = 40;
+const LOCAL_HIDDEN_KEY = "theve.programschema.hidden.v1";
 
 function element<T extends HTMLElement>(id: string): T {
   const found = document.getElementById(id);
@@ -62,8 +61,6 @@ const decision = element<HTMLSelectElement>("decision");
 const reviewChannel = element<HTMLSelectElement>("review-channel");
 const groupLabel = element<HTMLInputElement>("group-label");
 const notes = element<HTMLTextAreaElement>("notes");
-const basis = element<HTMLTextAreaElement>("basis");
-const evidenceUrl = element<HTMLInputElement>("evidence-url");
 const rightsFields = element<HTMLDivElement>("rights-fields");
 const confirmRights = element<HTMLInputElement>("confirm-rights");
 const confirmScope = element<HTMLInputElement>("confirm-scope");
@@ -73,6 +70,26 @@ const importJson = element<HTMLInputElement>("import-json");
 let candidates: Candidate[] = [];
 let existingReviews = new Map<string, ReviewRecord>();
 const selected = new Set<string>();
+const localHidden = new Set<string>();
+
+try {
+  const saved = JSON.parse(localStorage.getItem(LOCAL_HIDDEN_KEY) || "[]");
+  if (Array.isArray(saved)) {
+    for (const id of saved) {
+      if (typeof id === "string") localHidden.add(id);
+    }
+  }
+} catch {
+  // Privat läge kan blockera lokal lagring.
+}
+
+function saveLocalHidden(): void {
+  try {
+    localStorage.setItem(LOCAL_HIDDEN_KEY, JSON.stringify([...localHidden]));
+  } catch {
+    // Döljning fungerar tills sidan laddas om även utan lokal lagring.
+  }
+}
 
 function make<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -116,11 +133,19 @@ function shownCandidates(): Candidate[] {
       filterChannel.value === "all" ||
       candidate.suggestedChannel === filterChannel.value;
     const review = existingReviews.get(candidate.identifier);
+    const hidden = localHidden.has(candidate.identifier);
+    const mode = filterReview.value;
     const matchesReview =
-      filterReview.value === "all" ||
-      (filterReview.value === "unreviewed"
-        ? !review
-        : review?.decision === filterReview.value);
+      mode === "hidden"
+        ? hidden
+        : mode === "rejected"
+          ? review?.decision === "rejected"
+          : !hidden &&
+            (mode === "all"
+              ? review?.decision !== "rejected"
+              : mode === "unreviewed"
+                ? !review
+                : review?.decision === mode);
     return matchesText && matchesChannel && matchesReview;
   });
 }
@@ -144,7 +169,7 @@ function render() {
   const visible = shownCandidates();
   const scrollTop = list.scrollTop;
   const groups = new Map<string, Candidate[]>();
-  for (const candidate of candidates) {
+  for (const candidate of visible) {
     const season = seasonOf(candidate);
     if (season) {
       const entries = groups.get(season.key) ?? [];
@@ -221,7 +246,40 @@ function render() {
       "https://archive.org/details/" + encodeURIComponent(candidate.identifier);
     archiveLink.target = "_blank";
     archiveLink.rel = "noopener noreferrer";
-    right.append(license, status, archiveLink);
+    const hideButton = make(
+      "button",
+      "button button--quiet candidate-hide",
+      localHidden.has(candidate.identifier) ? "VISA IGEN" : "DÖLJ LOKALT",
+    );
+    hideButton.type = "button";
+    hideButton.addEventListener("click", () => {
+      if (localHidden.has(candidate.identifier)) localHidden.delete(candidate.identifier);
+      else localHidden.add(candidate.identifier);
+      saveLocalHidden();
+      selected.delete(candidate.identifier);
+      render();
+    });
+    const rejectButton = make(
+      "button",
+      "button button--quiet candidate-reject",
+      "AVVISA I GITHUB",
+    );
+    rejectButton.type = "button";
+    rejectButton.addEventListener("click", () => {
+      selected.clear();
+      selected.add(candidate.identifier);
+      decision.value = "rejected";
+      if (!notes.value.trim()) {
+        notes.value = "Arkivposten ska inte användas i Theve.";
+      }
+      confirmScope.checked = false;
+      updateSelection();
+      element<HTMLElement>("review-panel").scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+    right.append(license, status, archiveLink, hideButton, rejectButton);
     row.append(checkbox, details, right);
     children.push(row);
   }
@@ -295,9 +353,6 @@ function requestFromInputs(): ReviewRequest {
       "Dela upp massgranskningen i grupper om högst 40 arkivposter.",
     );
   }
-  const chosen = candidates.filter((candidate) =>
-    selected.has(candidate.identifier),
-  );
   const mode = decision.value as Decision;
   if (!["selected", "approved", "rejected"].includes(mode)) {
     throw new Error("Välj ett giltigt beslut.");
@@ -308,47 +363,16 @@ function requestFromInputs(): ReviewRequest {
   if (!confirmScope.checked) {
     throw new Error("Bekräfta att du har granskat vilka poster som ingår.");
   }
-  if (
-    mode !== "rejected" &&
-    chosen.some(
-      (candidate) =>
-        !Number.isFinite(candidate.media?.durationSeconds) ||
-        !/\.mp4$/i.test(candidate.media?.preferredFile || ""),
-    )
-  ) {
-    throw new Error("Någon vald arkivpost saknar MP4 eller speltid.");
-  }
-  if (mode === "approved") {
-    if (
-      chosen.some((candidate) => !candidate.licenseUrl?.startsWith("https://"))
-    ) {
-      throw new Error(
-        "Alla valda poster måste ha en verifierbar licenslänk i Internet Archive. Välj annars 'fortsatt granskning'.",
-      );
-    }
-    if (basis.value.trim().length < 20) {
-      throw new Error("Beskriv rättighetsgrunden med minst 20 tecken.");
-    }
-    try {
-      if (new URL(evidenceUrl.value).protocol !== "https:") {
-        throw new Error("wrong protocol");
-      }
-    } catch {
-      throw new Error("Ange en publik HTTPS-länk till rättighetsunderlaget.");
-    }
-    if (!confirmRights.checked) {
-      throw new Error("Bekräfta att underlaget gäller alla markerade poster.");
-    }
+  if (mode === "approved" && !confirmRights.checked) {
+    throw new Error("Bekräfta att du manuellt granskat rättigheterna för samtliga poster.");
   }
   return {
-    version: 1,
+    version: 2,
     identifiers: ids,
     decision: mode,
     channelId: reviewChannel.value || null,
     groupLabel: groupLabel.value.trim(),
     notes: notes.value.trim(),
-    basis: mode === "approved" ? basis.value.trim() : "",
-    evidenceUrl: mode === "approved" ? evidenceUrl.value.trim() : null,
     confirmedScope: true,
     confirmedRightsForAll: mode === "approved" && confirmRights.checked,
   };
@@ -356,7 +380,7 @@ function requestFromInputs(): ReviewRequest {
 
 function prepareIssue() {
   const request = requestFromInputs();
-  const body = "THEVE_REVIEW_V1\n" + JSON.stringify(request);
+  const body = "THEVE_REVIEW_V2\n" + JSON.stringify(request);
   const query = new URLSearchParams({
     title:
       "Theve: " +
