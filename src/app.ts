@@ -13,6 +13,10 @@ import {
 } from "./core/channel-navigation";
 import { DirectNumberBuffer } from "./core/direct-number-buffer";
 import { InternetArchiveAdapter } from "./core/internet-archive";
+import {
+  type CachedForecast,
+  fetchMunicipalityWeather,
+} from "./core/local-weather";
 import { OverlayBackStack } from "./core/overlay-back-stack";
 import { ArchivePlaybackService } from "./core/playback-service";
 import { PlayerController } from "./core/player-controller";
@@ -25,6 +29,14 @@ import {
 } from "./core/schedule-engine";
 import { createTeletextPage } from "./core/teletext";
 import { formatTheveClock, millisecondsUntilNextMinute } from "./core/time";
+import {
+  chooseMunicipality,
+  findMunicipality,
+  type Municipality,
+  readWeatherPreferences,
+  saveWeatherPreferences,
+  toggleFavorite,
+} from "./core/weather-places";
 
 export interface StartViewModel {
   readonly eyebrow: string;
@@ -147,6 +159,10 @@ export function mountStartView(
   let bannerTimer: ReturnType<typeof setTimeout> | null = null;
   let scheduleTimer: ReturnType<typeof setTimeout> | null = null;
   let clockTimer: ReturnType<typeof setTimeout> | null = null;
+  let weatherPreferences = readWeatherPreferences();
+  let selectedWeather: CachedForecast | null = null;
+  let localWeatherStatus: "loading" | "error" | "ready" = "loading";
+  let weatherRequestRevision = 0;
   const teletext = createTeletext({
     getPage: (number, channelName) => {
       if (!publicData) {
@@ -158,9 +174,56 @@ export function mountStartView(
         schedule: publicData.schedule,
         weather: publicData.weather,
         nowEpochMs: Date.now(),
+        selectedMunicipalityName: findMunicipality(
+          weatherPreferences.selectedId,
+        )?.name,
+        selectedWeather: selectedWeather?.location,
+        localWeatherStatus,
+        isSelectedFavorite: Boolean(
+          weatherPreferences.selectedId &&
+            weatherPreferences.favorites.includes(
+              weatherPreferences.selectedId,
+            ),
+        ),
       });
     },
+    getFavorites: () => weatherPreferences.favorites,
+    getSelectedMunicipalityId: () => weatherPreferences.selectedId,
+    onSelectMunicipality: (municipality) => {
+      weatherPreferences = chooseMunicipality(
+        weatherPreferences,
+        municipality.id,
+      );
+      saveWeatherPreferences(weatherPreferences);
+      selectedWeather = null;
+      void refreshSelectedWeather(municipality);
+    },
+    onToggleFavorite: () => {
+      const id = weatherPreferences.selectedId;
+      if (!id) return;
+      weatherPreferences = toggleFavorite(weatherPreferences, id);
+      saveWeatherPreferences(weatherPreferences);
+    },
   });
+
+  async function refreshSelectedWeather(
+    municipality: Municipality,
+  ): Promise<void> {
+    const revision = ++weatherRequestRevision;
+    localWeatherStatus = "loading";
+    teletext.refresh();
+    try {
+      const result = await fetchMunicipalityWeather(municipality);
+      if (revision !== weatherRequestRevision) return;
+      selectedWeather = result;
+      localWeatherStatus = "ready";
+    } catch {
+      if (revision !== weatherRequestRevision) return;
+      localWeatherStatus = "error";
+      selectedWeather = null;
+    }
+    teletext.refresh();
+  }
 
   const closeGuide = () => {
     guide.close();
@@ -381,6 +444,8 @@ export function mountStartView(
     directNumber.clear();
     backStack.push({ id: "teletext", close: teletext.close });
     teletext.open(channel.name);
+    const selected = findMunicipality(weatherPreferences.selectedId);
+    if (selected) void refreshSelectedWeather(selected);
   }
 
   async function startTv(): Promise<void> {
@@ -535,8 +600,14 @@ export function mountStartView(
       event.preventDefault();
       if (action.type === "digit") {
         teletext.pushDigit(action.digit);
+      } else if (action.type === "channel_up") {
+        teletext.move(-1);
+      } else if (action.type === "channel_down") {
+        teletext.move(1);
+      } else if (action.type === "confirm") {
+        teletext.confirm();
       } else if (action.type === "back" || action.type === "teletext") {
-        if (!backStack.back()) {
+        if (!teletext.back() && !backStack.back()) {
           closeTeletext();
         }
       }
