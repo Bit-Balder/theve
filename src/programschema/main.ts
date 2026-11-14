@@ -24,14 +24,12 @@ interface ReviewRecord {
   decision: Decision;
 }
 interface ReviewRequest {
-  version: 1;
+  version: 2;
   identifiers: string[];
   decision: Decision;
   channelId: string | null;
   groupLabel: string;
   notes: string;
-  basis: string;
-  evidenceUrl: string | null;
   confirmedScope: true;
   confirmedRightsForAll: boolean;
 }
@@ -62,8 +60,6 @@ const decision = element<HTMLSelectElement>("decision");
 const reviewChannel = element<HTMLSelectElement>("review-channel");
 const groupLabel = element<HTMLInputElement>("group-label");
 const notes = element<HTMLTextAreaElement>("notes");
-const basis = element<HTMLTextAreaElement>("basis");
-const evidenceUrl = element<HTMLInputElement>("evidence-url");
 const rightsFields = element<HTMLDivElement>("rights-fields");
 const confirmRights = element<HTMLInputElement>("confirm-rights");
 const confirmScope = element<HTMLInputElement>("confirm-scope");
@@ -205,23 +201,18 @@ function render() {
     const second = make("p", "metadata", candidate.identifier);
     details.append(title, metadata, second);
     const right = make("div", "candidate-actions");
-    const license = make(
-      "span",
-      candidate.licenseUrl ? "status-tag status-tag--license" : "status-tag",
-      candidate.licenseUrl ? "LICENSLÄNK FINNS" : "LICENS SAKNAS",
-    );
     const review = existingReviews.get(candidate.identifier);
     const status = make(
       "span",
       "status-tag",
-      review ? "GRANSKAD: " + review.decision.toUpperCase() : "OGRANSKAD",
+      review ? "GRANSKAD: " + review.decision.toUpperCase() : "VÄNTAR PÅ BESLUT",
     );
     const archiveLink = make("a", "archive-link", "VISA ARKIVPOST");
     archiveLink.href =
       "https://archive.org/details/" + encodeURIComponent(candidate.identifier);
     archiveLink.target = "_blank";
     archiveLink.rel = "noopener noreferrer";
-    right.append(license, status, archiveLink);
+    right.append(status, archiveLink);
     row.append(checkbox, details, right);
     children.push(row);
   }
@@ -318,37 +309,16 @@ function requestFromInputs(): ReviewRequest {
   ) {
     throw new Error("Någon vald arkivpost saknar MP4 eller speltid.");
   }
-  if (mode === "approved") {
-    if (
-      chosen.some((candidate) => !candidate.licenseUrl?.startsWith("https://"))
-    ) {
-      throw new Error(
-        "Alla valda poster måste ha en verifierbar licenslänk i Internet Archive. Välj annars 'fortsatt granskning'.",
-      );
-    }
-    if (basis.value.trim().length < 20) {
-      throw new Error("Beskriv rättighetsgrunden med minst 20 tecken.");
-    }
-    try {
-      if (new URL(evidenceUrl.value).protocol !== "https:") {
-        throw new Error("wrong protocol");
-      }
-    } catch {
-      throw new Error("Ange en publik HTTPS-länk till rättighetsunderlaget.");
-    }
-    if (!confirmRights.checked) {
-      throw new Error("Bekräfta att underlaget gäller alla markerade poster.");
-    }
+  if (mode === "approved" && !confirmRights.checked) {
+    throw new Error("Bekräfta din manuella rättighetsgranskning för alla markerade poster.");
   }
   return {
-    version: 1,
+    version: 2,
     identifiers: ids,
     decision: mode,
     channelId: reviewChannel.value || null,
     groupLabel: groupLabel.value.trim(),
     notes: notes.value.trim(),
-    basis: mode === "approved" ? basis.value.trim() : "",
-    evidenceUrl: mode === "approved" ? evidenceUrl.value.trim() : null,
     confirmedScope: true,
     confirmedRightsForAll: mode === "approved" && confirmRights.checked,
   };
@@ -356,7 +326,7 @@ function requestFromInputs(): ReviewRequest {
 
 function prepareIssue() {
   const request = requestFromInputs();
-  const body = "THEVE_REVIEW_V1\n" + JSON.stringify(request);
+  const body = "THEVE_REVIEW_V2\n" + JSON.stringify(request);
   const query = new URLSearchParams({
     title:
       "Theve: " +
