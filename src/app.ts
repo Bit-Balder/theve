@@ -13,7 +13,10 @@ import {
 } from "./core/channel-navigation";
 import { DirectNumberBuffer } from "./core/direct-number-buffer";
 import { InternetArchiveAdapter } from "./core/internet-archive";
-import { type CachedForecast, fetchMunicipalityWeather } from "./core/local-weather";
+import {
+  type CachedForecast,
+  fetchMunicipalityWeather,
+} from "./core/local-weather";
 import { OverlayBackStack } from "./core/overlay-back-stack";
 import { ArchivePlaybackService } from "./core/playback-service";
 import { PlayerController } from "./core/player-controller";
@@ -27,9 +30,9 @@ import {
 import { createTeletextPage } from "./core/teletext";
 import { formatTheveClock, millisecondsUntilNextMinute } from "./core/time";
 import {
-  type Municipality,
   chooseMunicipality,
   findMunicipality,
+  type Municipality,
   readWeatherPreferences,
   saveWeatherPreferences,
   toggleFavorite,
@@ -171,16 +174,26 @@ export function mountStartView(
         schedule: publicData.schedule,
         weather: publicData.weather,
         nowEpochMs: Date.now(),
-        selectedMunicipalityName: findMunicipality(weatherPreferences.selectedId)?.name,
+        selectedMunicipalityName: findMunicipality(
+          weatherPreferences.selectedId,
+        )?.name,
         selectedWeather: selectedWeather?.location,
         localWeatherStatus,
-        isSelectedFavorite: Boolean(weatherPreferences.selectedId && weatherPreferences.favorites.includes(weatherPreferences.selectedId)),
+        isSelectedFavorite: Boolean(
+          weatherPreferences.selectedId &&
+            weatherPreferences.favorites.includes(
+              weatherPreferences.selectedId,
+            ),
+        ),
       });
     },
     getFavorites: () => weatherPreferences.favorites,
     getSelectedMunicipalityId: () => weatherPreferences.selectedId,
     onSelectMunicipality: (municipality) => {
-      weatherPreferences = chooseMunicipality(weatherPreferences, municipality.id);
+      weatherPreferences = chooseMunicipality(
+        weatherPreferences,
+        municipality.id,
+      );
       saveWeatherPreferences(weatherPreferences);
       selectedWeather = null;
       void refreshSelectedWeather(municipality);
@@ -193,7 +206,9 @@ export function mountStartView(
     },
   });
 
-  async function refreshSelectedWeather(municipality: Municipality): Promise<void> {
+  async function refreshSelectedWeather(
+    municipality: Municipality,
+  ): Promise<void> {
     const revision = ++weatherRequestRevision;
     localWeatherStatus = "loading";
     teletext.refresh();
