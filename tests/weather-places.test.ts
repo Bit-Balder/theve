@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  describeWeatherError,
-  smhiPointUrl,
-} from "../src/core/local-weather";
+import { describeWeatherError, smhiPointUrl } from "../src/core/local-weather";
 import {
   chooseMunicipality,
   findMunicipality,
@@ -53,7 +50,9 @@ describe("Väderregioner, kommuner och favoriter", () => {
 
   it("bevarar kommunnamn som slutar med s", () => {
     expect(findMunicipality("0486")?.name).toBe("Strängnäs");
-    expect(MUNICIPALITIES.some((place) => place.name === "Västerås")).toBe(true);
+    expect(MUNICIPALITIES.some((place) => place.name === "Västerås")).toBe(
+      true,
+    );
     expect(MUNICIPALITIES.some((place) => place.name === "Höganäs")).toBe(true);
   });
 
