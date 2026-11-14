@@ -46,6 +46,13 @@ test("snabbmenyn döljs automatiskt och styrs med vänster och höger", async ({
   await page.keyboard.press("ArrowRight");
   await expect(actions).toBeVisible();
   await expect(buttons.nth(0)).toBeFocused();
+  await page.keyboard.press("Enter");
+  const guide = page.getByRole("dialog", { name: "PROGRAMGUIDE" });
+  await expect(guide).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(guide).toBeHidden();
+  await page.keyboard.press("ArrowRight");
+  await expect(buttons.nth(0)).toBeFocused();
   await page.keyboard.press("ArrowRight");
   await expect(buttons.nth(1)).toBeFocused();
   await page.keyboard.press("ArrowRight");
