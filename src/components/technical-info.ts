@@ -2,6 +2,7 @@ export interface TechnicalInfoData {
   readonly version: string;
   readonly dataRevision: string;
   readonly sourceRevision: string;
+  readonly crtEnabled: boolean;
 }
 
 export interface TechnicalInfoController {
@@ -13,6 +14,7 @@ export interface TechnicalInfoController {
 
 export interface TechnicalInfoOptions {
   readonly onRequestClose: () => void;
+  readonly onToggleCrt: () => boolean;
 }
 
 export function createTechnicalInfo(
@@ -38,7 +40,24 @@ export function createTechnicalInfo(
 
   const list = document.createElement("dl");
   list.className = "technical-info__list";
-  root.append(header, list);
+
+  const settings = document.createElement("section");
+  settings.className = "technical-info__settings";
+  const settingsHeading = document.createElement("h3");
+  settingsHeading.textContent = "BILDINSTÄLLNINGAR";
+  const crtButton = document.createElement("button");
+  crtButton.type = "button";
+  crtButton.className = "technical-info__crt-button focus-control";
+  crtButton.setAttribute("aria-label", "Växla bildrörseffekt");
+  const setCrtLabel = (enabled: boolean) => {
+    crtButton.textContent = enabled ? "CRT - PÅ" : "CRT - AV";
+    crtButton.setAttribute("aria-pressed", String(enabled));
+  };
+  crtButton.addEventListener("click", () => {
+    setCrtLabel(options.onToggleCrt());
+  });
+  settings.append(settingsHeading, crtButton);
+  root.append(header, list, settings);
 
   let restoreTarget: HTMLElement | null = null;
 
@@ -74,8 +93,9 @@ export function createTechnicalInfo(
           return [term, description];
         }),
       );
+      setCrtLabel(data.crtEnabled);
       root.hidden = false;
-      root.focus();
+      crtButton.focus();
     },
     close() {
       root.hidden = true;

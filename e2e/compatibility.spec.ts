@@ -79,6 +79,9 @@ test("CRT kan stängas av och valet ligger kvar", async ({ page }) => {
     "subtle",
   );
   await page.keyboard.press("c");
+  const info = page.getByRole("dialog", { name: "TEKNISK INFORMATION" });
+  await expect(info).toBeVisible();
+  await page.keyboard.press("Enter");
   await expect(page.locator(".tv-shell")).toHaveAttribute("data-crt", "off");
   await page.reload();
   await expect(page.locator(".tv-shell")).toHaveAttribute("data-crt", "off");

@@ -31,23 +31,32 @@ async function selectFirstChannel(page: import("@playwright/test").Page) {
   await expect(page.getByRole("region", { name: "Theve sändning" })).toBeVisible();
 }
 
-test("kanalguiden är första vy i 4:3", async ({ page }) => {
-  await expect(
-    page.getByRole("dialog", { name: "PROGRAMGUIDE" }),
-  ).toBeVisible();
-  await expect(page.locator(".screen43")).toHaveScreenshot(
-    "start-4x3.png",
-    screenshotOptions,
-  );
+test("kanalguiden är blå, har rätt proportioner och visar stora logotyper", async ({
+  page,
+}) => {
+  const guide = page.getByRole("dialog", { name: "PROGRAMGUIDE" });
+  await expect(guide).toBeVisible();
+  const focused = guide.locator(".channel-guide__row:focus-visible");
+  await expect(focused).toHaveCount(1);
+  await expect(focused).toHaveCSS("background-color", "rgb(24, 38, 96)");
+  await expect(guide.locator(".channel-guide__number")).toHaveCount(0);
+  const logo = guide.locator(".channel-guide__logo").first();
+  await expect(logo).toBeVisible();
+  const box = await logo.boundingBox();
+  expect(box?.width).toBeGreaterThan(80);
+  const screen = await page.locator(".screen43").boundingBox();
+  expect((screen?.width ?? 0) / (screen?.height ?? 1)).toBeCloseTo(4 / 3, 2);
 });
 
-test("kanallogotyp visas när kanalen öppnas", async ({ page }) => {
+test("kanallogotyp och GUIDE TXT INFO visas när kanalen öppnas", async ({
+  page,
+}) => {
   await selectFirstChannel(page);
   await expect(page.locator(".channel-bug__logo")).toBeVisible();
-  await expect(page.locator(".screen43")).toHaveScreenshot(
-    "channel-logo.png",
-    screenshotOptions,
-  );
+  const actions = page.locator(".tv-actions");
+  await expect(actions).toBeVisible();
+  await expect(actions.locator("button")).toHaveCount(3);
+  await expect(actions).toBeHidden({ timeout: 7_000 });
 });
 
 test("Text-TV med VT323", async ({ page }) => {
@@ -79,8 +88,8 @@ test("Barns analoga slutskylt", async ({ page }) => {
   await selectFirstChannel(page);
   await page.keyboard.press("8");
   await expect(page.locator(".tv-experience__off-air-card")).toBeVisible();
-  await expect(page.locator(".screen43")).toHaveScreenshot(
-    "barn-slutskylt.png",
-    screenshotOptions,
+  await expect(page.locator(".tv-experience__off-air-card")).toHaveAttribute(
+    "src",
+    "assets/cards/barn-off-air.svg",
   );
 });

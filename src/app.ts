@@ -164,6 +164,7 @@ export function mountStartView(
   let selectionRevision = 0;
   let bannerTimer: ReturnType<typeof setTimeout> | null = null;
   let channelBugTimer: ReturnType<typeof setTimeout> | null = null;
+  let actionTimer: ReturnType<typeof setTimeout> | null = null;
   let scheduleTimer: ReturnType<typeof setTimeout> | null = null;
   let clockTimer: ReturnType<typeof setTimeout> | null = null;
   let weatherPreferences = readWeatherPreferences();
@@ -171,6 +172,41 @@ export function mountStartView(
   let localWeatherStatus: "loading" | "error" | "ready" = "loading";
   let localWeatherError = "";
   let weatherRequestRevision = 0;
+  const actionButtons = [tv.guideButton, tv.txtButton, tv.infoButton];
+  let actionIndex = 0;
+
+  function hideTvActions(): void {
+    if (actionTimer) {
+      clearTimeout(actionTimer);
+      actionTimer = null;
+    }
+    if (tv.actions.contains(document.activeElement)) {
+      tv.root.focus();
+    }
+    tv.actions.hidden = true;
+    tv.status.hidden = true;
+  }
+
+  function showTvActions(selectedIndex?: number): void {
+    tv.actions.hidden = false;
+    tv.status.hidden = false;
+    if (selectedIndex !== undefined) {
+      actionIndex = selectedIndex;
+      actionButtons[actionIndex]?.focus();
+    }
+    if (actionTimer) clearTimeout(actionTimer);
+    actionTimer = setTimeout(hideTvActions, 4_000);
+  }
+
+  function moveTvActions(direction: -1 | 1): void {
+    const nextIndex = tv.actions.hidden
+      ? direction === 1
+        ? 0
+        : actionButtons.length - 1
+      : (actionIndex + direction + actionButtons.length) % actionButtons.length;
+    showTvActions(nextIndex);
+  }
+
   const teletext = createTeletext({
     getPage: (number, channelName) => {
       if (!publicData) {
@@ -269,6 +305,7 @@ export function mountStartView(
         closeInfo();
       }
     },
+    onToggleCrt: toggleCrt,
   });
 
   const directNumber = new DirectNumberBuffer({
@@ -385,6 +422,7 @@ export function mountStartView(
     void tv.identLogo.offsetWidth;
     tv.identLogo.classList.add("tv-experience__ident-logo--entering");
     tv.status.textContent = `KANAL ${channel.number} - ${channel.name}`;
+    showTvActions();
     media.hidden = true;
     tv.picture.hidden = false;
 
@@ -470,6 +508,7 @@ export function mountStartView(
     if (!publicData || !currentChannelId || guide.isOpen()) {
       return;
     }
+    hideTvActions();
     backStack.push({ id: "guide", close: guide.close });
     guide.open(createGuideEntries(publicData, Date.now()), currentChannelId);
   }
@@ -485,6 +524,7 @@ export function mountStartView(
       return;
     }
     directNumber.clear();
+    hideTvActions();
     backStack.push({ id: "teletext", close: teletext.close });
     teletext.open(channel.name);
     const selected = findMunicipality(weatherPreferences.selectedId);
@@ -496,27 +536,20 @@ export function mountStartView(
       return;
     }
     directNumber.clear();
+    hideTvActions();
     backStack.push({ id: "info", close: info.close });
     info.open({
       version: THEVE_VERSION,
       dataRevision: publicData.revision,
       sourceRevision: publicData.sourceRevision,
+      crtEnabled: shell.dataset.crt === "subtle",
     });
   }
 
-  function syncCrtButton(): void {
-    const isOn = shell.dataset.crt === "subtle";
-    tv.crtButton.textContent = isOn ? "CRT PÅ" : "CRT AV";
-    tv.crtButton.setAttribute(
-      "aria-label",
-      isOn ? "Stäng av bildrörseffekt" : "Slå på bildrörseffekt",
-    );
-  }
-
-  function toggleCrt(): void {
+  function toggleCrt(): boolean {
     const nextMode = shell.dataset.crt === "subtle" ? "off" : "subtle";
     setCrtMode(shell, nextMode);
-    syncCrtButton();
+    return nextMode === "subtle";
   }
 
   async function startTv(activatePlayback = false): Promise<void> {
@@ -662,9 +695,12 @@ export function mountStartView(
   startScreen.append(topbar, content, createFocusProof());
   tv.guideButton.addEventListener("click", openGuide);
   tv.txtButton.addEventListener("click", openTeletext);
-  tv.crtButton.addEventListener("click", toggleCrt);
   tv.infoButton.addEventListener("click", openInfo);
-  syncCrtButton();
+  actionButtons.forEach((button, index) => {
+    button.addEventListener("focus", () => {
+      actionIndex = index;
+    });
+  });
   safeArea.append(
     startScreen,
     tv.root,
@@ -724,8 +760,17 @@ export function mountStartView(
       directNumber.push(action.digit);
       return;
     }
+    if (action.type === "left" || action.type === "right") {
+      directNumber.clear();
+      moveTvActions(action.type === "right" ? 1 : -1);
+      return;
+    }
     if (action.type === "confirm") {
-      directNumber.confirm();
+      if (!tv.actions.hidden && tv.actions.contains(document.activeElement)) {
+        actionButtons[actionIndex]?.click();
+      } else {
+        directNumber.confirm();
+      }
       return;
     }
     if (action.type === "guide") {
@@ -742,7 +787,7 @@ export function mountStartView(
       return;
     }
     if (action.type === "crt") {
-      toggleCrt();
+      openInfo();
       return;
     }
     if (action.type === "back") {
