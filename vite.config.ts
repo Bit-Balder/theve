@@ -5,6 +5,12 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: true,
+    rollupOptions: {
+      input: {
+        tv: "index.html",
+        programschema: "programschema/index.html",
+      },
+    },
   },
   test: {
     include: ["tests/**/*.test.ts", "tests/**/*.test.mjs"],

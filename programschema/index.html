@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#182660" />
+    <title>Theve - Programschema och granskning</title>
+  </head>
+  <body>
+    <div id="programschema">
+      <header class="editor-header">
+        <div>
+          <a class="back-link" href="../">THEVE / TV</a>
+          <h1>PROGRAMSCHEMA</h1>
+          <p>Granska och sortera svenska TV-program</p>
+        </div>
+        <div class="editor-stamp" aria-label="Theve innehållsgranskning">
+          <span>THEVE</span>
+          <span>80 / 90 / 00</span>
+        </div>
+      </header>
+
+      <main>
+        <div class="editor-alert">
+          <strong>GRANSKNING - INTE PUBLICERING</strong>
+          <p>Valda program läggs inte automatiskt i tablån.
+            Rättigheter, uppspelning och familjelämplighet måste kontrolleras separat.</p>
+        </div>
+
+        <section class="toolbar" aria-label="Sök och filtrera">
+          <label>SÖK
+            <input id="search" type="search" placeholder="Titel, serie, avsnitt eller identifierare" />
+          </label>
+          <label>KANAL
+            <select id="filter-channel">
+              <option value="all">Alla kanaler</option>
+              <option value="08">Barn</option>
+              <option value="06">TV6 - Tecknat</option>
+              <option value="01">TV1</option>
+              <option value="02">TV2</option>
+              <option value="03">TV3</option>
+              <option value="04">TV4</option>
+              <option value="05">TV5</option>
+              <option value="07">TV7</option>
+              <option value="09">Natur</option>
+            </select>
+          </label>
+          <label>GRANSKNING
+            <select id="filter-review">
+              <option value="all">Alla</option>
+              <option value="unreviewed">Ogranskade</option>
+              <option value="selected">Utvalda</option>
+              <option value="approved">Rättigheter godkända</option>
+              <option value="rejected">Avvisade</option>
+            </select>
+          </label>
+          <button id="reload" type="button" class="button button--quiet">HÄMTA NYTT</button>
+        </section>
+
+        <p id="load-status" role="status" aria-live="polite">Hämtar program från GitHub...</p>
+
+        <div class="editor-layout">
+          <section class="catalog" aria-label="Arkivkandidater">
+            <div class="section-head">
+              <div><h2>ARKIVKANDIDATER</h2><p id="list-summary"></p></div>
+              <div class="row-actions">
+                <button type="button" id="select-visible" class="button button--quiet">MARKERA SYNLIGA</button>
+                <button type="button" id="clear-selected" class="button button--quiet">AVMARKERA</button>
+              </div>
+            </div>
+            <div id="candidate-list" class="candidate-list"></div>
+          </section>
+
+          <aside class="review-panel" aria-label="Massgranskning">
+            <h2>MASSGRANSKNING</h2>
+            <p class="selection-count" id="selected-count">0 VALDA PROGRAM</p>
+            <p>Markera en serie, en säsong eller flera arkivposter.</p>
+            <label>BESLUT
+              <select id="decision">
+                <option value="selected">Välj till katalog - fortsatt granskning</option>
+                <option value="approved">Godkänn rättigheterna</option>
+                <option value="rejected">Avvisa / uteslut ur katalogen</option>
+              </select>
+            </label>
+            <label>KANAL
+              <select id="review-channel">
+                <option value="">Behåll varje programs förslag</option>
+                <option value="barn">Barn</option>
+                <option value="tv6">TV6 - Tecknat</option>
+                <option value="tv1">TV1</option>
+                <option value="tv2">TV2</option>
+                <option value="tv3">TV3 - Serier</option>
+                <option value="tv4">TV4</option>
+                <option value="tv5">TV5</option>
+                <option value="tv7">TV7</option>
+                <option value="natur">Natur</option>
+              </select>
+            </label>
+            <label>GRUPP / SÄSONG (FRIVILLIGT)
+              <input id="group-label" maxlength="120" placeholder="Exempel: Serie - säsong 2" />
+            </label>
+            <label>MOTIVERING
+              <textarea id="notes" rows="3" maxlength="1200" placeholder="Varför väljer, godkänner eller avvisar du materialet?"></textarea>
+            </label>
+            <div id="rights-fields" hidden>
+              <label>RÄTTIGHETSGRUND
+                <textarea id="basis" rows="3" maxlength="1200" placeholder="Beskriv vem som äger rättigheterna och varför tillståndet gäller."></textarea>
+              </label>
+              <label>OFFENTLIG LÄNK TILL RÄTTIGHETSUNDERLAG
+                <input id="evidence-url" type="url" maxlength="2048" placeholder="https://..." />
+              </label>
+              <p class="rights-note">Internet Archives licensetikett räcker inte ensam. Underlaget måste omfatta alla valda program.</p>
+              <label class="checkline"><input type="checkbox" id="confirm-rights" />
+                Jag har verifierat rättigheterna för samtliga valda poster.
+              </label>
+            </div>
+            <label class="checkline"><input type="checkbox" id="confirm-scope" />
+              Jag har granskat vilka poster som omfattas.
+            </label>
+            <p class="privacy">GitHub-ärenden är offentliga. Lägg aldrig privata avtal eller personuppgifter i formuläret.</p>
+            <p id="review-error" class="error" role="alert" aria-live="assertive"></p>
+            <button type="button" class="button button--primary" id="submit-review">SKAPA GRANSKNINGSÄRENDE</button>
+            <button type="button" class="button button--quiet" id="download-review">SPARA BESLUT SOM JSON</button>
+            <p class="small">GitHub skapar en separat gren. Om automatiska pull requests är blockerade får du en manuell länk.</p>
+          </aside>
+        </div>
+
+        <section class="import-panel">
+          <h2>OM GITHUB-INLÄSNINGEN MISSLYCKAS</h2>
+          <p>Importera <code>candidates.json</code> från arkivgrenen. Inga filer laddas upp till Theve.</p>
+          <input id="import-json" type="file" accept=".json,application/json" />
+        </section>
+      </main>
+      <footer>THEVE - PROGRAMSCHEMA / ENDAST REDAKTIONELL GRANSKNING</footer>
+    </div>
+    <script type="module" src="/src/programschema/main.ts"></script>
+  </body>
+</html>

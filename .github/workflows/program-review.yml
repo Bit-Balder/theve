@@ -1,0 +1,105 @@
+name: Theve programgranskning
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  review:
+    if: startsWith(github.event.issue.body, 'THEVE_REVIEW_V1')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Kontrollera att granskaren har skrivrättigheter
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const actor = context.payload.issue.user.login;
+            const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              username: actor,
+            });
+            if (!["admin", "maintain", "write"].includes(data.permission)) {
+              core.setFailed("Endast behöriga redaktörer får granska program.");
+            }
+
+      - name: Hämta godkänd huvudgren
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Använd Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Hämta kandidater från separat sökgren
+        shell: bash
+        run: |
+          git fetch --no-tags origin automation/archive-discovery-results
+          git show FETCH_HEAD:data/discovery/internet-archive/candidates.json \
+            > "$RUNNER_TEMP/theve-candidates.json"
+
+      - name: Installera beroenden
+        run: npm ci
+
+      - name: Kontrollera beslut och uppdatera källdata
+        env:
+          THEVE_CANDIDATE_PATH: ${{ runner.temp }}/theve-candidates.json
+          THEVE_REVIEW_BODY: ${{ github.event.issue.body }}
+          THEVE_REVIEW_AUTHOR: ${{ github.event.issue.user.login }}
+          THEVE_REVIEW_ISSUE: ${{ github.event.issue.number }}
+          THEVE_REVIEW_DATE: ${{ github.event.issue.created_at }}
+        run: node scripts/apply-editorial-review.mjs
+
+      - name: Bygg om och kontrollera källdata
+        run: |
+          npm run data:build
+          npm run data:check
+          npm run test
+
+      - name: Skapa separat ändringsgren
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          branch="editorial/review-issue-$ISSUE_NUMBER"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add data/editorial/reviews.json data/source/catalog.json \
+            data/source/rights.json public/data/
+          git commit -m "chore: editorial review issue $ISSUE_NUMBER"
+          git push origin "$branch"
+
+      - name: Föreslå pull request eller visa manuell länk
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          branch="editorial/review-issue-$ISSUE_NUMBER"
+          body="Granskningsbeslut från ärende #$ISSUE_NUMBER.
+
+          Inga program läggs automatiskt i tablån.
+          Rättighetsgodkännande innebär inte att publicering eller familjegranskning är klar."
+          if gh pr create --repo "$REPO" --base main --head "$branch" \
+            --title "Programgranskning #$ISSUE_NUMBER" --body "$body"; then
+            echo "Pull request skapad." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "GitHub blockerade automatisk pull request." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          link="https://github.com/$REPO/pull/new/$branch"
+          echo "Granska ändringen: $link" >> "$GITHUB_STEP_SUMMARY"
+          gh issue comment "$ISSUE_NUMBER" --repo "$REPO" \
+            --body "Granskningsbeslutet finns i en separat gren. Öppna ändringsförslag: $link"
