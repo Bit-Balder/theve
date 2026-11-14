@@ -23,31 +23,35 @@ const screenshotOptions = {
   threshold: 0.35,
 };
 
-async function startTv(page: import("@playwright/test").Page) {
-  await expect(page.getByRole("button", { name: /starta tv/i })).toBeFocused();
+async function selectFirstChannel(page: import("@playwright/test").Page) {
+  await expect(
+    page.getByRole("dialog", { name: "PROGRAMGUIDE" }),
+  ).toBeVisible();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("region", { name: "Theve sändning" })).toBeVisible();
 }
 
-test("startsida i 4:3", async ({ page }) => {
+test("kanalguiden är första vy i 4:3", async ({ page }) => {
+  await expect(
+    page.getByRole("dialog", { name: "PROGRAMGUIDE" }),
+  ).toBeVisible();
   await expect(page.locator(".screen43")).toHaveScreenshot(
     "start-4x3.png",
     screenshotOptions,
   );
 });
 
-test("programguide", async ({ page }) => {
-  await startTv(page);
-  await page.keyboard.press("g");
-  await expect(page.getByRole("dialog", { name: "PROGRAMGUIDE" })).toBeVisible();
+test("kanallogotyp visas när kanalen öppnas", async ({ page }) => {
+  await selectFirstChannel(page);
+  await expect(page.locator(".channel-bug__logo")).toBeVisible();
   await expect(page.locator(".screen43")).toHaveScreenshot(
-    "programguide.png",
+    "channel-logo.png",
     screenshotOptions,
   );
 });
 
 test("Text-TV med VT323", async ({ page }) => {
-  await startTv(page);
+  await selectFirstChannel(page);
   await page.keyboard.press("t");
   await expect(page.getByRole("dialog", { name: "Theve Text-TV" })).toBeVisible();
   const screen = await page.locator(".screen43").boundingBox();
@@ -72,7 +76,7 @@ test("Barns analoga slutskylt", async ({ page }) => {
       }
     ).__setTheveNow("2026-11-13T18:00:00.000Z");
   });
-  await startTv(page);
+  await selectFirstChannel(page);
   await page.keyboard.press("8");
   await expect(page.locator(".tv-experience__off-air-card")).toBeVisible();
   await expect(page.locator(".screen43")).toHaveScreenshot(

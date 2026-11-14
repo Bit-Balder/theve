@@ -27,15 +27,14 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   });
   await page.goto("/");
 
-  await expect(
-    page.getByText("ETAPP 11 - KVALITET OCH KOMPATIBILITET"),
-  ).toBeVisible();
-  await expect(page.locator(".topbar__clock")).toHaveText("14:05");
-  await expect(page.getByRole("button", { name: /starta tv/i })).toBeFocused();
+  const guide = page.getByRole("dialog", { name: "PROGRAMGUIDE" });
+  await expect(guide).toBeVisible();
+  await expect(guide.locator('[data-channel-id="tv1"]')).toBeFocused();
   await page.keyboard.press("Enter");
 
   const tv = page.getByRole("region", { name: "Theve sändning" });
   await expect(tv).toBeVisible();
+  await expect(guide).toBeHidden();
   await expect(tv).toHaveAttribute("data-channel-id", "tv1");
   await expect(page.getByText("TV1 - Nyheter och kultur").first()).toBeVisible();
   await expect(page.locator(".program-banner__next")).toContainText(
@@ -45,6 +44,12 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
     "src",
     "assets/logos/tv1-bug.svg",
   );
+  await expect(page.locator(".channel-bug__label")).toHaveText("TV1");
+  await expect(page.locator(".channel-bug")).toHaveClass(
+    /channel-bug--compact/,
+    { timeout: 5_000 },
+  );
+  await expect(page.locator(".channel-bug__label")).toBeVisible();
 
   await page.keyboard.press("ArrowUp");
   await expect(tv).toHaveAttribute("data-channel-id", "tv2");
@@ -61,7 +66,6 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   await expect(page.locator(".direct-number")).toBeHidden();
 
   await page.keyboard.press("g");
-  const guide = page.getByRole("dialog", { name: "PROGRAMGUIDE" });
   await expect(guide).toBeVisible();
   await expect(
     guide.locator('[data-channel-id="natur"]'),
@@ -76,11 +80,25 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   await expect(tv).toHaveAttribute("data-channel-id", "tv1");
   await expect(tv).toBeFocused();
 
-  await page.keyboard.press("g");
+  const guideButton = page.getByRole("button", {
+    name: "Öppna programguide",
+  });
+  await guideButton.click();
   await expect(guide).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(guide).toBeHidden();
-  await expect(tv).toBeFocused();
+  expect(
+    await tv.evaluate((element) => element.contains(document.activeElement)),
+  ).toBe(true);
+
+  await page.keyboard.press("i");
+  const info = page.getByRole("dialog", { name: "TEKNISK INFORMATION" });
+  await expect(info).toBeVisible();
+  await expect(info.getByText("1.0.0-rc.1")).toBeVisible();
+  await expect(info.getByText("DATAREVISION")).toBeVisible();
+  await expect(info.getByText("KÄLLREVISION")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(info).toBeHidden();
 
   await page.keyboard.press("t");
   const teletext = page.getByRole("dialog", { name: "Theve Text-TV" });
@@ -129,7 +147,9 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   await expect(teletext.getByText("Å Ä Ö · SVENSKA TECKEN")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(teletext).toBeHidden();
-  await expect(tv).toBeFocused();
+  expect(
+    await tv.evaluate((element) => element.contains(document.activeElement)),
+  ).toBe(true);
 });
 
 test("Barn följer 18.55, 19.00 och 06.00 utan omladdning", async ({
@@ -161,6 +181,9 @@ test("Barn följer 18.55, 19.00 och 06.00 utan omladdning", async ({
   };
 
   await page.goto("/");
+  await expect(
+    page.getByRole("dialog", { name: "PROGRAMGUIDE" }),
+  ).toBeVisible();
   await page.keyboard.press("Enter");
   const tv = page.getByRole("region", { name: "Theve sändning" });
   await expect(tv).toBeFocused();

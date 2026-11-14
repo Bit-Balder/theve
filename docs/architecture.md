@@ -49,6 +49,8 @@ Archives JSON-format eller spelarens interna tillstånd. Det är uppdelat i:
   kanalvalet fritt från DOM;
 - `overlay-back-stack.ts`, som stänger senaste överlägget först;
 - `channel-guide.ts`, som äger roving tabindex och fokusåterställning.
+- `technical-info.ts`, som visar app- och datarevision utan att läsa
+  GitHub- eller byggmiljödata i klienten;
 - `src/core/teletext.ts`, som bygger 40 × 24-sidor, bryter text och skiljer på
   färsk, gammal och saknad väderdata;
 - `src/components/teletext.ts`, som endast renderar raderna och hanterar den
@@ -104,9 +106,10 @@ lokalt och i GitHub Actions. Varje genererad manifestfil innehåller både
 publik revision och källrevision, så en rapport kan spåras till exakt indata.
 
 Playwright kör Chromium, Firefox, WebKit och en 1280 × 720-yta som motsvarar en
-webbläsare på TV-box. Fyra stabila Chromium-referenser bevakar start, guide,
-Text-TV och slutskylt. Distributionskontrollen stoppar video i artifactet och
-begränsar total-, JavaScript- och CSS-storlek.
+webbläsare på TV-box. Fyra stabila Chromium-referenser bevakar start, kanalens
+logotyp, Text-TV och slutskylt. Distributionskontrollen stoppar video i
+artifactet, söker efter kända hemlighetsmönster och begränsar total-,
+JavaScript- och CSS-storlek.
 
 Produktionsbygget kräver att både `public/data/` och SVG-originalen exakt
 motsvarar sina källor. På `main` skapar samma kvalitetsworkflow ett Pages-

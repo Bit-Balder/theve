@@ -21,8 +21,8 @@ inte har byggt produkten.
 Referensbilderna ligger i `e2e/__screenshots__/` och tas i Chromium med lokala
 fontfiler, fast klocka, reducerad rörelse och avstängda animationer.
 
-- `start-4x3.png`: 4:3, säker yta, aktuell klocka och fokus.
-- `programguide.png`: nio kanaler, fokus och nu/nästa-kolumner.
+- `start-4x3.png`: programguiden som första 4:3-vy.
+- `channel-logo.png`: kanalens fulla logotyp direkt efter kanalval.
 - `text-tv-vt323.png`: 40 × 24, VT323 och svenska tecken.
 - `barn-slutskylt.png`: analog lokal slutskylt efter 19.00.
 

@@ -16,7 +16,9 @@ test("4:3-ytan ryms och endast lokala resurser laddas", async ({ page }) => {
   });
 
   await page.goto("/");
-  await expect(page.getByRole("button", { name: /starta tv/i })).toBeFocused();
+  await expect(
+    page.getByRole("dialog", { name: "PROGRAMGUIDE" }),
+  ).toBeVisible();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("region", { name: "Theve sändning" })).toBeVisible();
 
@@ -33,7 +35,9 @@ test("fokus, guide och Text-TV fungerar i motsvarande 200 procents zoom", async 
 }) => {
   await page.setViewportSize({ width: 400, height: 300 });
   await page.goto("/");
-  await expect(page.getByRole("button", { name: /starta tv/i })).toBeFocused();
+  await expect(
+    page.getByRole("dialog", { name: "PROGRAMGUIDE" }),
+  ).toBeVisible();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("region", { name: "Theve sändning" })).toBeVisible();
   await page.keyboard.press("g");
@@ -54,7 +58,9 @@ test("reducerad rörelse stänger av CRT och identitetsanimation", async ({
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await expect(page.locator(".tv-shell")).toHaveAttribute("data-crt", "off");
-  await expect(page.getByRole("button", { name: /starta tv/i })).toBeFocused();
+  await expect(
+    page.getByRole("dialog", { name: "PROGRAMGUIDE" }),
+  ).toBeVisible();
   await page.keyboard.press("Enter");
   await expect(page.locator(".tv-experience__ident-logo")).toHaveCSS(
     "animation-name",
@@ -64,13 +70,15 @@ test("reducerad rörelse stänger av CRT och identitetsanimation", async ({
 
 test("CRT kan stängas av och valet ligger kvar", async ({ page }) => {
   await page.goto("/");
+  await expect(
+    page.getByRole("dialog", { name: "PROGRAMGUIDE" }),
+  ).toBeVisible();
+  await page.keyboard.press("Enter");
   await expect(page.locator(".tv-shell")).toHaveAttribute(
     "data-crt",
     "subtle",
   );
-  await page.keyboard.press("ArrowDown");
-  await page.keyboard.press("ArrowDown");
-  await page.keyboard.press("Enter");
+  await page.keyboard.press("c");
   await expect(page.locator(".tv-shell")).toHaveAttribute("data-crt", "off");
   await page.reload();
   await expect(page.locator(".tv-shell")).toHaveAttribute("data-crt", "off");

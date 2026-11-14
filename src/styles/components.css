@@ -403,12 +403,41 @@
   padding: var(--space-1) var(--space-2);
   background: color-mix(in srgb, var(--color-teletext) 82%, transparent);
   box-shadow: 0.18rem 0.18rem 0 var(--color-coral);
+  transition:
+    background var(--motion-duration) ease,
+    box-shadow var(--motion-duration) ease;
 }
 
 .channel-bug__logo {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.channel-bug__label {
+  display: none;
+  color: var(--color-cream);
+  font-size: var(--font-size-md);
+  letter-spacing: 0.08em;
+  line-height: 0.8;
+  text-shadow:
+    0.08rem 0.08rem 0 var(--color-teletext),
+    -0.08rem -0.08rem 0 var(--color-teletext);
+}
+
+.channel-bug--compact {
+  width: auto;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.channel-bug--compact .channel-bug__logo {
+  display: none;
+}
+
+.channel-bug--compact .channel-bug__label {
+  display: block;
 }
 
 .program-banner {
@@ -468,7 +497,7 @@
   position: absolute;
   right: var(--space-4);
   bottom: var(--space-2);
-  left: calc(var(--space-4) + 4.3rem);
+  left: calc(var(--space-4) + 17rem);
   z-index: 2;
   margin: 0;
   overflow: hidden;
@@ -480,17 +509,97 @@
   white-space: nowrap;
 }
 
-.txt-button {
+.tv-actions {
   position: absolute;
   bottom: var(--space-2);
   left: var(--space-4);
   z-index: 3;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.tv-action-button {
   min-width: 3.4rem;
   padding: var(--space-1) var(--space-2);
   color: var(--color-teletext);
-  background: var(--color-coral);
   font-size: var(--font-size-xs);
   letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.guide-button {
+  background: var(--color-yellow);
+}
+
+.txt-button {
+  background: var(--color-coral);
+}
+
+.crt-button {
+  background: var(--color-tv-blue);
+  color: var(--color-cream);
+  box-shadow: inset 0 0 0 0.1rem var(--color-cream);
+}
+
+.info-button {
+  background: var(--color-cream);
+}
+
+.technical-info {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  padding: clamp(var(--space-4), 4vw, var(--space-7));
+  color: var(--color-cream);
+  background: color-mix(
+    in srgb,
+    var(--color-teletext) 94%,
+    var(--color-tv-blue)
+  );
+  border: 0.15rem solid var(--color-yellow);
+  outline: none;
+}
+
+.technical-info__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 0.14rem solid var(--color-coral);
+}
+
+.technical-info__header h2 {
+  margin: 0;
+  color: var(--color-yellow);
+  font-size: var(--font-size-lg);
+  font-weight: 400;
+  line-height: 0.85;
+}
+
+.technical-info__header span {
+  color: var(--color-coral);
+  font-size: var(--font-size-xs);
+}
+
+.technical-info__list {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.7fr) minmax(0, 1.3fr);
+  gap: var(--space-4) var(--space-6);
+  margin: var(--space-7) 0 0;
+}
+
+.technical-info__list dt {
+  color: var(--color-coral);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.08em;
+}
+
+.technical-info__list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-cream);
+  font-size: var(--font-size-md);
   line-height: 1;
 }
 
@@ -766,6 +875,10 @@
 
   .channel-guide__logo {
     width: 2.5rem;
+  }
+
+  .tv-experience__status {
+    display: none;
   }
 }
 
