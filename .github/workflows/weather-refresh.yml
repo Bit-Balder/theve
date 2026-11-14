@@ -1,0 +1,62 @@
+name: Refresh Text-TV weather
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+      timezone: "Europe/Stockholm"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: theve-weather-pages
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Build and publish refreshed weather
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Check out approved default branch
+        uses: actions/checkout@v6
+
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download fresh SMHI weather for overview cities
+        run: npm run weather:update
+
+      - name: Rebuild validated Text-TV data
+        run: npm run data:build
+
+      - name: Verify published files
+        run: npm run lint && npm run test && npm run build && npm run quality:audit
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Package Theve with fresh weather
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+      - name: Publish generated site without committing to main
+        id: deployment
+        uses: actions/deploy-pages@v5
