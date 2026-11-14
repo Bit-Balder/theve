@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   applyReviewRequest,
   catalogIdFromIdentifier,
-  parseReviewRequest,
   PRIVATE_RIGHTS_BASIS,
+  parseReviewRequest,
   verifyPrivateRightsRecord,
 } from "../scripts/lib/editorial-review.mjs";
 
@@ -96,9 +96,9 @@ describe("programgranskning med privat rättighetsunderlag", () => {
     expect(() => request({ ...base, basis: "Hemligt dokument" })).toThrow(
       "Privat rättighetsunderlag",
     );
-    expect(() =>
-      request({ ...base, evidenceUrl: privateUrl }),
-    ).toThrow("Privat rättighetsunderlag");
+    expect(() => request({ ...base, evidenceUrl: privateUrl })).toThrow(
+      "Privat rättighetsunderlag",
+    );
   });
 
   it("massväljer en säsong utan publicering", () => {
@@ -145,8 +145,12 @@ describe("programgranskning med privat rättighetsunderlag", () => {
       rightsRecordsJson: secretFor(),
     });
     expect(result.rights.entries).toHaveLength(2);
-    expect(result.rights.entries.every((r) => r.status === "approved")).toBe(true);
-    expect(result.rights.entries.every((r) => r.publicationAllowed === false)).toBe(true);
+    expect(result.rights.entries.every((r) => r.status === "approved")).toBe(
+      true,
+    );
+    expect(
+      result.rights.entries.every((r) => r.publicationAllowed === false),
+    ).toBe(true);
     expect(result.rights.entries[0].basis).toBe(PRIVATE_RIGHTS_BASIS);
     expect(result.rights.entries[0].evidenceUrl).toBeNull();
     expect(result.rights.entries.some((r) => r.licenseUrl === null)).toBe(true);
@@ -168,7 +172,9 @@ describe("programgranskning med privat rättighetsunderlag", () => {
     expect(() =>
       run(approved, { rightsRecordsJson: secretFor([base.identifiers[0]]) }),
     ).toThrow("Privat rättighetsunderlag");
-    expect(verifyPrivateRightsRecord(secretFor(), 35, base.identifiers)).toBe(true);
+    expect(verifyPrivateRightsRecord(secretFor(), 35, base.identifiers)).toBe(
+      true,
+    );
     expect(() =>
       request({
         ...base,
@@ -185,7 +191,9 @@ describe("programgranskning med privat rättighetsunderlag", () => {
     }));
     const result = run(request(), { sourceCandidates: unavailable });
     expect(result.journal.entries).toHaveLength(2);
-    expect(result.journal.entries.every((entry) => entry.catalogPending)).toBe(true);
+    expect(result.journal.entries.every((entry) => entry.catalogPending)).toBe(
+      true,
+    );
     expect(result.catalog.items).toHaveLength(0);
     expect(result.rights.entries).toHaveLength(0);
   });
@@ -195,11 +203,13 @@ describe("programgranskning med privat rättighetsunderlag", () => {
     expect(itemId).toBe(catalogIdFromIdentifier(candidates[0].identifier));
     const publishedRights = {
       ...rights,
-      entries: [{
-        catalogItemId: itemId,
-        status: "approved",
-        publicationAllowed: true,
-      }],
+      entries: [
+        {
+          catalogItemId: itemId,
+          status: "approved",
+          publicationAllowed: true,
+        },
+      ],
     };
     const reject = request({
       ...base,

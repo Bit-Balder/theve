@@ -253,7 +253,8 @@ function render() {
     );
     hideButton.type = "button";
     hideButton.addEventListener("click", () => {
-      if (localHidden.has(candidate.identifier)) localHidden.delete(candidate.identifier);
+      if (localHidden.has(candidate.identifier))
+        localHidden.delete(candidate.identifier);
       else localHidden.add(candidate.identifier);
       saveLocalHidden();
       selected.delete(candidate.identifier);
@@ -364,7 +365,9 @@ function requestFromInputs(): ReviewRequest {
     throw new Error("Bekräfta att du har granskat vilka poster som ingår.");
   }
   if (mode === "approved" && !confirmRights.checked) {
-    throw new Error("Bekräfta att du manuellt granskat rättigheterna för samtliga poster.");
+    throw new Error(
+      "Bekräfta att du manuellt granskat rättigheterna för samtliga poster.",
+    );
   }
   return {
     version: 2,

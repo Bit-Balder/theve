@@ -1,7 +1,8 @@
 import { createHash } from "node:crypto";
 
 export const MAX_REVIEW_ITEMS = 40;
-export const PRIVATE_RIGHTS_BASIS = "Rättigheter verifierade. Privat underlag finns i GitHub Secrets.";
+export const PRIVATE_RIGHTS_BASIS =
+  "Rättigheter verifierade. Privat underlag finns i GitHub Secrets.";
 const CHANNELS = {
   "01": "tv1",
   "02": "tv2",
@@ -26,12 +27,19 @@ function validUrl(value) {
 
 export function parseReviewRequest(body) {
   if (typeof body !== "string" || !body.startsWith("THEVE_REVIEW_V2\n")) {
-    throw new Error("Ärendet måste använda THEVE_REVIEW_V2 utan privata underlag.");
+    throw new Error(
+      "Ärendet måste använda THEVE_REVIEW_V2 utan privata underlag.",
+    );
   }
   if (body.length > 14_000) throw new Error("Ärendet är för stort.");
   const data = JSON.parse(body.slice("THEVE_REVIEW_V2\n".length));
-  if (Object.hasOwn(data ?? {}, "basis") || Object.hasOwn(data ?? {}, "evidenceUrl")) {
-    throw new Error("Privat rättighetsunderlag får inte finnas i ett offentligt ärende.");
+  if (
+    Object.hasOwn(data ?? {}, "basis") ||
+    Object.hasOwn(data ?? {}, "evidenceUrl")
+  ) {
+    throw new Error(
+      "Privat rättighetsunderlag får inte finnas i ett offentligt ärende.",
+    );
   }
   const decisions = ["selected", "approved", "rejected"];
   if (
@@ -61,7 +69,9 @@ export function parseReviewRequest(body) {
     throw new Error("Skriv en motivering på minst åtta tecken.");
   }
   if (data.decision === "approved" && data.confirmedRightsForAll !== true) {
-    throw new Error("Bekräfta din manuella rättighetsgranskning för alla valda poster.");
+    throw new Error(
+      "Bekräfta din manuella rättighetsgranskning för alla valda poster.",
+    );
   }
   return {
     version: 2,
@@ -87,15 +97,23 @@ export function parseReviewRequest(body) {
  * GitHub Secret THEVE_PRIVATE_RIGHTS_RECORDS is only read during the Action.
  * Neither the secret nor its values may enter a public JSON file.
  */
-export function verifyPrivateRightsRecord(recordsJson, issueNumber, identifiers) {
+export function verifyPrivateRightsRecord(
+  recordsJson,
+  issueNumber,
+  identifiers,
+) {
   if (typeof recordsJson !== "string" || !recordsJson.trim()) {
-    throw new Error("Lägg först till ärendets privata underlag i GitHub Secret THEVE_PRIVATE_RIGHTS_RECORDS. Öppna sedan ärendet igen.");
+    throw new Error(
+      "Lägg först till ärendets privata underlag i GitHub Secret THEVE_PRIVATE_RIGHTS_RECORDS. Öppna sedan ärendet igen.",
+    );
   }
   let records;
   try {
     records = JSON.parse(recordsJson);
   } catch {
-    throw new Error("GitHub Secret THEVE_PRIVATE_RIGHTS_RECORDS innehåller ogiltig JSON.");
+    throw new Error(
+      "GitHub Secret THEVE_PRIVATE_RIGHTS_RECORDS innehåller ogiltig JSON.",
+    );
   }
   const record = records?.[String(issueNumber)];
   if (
@@ -109,7 +127,9 @@ export function verifyPrivateRightsRecord(recordsJson, issueNumber, identifiers)
     record.basis.trim().length < 20 ||
     !validUrl(record.evidenceUrl)
   ) {
-    throw new Error("Privat rättighetsunderlag för ärendet saknas, är ofullständigt eller omfattar inte alla valda arkivposter.");
+    throw new Error(
+      "Privat rättighetsunderlag för ärendet saknas, är ofullständigt eller omfattar inte alla valda arkivposter.",
+    );
   }
   return true;
 }
