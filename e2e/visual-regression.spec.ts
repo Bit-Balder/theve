@@ -57,6 +57,10 @@ test("Text-TV med VT323", async ({ page }) => {
   if (!screen || !textGrid) throw new Error("Text-TV saknar yta");
   expect(textGrid.width / screen.width).toBeGreaterThan(0.75);
   expect(textGrid.height / screen.height).toBeGreaterThan(0.75);
+  const header = await page.locator(".teletext__row--header").boundingBox();
+  expect(header).not.toBeNull();
+  if (!header) throw new Error("Text-TV saknar rubrikrad");
+  expect(header.width / screen.width).toBeGreaterThan(0.85);
   await expect(page.locator(".teletext__row")).toHaveCount(24);
 });
 

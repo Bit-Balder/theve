@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { smhiPointUrl } from "../src/core/local-weather";
+import { describeWeatherError, smhiPointUrl } from "../src/core/local-weather";
 import {
   chooseMunicipality,
   findMunicipality,
@@ -46,6 +46,23 @@ describe("Väderregioner, kommuner och favoriter", () => {
     expect(preferences.favorites).not.toContain(ids[2]);
     preferences = chooseMunicipality(preferences, ids[1]);
     expect(preferences.selectedId).toBe(ids[1]);
+  });
+
+  it("bevarar kommunnamn som slutar med s", () => {
+    expect(findMunicipality("0486")?.name).toBe("Strängnäs");
+    expect(MUNICIPALITIES.some((place) => place.name === "Västerås")).toBe(
+      true,
+    );
+    expect(MUNICIPALITIES.some((place) => place.name === "Höganäs")).toBe(true);
+  });
+
+  it("visar statuskod eller nätverksfel från SMHI", () => {
+    expect(describeWeatherError(new Error("SMHI svarade HTTP 403."))).toBe(
+      "SMHI SVARADE HTTP 403",
+    );
+    expect(describeWeatherError(new TypeError("Failed to fetch"))).toBe(
+      "NÄTVERK ELLER WEBBLÄSARE STOPPADE SMHI",
+    );
   });
 
   it("söker en SMHI-prognos för vald kommuns punkt", () => {

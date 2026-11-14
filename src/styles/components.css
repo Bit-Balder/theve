@@ -630,6 +630,9 @@
   overflow: hidden;
   margin: 0;
   white-space: pre;
+  /* Fyll 4:3-bredden utan att förstora de 24 radhöjderna. */
+  transform: scaleX(1.3);
+  transform-origin: center;
 }
 
 .teletext__row--selected {

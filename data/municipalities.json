@@ -152,7 +152,7 @@
     {
       "id": "2183",
       "region": "Gävleborgs län",
-      "name": "Bollnä",
+      "name": "Bollnäs",
       "latitude": 61.3483795,
       "longitude": 16.3942685
     },
@@ -166,7 +166,7 @@
     {
       "id": "2104",
       "region": "Gävleborgs län",
-      "name": "Hofor",
+      "name": "Hofors",
       "latitude": 60.54595,
       "longitude": 16.2841
     },
@@ -383,7 +383,7 @@
     {
       "id": "0687",
       "region": "Jönköpings län",
-      "name": "Tranå",
+      "name": "Tranås",
       "latitude": 58.035518,
       "longitude": 14.975696
     },
@@ -446,7 +446,7 @@
     {
       "id": "0861",
       "region": "Kalmar län",
-      "name": "Mönsterå",
+      "name": "Mönsterås",
       "latitude": 57.0415797,
       "longitude": 16.44312
     },
@@ -474,7 +474,7 @@
     {
       "id": "0834",
       "region": "Kalmar län",
-      "name": "Torså",
+      "name": "Torsås",
       "latitude": 56.4126197,
       "longitude": 15.9987709
     },
@@ -698,7 +698,7 @@
     {
       "id": "1284",
       "region": "Skåne län",
-      "name": "Höganä",
+      "name": "Höganäs",
       "latitude": 56.2006388,
       "longitude": 12.5553288
     },
@@ -1104,7 +1104,7 @@
     {
       "id": "0486",
       "region": "Södermanlands län",
-      "name": "Strängnä",
+      "name": "Strängnäs",
       "latitude": 59.3774523,
       "longitude": 17.0321193
     },
@@ -1209,14 +1209,14 @@
     {
       "id": "1764",
       "region": "Värmlands län",
-      "name": "Grum",
+      "name": "Grums",
       "latitude": 59.3531787,
       "longitude": 13.1117319
     },
     {
       "id": "1783",
       "region": "Värmlands län",
-      "name": "Hagfor",
+      "name": "Hagfors",
       "latitude": 60.0314137,
       "longitude": 13.7021418
     },
@@ -1251,14 +1251,14 @@
     {
       "id": "1762",
       "region": "Värmlands län",
-      "name": "Munkfor",
+      "name": "Munkfors",
       "latitude": 59.3827781,
       "longitude": 13.5176245
     },
     {
       "id": "1760",
       "region": "Värmlands län",
-      "name": "Storfor",
+      "name": "Storfors",
       "latitude": 59.5332079,
       "longitude": 14.2722085
     },
@@ -1335,7 +1335,7 @@
     {
       "id": "2409",
       "region": "Västerbottens län",
-      "name": "Robertsfor",
+      "name": "Robertsfors",
       "latitude": 65.3337311,
       "longitude": 16.5161695
     },
@@ -1384,7 +1384,7 @@
     {
       "id": "2460",
       "region": "Västerbottens län",
-      "name": "Vännä",
+      "name": "Vännäs",
       "latitude": 63.9054631,
       "longitude": 19.7514505
     },
@@ -1405,7 +1405,7 @@
     {
       "id": "2282",
       "region": "Västernorrlands län",
-      "name": "Kramfor",
+      "name": "Kramfors",
       "latitude": 62.9284332,
       "longitude": 17.7862947
     },
@@ -1510,7 +1510,7 @@
     {
       "id": "1980",
       "region": "Västmanlands län",
-      "name": "Västerå",
+      "name": "Västerås",
       "latitude": 59.6099005,
       "longitude": 16.5448091
     },
@@ -1524,14 +1524,14 @@
     {
       "id": "1489",
       "region": "Västra Götalands län",
-      "name": "Alingså",
+      "name": "Alingsås",
       "latitude": 57.9799652,
       "longitude": 12.5557707
     },
     {
       "id": "1460",
       "region": "Västra Götalands län",
-      "name": "Bengtsfor",
+      "name": "Bengtsfors",
       "latitude": 59.028612,
       "longitude": 12.226943
     },
@@ -1545,7 +1545,7 @@
     {
       "id": "1490",
       "region": "Västra Götalands län",
-      "name": "Borå",
+      "name": "Borås",
       "latitude": 57.5044942,
       "longitude": 13.1104746
     },
@@ -1734,7 +1734,7 @@
     {
       "id": "1427",
       "region": "Västra Götalands län",
-      "name": "Sotenä",
+      "name": "Sotenäs",
       "latitude": 58.4401392,
       "longitude": 11.3614392
     },
@@ -1867,7 +1867,7 @@
     {
       "id": "1862",
       "region": "Örebro län",
-      "name": "Degerfor",
+      "name": "Degerfors",
       "latitude": 59.2391027,
       "longitude": 14.4339179
     },
@@ -1881,7 +1881,7 @@
     {
       "id": "1863",
       "region": "Örebro län",
-      "name": "Hällefor",
+      "name": "Hällefors",
       "latitude": 59.783688,
       "longitude": 14.5225692
     },

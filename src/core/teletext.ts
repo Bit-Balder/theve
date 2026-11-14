@@ -67,6 +67,7 @@ export interface TeletextPageContext {
   readonly selectedMunicipalityName?: string;
   readonly selectedWeather?: WeatherLocation | null;
   readonly localWeatherStatus?: "loading" | "error" | "ready";
+  readonly localWeatherError?: string;
   readonly isSelectedFavorite?: boolean;
 }
 
@@ -355,6 +356,9 @@ function localRows(context: TeletextPageContext): readonly string[] {
       context.localWeatherStatus === "error"
         ? "KUNDE INTE HÄMTA VÄDER FRÅN SMHI"
         : "HÄMTAR LOKAL VÄDERPROGNOS",
+      ...(context.localWeatherStatus === "error" && context.localWeatherError
+        ? [context.localWeatherError]
+        : []),
       "",
       "301  VÄLJ EN ANNAN KOMMUN",
       "302  SPARADE FAVORITER",
