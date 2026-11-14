@@ -1,7 +1,7 @@
-/* TDAText: Copyright 2024 Dmitry Tretyakov, SIL OFL 1.1. */
+/* TDAText: Copyright 2024–2025 Dmitry Tretyakov, SIL OFL 1.1. */
 @font-face {
   font-family: "TDAText";
-  src: url("../assets/fonts/TDAText.woff2") format("woff2");
+  src: url("../assets/fonts/TDAText.ttf") format("truetype");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
