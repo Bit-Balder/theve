@@ -12,6 +12,7 @@ import {
   getAdjacentChannel,
 } from "./core/channel-navigation";
 import { DirectNumberBuffer } from "./core/direct-number-buffer";
+import { displayTvText } from "./core/display-text";
 import { InternetArchiveAdapter } from "./core/internet-archive";
 import {
   type CachedForecast,
@@ -49,7 +50,7 @@ export interface StartViewModel {
 
 export function createStartViewModel(): StartViewModel {
   return {
-    eyebrow: "SVENSK FAMILJE-TV · FORMTEST",
+    eyebrow: "SVENSK FAMILJE-TV - FORMTEST",
     title: project.name,
     tagline: project.tagline,
     stage: project.stage,
@@ -61,7 +62,9 @@ function slotTitle(slot: CompiledScheduleSlot | null): string {
   if (!slot) {
     return "INGEN TABLÅUPPGIFT";
   }
-  return slot.catalogTitle ?? slot.label ?? "PROGRAMUPPGIFT SAKNAS";
+  return displayTvText(
+    slot.catalogTitle ?? slot.label ?? "PROGRAMUPPGIFT SAKNAS",
+  );
 }
 
 function createGuideEntries(
@@ -105,7 +108,7 @@ function createFocusProof(): HTMLElement {
   const title = document.createElement("h2");
   title.id = "focus-proof-title";
   title.className = "focus-proof__title";
-  title.textContent = "FOKUSRING · FÄRGPROV";
+  title.textContent = "FOKUSRING - FÄRGPROV";
 
   const grid = document.createElement("div");
   grid.className = "focus-proof__grid";
@@ -280,8 +283,8 @@ export function mountStartView(
   }
 
   function showBanner(program: string, next: string): void {
-    tv.bannerProgram.textContent = program;
-    tv.bannerNext.textContent = `NÄSTA · ${next}`;
+    tv.bannerProgram.textContent = displayTvText(program);
+    tv.bannerNext.textContent = `NÄSTA - ${displayTvText(next)}`;
     tv.banner.classList.remove("program-banner--hidden");
     if (bannerTimer) {
       clearTimeout(bannerTimer);
@@ -348,7 +351,7 @@ export function mountStartView(
     tv.identLogo.classList.remove("tv-experience__ident-logo--entering");
     void tv.identLogo.offsetWidth;
     tv.identLogo.classList.add("tv-experience__ident-logo--entering");
-    tv.status.textContent = `KANAL ${channel.number} · ${channel.name}`;
+    tv.status.textContent = `KANAL ${channel.number} - ${channel.name}`;
     media.hidden = true;
     tv.picture.hidden = false;
 
@@ -376,7 +379,7 @@ export function mountStartView(
       playback.stop();
       tv.picture.dataset.state = "reserve";
       tv.pictureLabel.textContent =
-        scheduleState.reserveMessage ?? "RESERVBILD";
+        displayTvText(scheduleState.reserveMessage ?? "RESERVBILD");
       return;
     }
 
@@ -408,7 +411,7 @@ export function mountStartView(
 
     if (catalogItem.source.type !== "internet_archive") {
       playback.stop();
-      tv.pictureLabel.textContent = catalogItem.title;
+      tv.pictureLabel.textContent = displayTvText(catalogItem.title);
       return;
     }
 
@@ -475,7 +478,7 @@ export function mountStartView(
       tv.root.focus();
       await tuneChannel(firstChannel.id);
     } catch {
-      menuStatus.textContent = "KANALDATA KUNDE INTE LÄSAS · FÖRSÖK IGEN";
+      menuStatus.textContent = "KANALDATA KUNDE INTE LÄSAS - FÖRSÖK IGEN";
       publicDataPromise = null;
     } finally {
       starting = false;
@@ -488,7 +491,7 @@ export function mountStartView(
 
   const clock = document.createElement("p");
   clock.className = "topbar__clock numeric-text";
-  clock.title = "Svensk tid · Europe/Stockholm";
+  clock.title = "Svensk tid - Europe/Stockholm";
   const updateClock = () => {
     const nowEpochMs = Date.now();
     const time = formatTheveClock(nowEpochMs);
@@ -551,7 +554,7 @@ export function mountStartView(
       { id: "focus", label: "VISA FOKUSPROV", hint: "PIL NED" },
       {
         id: "crt",
-        label: initialCrtMode === "subtle" ? "CRT · DISKRET" : "CRT · AV",
+        label: initialCrtMode === "subtle" ? "CRT - DISKRET" : "CRT - AV",
         hint: initialCrtMode === "subtle" ? "PÅ" : "AV",
       },
     ],
@@ -573,7 +576,7 @@ export function mountStartView(
         const hint = button.querySelector<HTMLElement>(".menu-button__hint");
         if (label && hint) {
           label.textContent =
-            nextMode === "subtle" ? "CRT · DISKRET" : "CRT · AV";
+            nextMode === "subtle" ? "CRT - DISKRET" : "CRT - AV";
           hint.textContent = nextMode === "subtle" ? "PÅ" : "AV";
         }
         menuStatus.textContent =
