@@ -1,7 +1,6 @@
 import type { TeletextPage } from "../core/teletext";
 import {
   type Municipality,
-  MUNICIPALITIES,
   REGIONS,
   municipalitiesInRegion,
   findMunicipality,
