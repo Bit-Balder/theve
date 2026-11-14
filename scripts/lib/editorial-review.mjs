@@ -207,17 +207,10 @@ export function applyReviewRequest({
     });
 
     if (request.decision === "rejected") {
-      if (existingRights.has(itemId)) {
-        existingRights.set(itemId, {
-          ...existingRights.get(itemId),
-          status: "rejected",
-          publicationAllowed: false,
-          basis: request.basis,
-          evidenceUrl: null,
-          reviewedAt,
-          notes: request.notes,
-        });
-      }
+      // Rejected drafts disappear from the catalog and remain in the journal.
+      // Active published entries were already blocked above.
+      existingCatalog.delete(itemId);
+      existingRights.delete(itemId);
       continue;
     }
 
