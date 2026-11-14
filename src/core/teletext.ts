@@ -362,11 +362,7 @@ function localRows(context: TeletextPageContext): readonly string[] {
   }
   const forecast = currentForecast(context.selectedWeather, context.nowEpochMs);
   if (!forecast) {
-    return [
-      name,
-      "VÄDERPROGNOSEN ÄR INAKTUELL",
-      "301 VÄLJ ANNAN KOMMUN",
-    ];
+    return [name, "VÄDERPROGNOSEN ÄR INAKTUELL", "301 VÄLJ ANNAN KOMMUN"];
   }
   return [
     name,
@@ -375,7 +371,8 @@ function localRows(context: TeletextPageContext): readonly string[] {
     "VIND " + forecast.windMps.toFixed(1) + " M/S",
     "NEDERBÖRD " + forecast.precipitationMm.toFixed(1) + " MM",
     "",
-    "ENTER " + (context.isSelectedFavorite ? "TA BORT FAVORIT" : "SPARA FAVORIT"),
+    "ENTER " +
+      (context.isSelectedFavorite ? "TA BORT FAVORIT" : "SPARA FAVORIT"),
     "301  VÄLJ LÄN OCH KOMMUN",
     "302  DINA FAVORITER",
     "303  TIMPROGNOS",
@@ -387,10 +384,11 @@ function localRows(context: TeletextPageContext): readonly string[] {
 }
 
 function createLocalWeather(context: TeletextPageContext): TeletextPage {
-  const status = context.selectedWeather && currentForecast(
-    context.selectedWeather,
-    context.nowEpochMs,
-  ) ? "ready" : "missing";
+  const status =
+    context.selectedWeather &&
+    currentForecast(context.selectedWeather, context.nowEpochMs)
+      ? "ready"
+      : "missing";
   return {
     number: "300",
     title: "DITT LOKALA VÄDER",
@@ -420,10 +418,14 @@ function createHourlyWeather(context: TeletextPageContext): TeletextPage {
       [
         (location?.name ?? "INGEN KOMMUN VALD").toUpperCase(),
         "",
-        ...forecasts.map((forecast) =>
-          formatTime(Date.parse(forecast.validAt)) + "  " +
-          Math.round(forecast.temperatureC) + "°C  " +
-          forecast.windMps.toFixed(1) + " M/S",
+        ...forecasts.map(
+          (forecast) =>
+            formatTime(Date.parse(forecast.validAt)) +
+            "  " +
+            Math.round(forecast.temperatureC) +
+            "°C  " +
+            forecast.windMps.toFixed(1) +
+            " M/S",
         ),
         ...(forecasts.length === 0 ? ["301  VÄLJ LÄN OCH KOMMUN"] : []),
         "",
@@ -501,7 +503,12 @@ export function createTeletextPage(
       number: "302",
       title: "VÄDERFAVORITER",
       status: "ready",
-      rows: pageRows("302", "VÄDERFAVORITER", ["301  VÄLJ KOMMUN"], context.nowEpochMs),
+      rows: pageRows(
+        "302",
+        "VÄDERFAVORITER",
+        ["301  VÄLJ KOMMUN"],
+        context.nowEpochMs,
+      ),
     };
   }
   if (number === "303") return createHourlyWeather(context);
