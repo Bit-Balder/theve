@@ -61,9 +61,9 @@ describe("Väderregioner, kommuner och favoriter", () => {
   });
 
   it("visar statuskod eller nätverksfel från lokalt väder", () => {
-    expect(describeWeatherError(new Error("Open-Meteo svarade HTTP 403."))).toBe(
-      "OPEN-METEO SVARADE HTTP 403",
-    );
+    expect(
+      describeWeatherError(new Error("Open-Meteo svarade HTTP 403.")),
+    ).toBe("OPEN-METEO SVARADE HTTP 403");
     expect(describeWeatherError(new TypeError("Failed to fetch"))).toBe(
       "NÄTVERK ELLER WEBBLÄSARE STOPPADE DATA",
     );
@@ -75,8 +75,12 @@ describe("Väderregioner, kommuner och favoriter", () => {
     if (!municipality) throw new Error("Strängnäs saknas");
     const url = new URL(openMeteoForecastUrl(municipality));
     expect(url.origin).toBe("https://api.open-meteo.com");
-    expect(url.searchParams.get("latitude")).toBe(String(municipality.latitude));
-    expect(url.searchParams.get("longitude")).toBe(String(municipality.longitude));
+    expect(url.searchParams.get("latitude")).toBe(
+      String(municipality.latitude),
+    );
+    expect(url.searchParams.get("longitude")).toBe(
+      String(municipality.longitude),
+    );
     expect(url.searchParams.get("wind_speed_unit")).toBe("ms");
     expect(url.searchParams.get("timeformat")).toBe("unixtime");
     expect(url.searchParams.get("hourly")).toContain("precipitation");
