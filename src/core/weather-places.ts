@@ -23,9 +23,12 @@ export const REGIONS: readonly string[] = [
 const STORAGE_KEY = "theve.weather.preferences.v1";
 const MAX_FAVORITES = 5;
 
-export function municipalitiesInRegion(region: string): readonly Municipality[] {
-  return MUNICIPALITIES.filter((municipality) => municipality.region === region)
-    .sort((a, b) => a.name.localeCompare(b.name, "sv"));
+export function municipalitiesInRegion(
+  region: string,
+): readonly Municipality[] {
+  return MUNICIPALITIES.filter(
+    (municipality) => municipality.region === region,
+  ).sort((a, b) => a.name.localeCompare(b.name, "sv"));
 }
 
 export function findMunicipality(id: string | null): Municipality | null {
@@ -47,9 +50,14 @@ export function readWeatherPreferences(): WeatherPreferences {
         ? record.selectedId
         : null;
     const favorites = Array.isArray(record.favorites)
-      ? [...new Set(record.favorites.filter(
-          (id): id is string => typeof id === "string" && Boolean(findMunicipality(id)),
-        ))].slice(0, MAX_FAVORITES)
+      ? [
+          ...new Set(
+            record.favorites.filter(
+              (id): id is string =>
+                typeof id === "string" && Boolean(findMunicipality(id)),
+            ),
+          ),
+        ].slice(0, MAX_FAVORITES)
       : [];
     return { selectedId, favorites };
   } catch {
