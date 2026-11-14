@@ -11,6 +11,23 @@ export interface CachedForecast {
   readonly location: WeatherLocation;
 }
 
+export function describeWeatherError(error: unknown): string {
+  if (error instanceof Error) {
+    const httpMatch = error.message.match(/^SMHI svarade HTTP (\\d{3})\\.$/);
+    if (httpMatch) return `SMHI SVARADE HTTP ${httpMatch[1]}`;
+    if (error.name === "TimeoutError" || error.name === "AbortError") {
+      return "SMHI SVARADE INTE I TID";
+    }
+    if (error instanceof SyntaxError) {
+      return "SMHI SKICKADE ETT FELAKTIGT SVAR";
+    }
+    if (error instanceof TypeError) {
+      return "NÄTVERK ELLER WEBBLÄSARE STOPPADE SMHI";
+    }
+  }
+  return "SMHI-PROGNOSEN KUNDE INTE HÄMTAS";
+}
+
 export function smhiPointUrl(municipality: Municipality): string {
   return (
     "https://opendata-download-metfcst.smhi.se/api/category/snow1g/" +
