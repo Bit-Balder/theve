@@ -378,8 +378,9 @@ export function mountStartView(
     if (!scheduleState.current) {
       playback.stop();
       tv.picture.dataset.state = "reserve";
-      tv.pictureLabel.textContent =
-        displayTvText(scheduleState.reserveMessage ?? "RESERVBILD");
+      tv.pictureLabel.textContent = displayTvText(
+        scheduleState.reserveMessage ?? "RESERVBILD",
+      );
       return;
     }
 
