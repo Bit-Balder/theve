@@ -1,14 +1,13 @@
 import { describe, expect, it } from "vitest";
-
+import { smhiPointUrl } from "../src/core/local-weather";
 import {
-  MUNICIPALITIES,
-  REGIONS,
   chooseMunicipality,
   findMunicipality,
+  MUNICIPALITIES,
   municipalitiesInRegion,
+  REGIONS,
   toggleFavorite,
 } from "../src/core/weather-places";
-import { smhiPointUrl } from "../src/core/local-weather";
 
 describe("Väderregioner, kommuner och favoriter", () => {
   it("har 21 län och 290 unika kommuner", () => {
@@ -21,14 +20,23 @@ describe("Väderregioner, kommuner och favoriter", () => {
     const region = "Stockholms län";
     const cities = municipalitiesInRegion(region);
     expect(cities.length).toBeGreaterThan(20);
-    expect(cities.every((municipality) => municipality.region === region)).toBe(true);
-    expect(cities.some((municipality) => municipality.name === "Stockholm")).toBe(true);
-    expect(cities.some((municipality) => municipality.name === "Malmö")).toBe(false);
+    expect(cities.every((municipality) => municipality.region === region)).toBe(
+      true,
+    );
+    expect(
+      cities.some((municipality) => municipality.name === "Stockholm"),
+    ).toBe(true);
+    expect(cities.some((municipality) => municipality.name === "Malmö")).toBe(
+      false,
+    );
   });
 
   it("sparar högst fem favoriter och kan ta bort en favorit", () => {
     const ids = MUNICIPALITIES.slice(0, 6).map((place) => place.id);
-    let preferences = { selectedId: null as string | null, favorites: [] as readonly string[] };
+    let preferences = {
+      selectedId: null as string | null,
+      favorites: [] as readonly string[],
+    };
     for (const id of ids) {
       preferences = toggleFavorite(preferences, id);
     }
