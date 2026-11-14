@@ -70,8 +70,7 @@ export function createTvExperience(): TvExperienceElements {
   status.className = "tv-experience__status";
   status.setAttribute("role", "status");
   status.setAttribute("aria-live", "polite");
-  status.textContent =
-    "PIL UPP/NED - KANAL  -  PIL VÄNSTER/HÖGER - MENY";
+  status.textContent = "PIL UPP/NED - KANAL  -  PIL VÄNSTER/HÖGER - MENY";
   status.hidden = true;
 
   const actions = document.createElement("nav");
