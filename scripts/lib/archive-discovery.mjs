@@ -189,12 +189,16 @@ export async function discoverArchive({
   config,
   existingCandidates = [],
   previousState = {},
+  excludedIdentifiers = [],
   requestJson,
   now = new Date().toISOString(),
 }) {
   validateConfig(config);
+  const rejected = new Set(excludedIdentifiers);
   const candidates = new Map(
-    existingCandidates.map((candidate) => [candidate.identifier, candidate]),
+    existingCandidates
+      .filter((candidate) => !rejected.has(candidate.identifier))
+      .map((candidate) => [candidate.identifier, candidate]),
   );
   const state = {
     schemaVersion: 1,
@@ -244,6 +248,11 @@ export async function discoverArchive({
     for (const summary of docs) {
       const identifier = textValue(summary.identifier);
       if (!identifier) continue;
+      if (rejected.has(identifier)) {
+        report.skipped.previously_rejected =
+          (report.skipped.previously_rejected || 0) + 1;
+        continue;
+      }
       if (candidates.has(identifier)) {
         const existing = candidates.get(identifier);
         if (!existing.matchingSearches.includes(search.id)) {
