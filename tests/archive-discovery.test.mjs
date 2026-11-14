@@ -15,7 +15,9 @@ const config = {
   schemaVersion: 1,
   period: { start: 1980, end: 2004 },
   settings: { searchesPerRun: 1, resultsPerSearch: 2, maxMetadataChecks: 2 },
-  queries: [{ id: "barn", channel: "08", query: "mediatype:movies AND title:barn" }],
+  queries: [
+    { id: "barn", channel: "08", query: "mediatype:movies AND title:barn" },
+  ],
 };
 
 const metadata = {
@@ -59,10 +61,18 @@ describe("Internet Archive discovery", () => {
   });
 
   it("never approves an item or claims streaming was tested", () => {
-    const result = makeCandidate(metadata, {}, config.queries[0], config.period, "2026-11-14T00:00:00Z");
+    const result = makeCandidate(
+      metadata,
+      {},
+      config.queries[0],
+      config.period,
+      "2026-11-14T00:00:00Z",
+    );
     expect(result.candidate.rightsStatus).toBe("review_required");
     expect(result.candidate.familyStatus).toBe("review_required");
-    expect(result.candidate.media.availabilityStatus).toBe("file_listed_not_playback_verified");
+    expect(result.candidate.media.availabilityStatus).toBe(
+      "file_listed_not_playback_verified",
+    );
     expect(result.candidate.media.durationSeconds).toBe(615);
   });
 
@@ -82,7 +92,9 @@ describe("Internet Archive discovery", () => {
     const requestJson = async (url) => {
       requests.push(url);
       if (url.includes("advancedsearch.php")) {
-        return { response: { numFound: 4, docs: [{ identifier: "test-svenskt" }] } };
+        return {
+          response: { numFound: 4, docs: [{ identifier: "test-svenskt" }] },
+        };
       }
       return metadata;
     };
@@ -105,7 +117,9 @@ describe("Internet Archive discovery", () => {
       config,
       requestJson: async (url) => {
         if (url.includes("advancedsearch.php")) {
-          return { response: { numFound: 10, docs: [{ identifier: "test-svenskt" }] } };
+          return {
+            response: { numFound: 10, docs: [{ identifier: "test-svenskt" }] },
+          };
         }
         throw new Error("Temporary outage");
       },
@@ -116,6 +130,11 @@ describe("Internet Archive discovery", () => {
 
   it("validates channel identifiers and request budgets", () => {
     expect(validateConfig(config)).toBe(config);
-    expect(() => validateConfig({ ...config, queries: [{ id: "x", channel: "0", query: "a" }] })).toThrow();
+    expect(() =>
+      validateConfig({
+        ...config,
+        queries: [{ id: "x", channel: "0", query: "a" }],
+      }),
+    ).toThrow();
   });
 });
