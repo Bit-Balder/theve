@@ -221,6 +221,9 @@ export function applyReviewRequest({
       continue;
     }
 
+    // Keep the decision, but never invent a duration or video format.
+    if (!catalogReady) continue;
+
     existingCatalog.set(itemId, {
       id: itemId,
       title: candidate.title,
