@@ -3,10 +3,9 @@
 Theve är en svensk 80-talsinspirerad linjär TV-upplevelse för familjens
 privata bruk. Projektet byggs stegvis enligt produktdokumentets etapper.
 
-Det här repot innehåller etapp 11: en stabiliserad release candidate med
-webbläsarmatris, TV-liknande teststorlek, visuell regression, prestandabudget,
-tillgänglighetskontroller och dokumenterad innehållsgranskning. Ingen skarp
-videokatalog ingår ännu.
+Det här repot innehåller etapp 12 och releasekandidaten `1.0.0-rc.1`.
+Programguiden är första vy och sändningsläget har synliga knappar för Guide,
+Text-TV, CRT och teknisk information. Ingen skarp videokatalog ingår ännu.
 
 ## Förutsättningar
 
@@ -25,7 +24,7 @@ npm run dev
 ```
 
 Vite visar den lokala adressen i terminalen. Öppna den för att se Theves
-startvy.
+programguide.
 
 ## Kvalitetskommandon
 
@@ -111,6 +110,10 @@ Läs [Text-TV-guiden](docs/teletext.md),
 [guiden till schemamotorn](docs/schedule-engine.md),
 [driftmanualen för automatiken](docs/automation.md),
 [kvalitetsmatrisen](docs/stage-11-quality.md),
+[snabbguiden för v1](docs/user-guide-v1.md),
+[driftmanualen för v1](docs/operations-v1.md),
+[release- och familjeacceptansen](docs/release-acceptance-v1.md),
+[backloggen efter v1](docs/backlog-after-v1.md),
 [startkatalogens granskningsprotokoll](docs/start-catalog-review.md),
 [kända begränsningar](docs/known-limitations.md),
 [beslutsloggen](docs/decisions.md) och
@@ -143,10 +146,10 @@ Font License 1.1. Licenstexterna finns i `docs/font-licenses/`.
 
 ## Status
 
-Etapp 11 kör hela fjärrkontrollflödet i Chromium, Firefox och WebKit samt i en
-TV-liknande Chromium-yta på 1280 × 720. Fyra referensbilder bevakar 4:3-start,
-guide, Text-TV och Barns slutskylt. Bygget har en storleksbudget och får inte
-innehålla videofiler.
+Etapp 12 kör hela fjärrkontrollflödet i Chromium, Firefox och WebKit samt i en
+TV-liknande Chromium-yta på 1280 × 720. Referensbilder bevakar startguiden,
+kanallogotypen, Text-TV och Barns slutskylt. Bygget har en storleksbudget och
+får varken innehålla videofiler eller kända hemlighetsmönster.
 
 Text-TV:s väder visar Stockholmsområdet, Göteborgsområdet och Malmöområdet med
 synlig SMHI-attribution och bearbetningsnotis. Varje område representeras av
@@ -155,4 +158,7 @@ en prognospunkt nära områdets centrum; värdet är inte ett regionalt medelvä
 Klockan läser enhetens aktuella tid men presenteras alltid i
 `Europe/Stockholm`, samma tidszon som tablån. Text-TV använder samma pixliga
 VT323 som klockan.
+
+Releasekandidaten får slutlig version och tagg `v1.0.0` först efter att
+familjetestet på målskärmen har godkänts.
 

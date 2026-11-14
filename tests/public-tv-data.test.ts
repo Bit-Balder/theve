@@ -3,8 +3,9 @@ import { describe, expect, it } from "vitest";
 import { loadPublicTvData } from "../src/core/public-tv-data";
 
 const revision = "test-revision";
+const sourceRevision = "test-source-revision";
 const baseDocuments: Readonly<Record<string, unknown>> = {
-  "./data/manifest.json": { revision },
+  "./data/manifest.json": { revision, sourceRevision },
   "./data/channels.json": { revision, channels: [] },
   "./data/catalog.json": { revision, items: [] },
   "./data/schedule.json": {
@@ -37,6 +38,7 @@ describe("publik Text-TV-data", () => {
     const data = await loadPublicTvData(fetcher(baseDocuments));
 
     expect(data.revision).toBe(revision);
+    expect(data.sourceRevision).toBe(sourceRevision);
     expect(data.weather).toBeNull();
   });
 

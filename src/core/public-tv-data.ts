@@ -8,6 +8,7 @@ export interface PublicCatalogItem extends CatalogItem {
 
 export interface PublicTvData {
   readonly revision: string;
+  readonly sourceRevision: string;
   readonly channels: readonly Channel[];
   readonly catalogItems: readonly PublicCatalogItem[];
   readonly schedule: CompiledSchedule;
@@ -16,6 +17,7 @@ export interface PublicTvData {
 
 interface ManifestDocument {
   readonly revision: string;
+  readonly sourceRevision: string;
 }
 
 interface ChannelsDocument {
@@ -71,6 +73,7 @@ export async function loadPublicTvData(
 
   return {
     revision: manifest.revision,
+    sourceRevision: manifest.sourceRevision,
     channels: channels.channels,
     catalogItems: catalog.items,
     schedule,

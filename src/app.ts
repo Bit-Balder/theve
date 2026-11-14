@@ -4,6 +4,7 @@ import {
 } from "./components/channel-guide";
 import { createFocusMenu } from "./components/focus-menu";
 import { createScreen43 } from "./components/screen43";
+import { createTechnicalInfo } from "./components/technical-info";
 import { createTeletext } from "./components/teletext";
 import { createTvExperience } from "./components/tv-experience";
 import { createTvShell, setCrtMode } from "./components/tv-shell";
@@ -24,6 +25,7 @@ import { ArchivePlaybackService } from "./core/playback-service";
 import { PlayerController } from "./core/player-controller";
 import { project } from "./core/project";
 import { loadPublicTvData, type PublicTvData } from "./core/public-tv-data";
+import { THEVE_VERSION } from "./core/release";
 import { normalizeRemoteInput } from "./core/remote-input";
 import {
   type CompiledScheduleSlot,
@@ -161,6 +163,7 @@ export function mountStartView(
   let starting = false;
   let selectionRevision = 0;
   let bannerTimer: ReturnType<typeof setTimeout> | null = null;
+  let channelBugTimer: ReturnType<typeof setTimeout> | null = null;
   let scheduleTimer: ReturnType<typeof setTimeout> | null = null;
   let clockTimer: ReturnType<typeof setTimeout> | null = null;
   let weatherPreferences = readWeatherPreferences();
@@ -244,13 +247,26 @@ export function mountStartView(
     backStack.remove("teletext");
   };
 
+  const closeInfo = () => {
+    info.close();
+    backStack.remove("info");
+  };
+
   const guide = createChannelGuide({
     onTune: (channelId) => {
-      void tuneChannel(channelId);
+      void activateAndTune(channelId);
     },
     onRequestClose: () => {
       if (!backStack.back()) {
         closeGuide();
+      }
+    },
+  });
+
+  const info = createTechnicalInfo({
+    onRequestClose: () => {
+      if (!backStack.back()) {
+        closeInfo();
       }
     },
   });
@@ -292,6 +308,11 @@ export function mountStartView(
     bannerTimer = setTimeout(() => {
       tv.banner.classList.add("program-banner--hidden");
     }, 4_000);
+  }
+
+  async function activateAndTune(channelId: string): Promise<void> {
+    void playback.activate();
+    await tuneChannel(channelId);
   }
 
   function scheduleNextBoundary(
@@ -341,8 +362,20 @@ export function mountStartView(
     tv.picture.dataset.theme = channel.theme;
     tv.picture.dataset.state = "reserve";
     tv.channelBug.dataset.theme = channel.theme;
+    tv.channelBug.classList.remove("channel-bug--compact");
     tv.channelLogo.src = channel.logo.compact;
     tv.channelLogo.alt = `${channel.name}, kanal ${channel.number}`;
+    tv.channelLabel.textContent = channel.name.toUpperCase();
+    tv.channelBug.setAttribute(
+      "aria-label",
+      `Aktuell kanal ${channel.name}, kanal ${channel.number}`,
+    );
+    if (channelBugTimer) {
+      clearTimeout(channelBugTimer);
+    }
+    channelBugTimer = setTimeout(() => {
+      tv.channelBug.classList.add("channel-bug--compact");
+    }, 4_000);
     tv.identLogo.src = channel.logo.fullColor;
     tv.identLogo.alt = `${channel.name} kanalidentitet`;
     tv.identLogo.hidden = false;
@@ -458,13 +491,47 @@ export function mountStartView(
     if (selected) void refreshSelectedWeather(selected);
   }
 
-  async function startTv(): Promise<void> {
-    if (started || starting) {
+  function openInfo(): void {
+    if (!publicData || info.isOpen()) {
+      return;
+    }
+    directNumber.clear();
+    backStack.push({ id: "info", close: info.close });
+    info.open({
+      version: THEVE_VERSION,
+      dataRevision: publicData.revision,
+      sourceRevision: publicData.sourceRevision,
+    });
+  }
+
+  function syncCrtButton(): void {
+    const isOn = shell.dataset.crt === "subtle";
+    tv.crtButton.textContent = isOn ? "CRT PÅ" : "CRT AV";
+    tv.crtButton.setAttribute(
+      "aria-label",
+      isOn ? "Stäng av bildrörseffekt" : "Slå på bildrörseffekt",
+    );
+  }
+
+  function toggleCrt(): void {
+    const nextMode = shell.dataset.crt === "subtle" ? "off" : "subtle";
+    setCrtMode(shell, nextMode);
+    syncCrtButton();
+  }
+
+  async function startTv(activatePlayback = false): Promise<void> {
+    if (started) {
+      openGuide();
+      return;
+    }
+    if (starting) {
       return;
     }
     starting = true;
     menuStatus.textContent = "LÄSER KANALER OCH TABLÅ";
-    await playback.activate();
+    if (activatePlayback) {
+      await playback.activate();
+    }
 
     try {
       publicData = await getPublicData();
@@ -477,7 +544,9 @@ export function mountStartView(
       startScreen.hidden = true;
       tv.root.hidden = false;
       tv.root.focus();
-      await tuneChannel(firstChannel.id);
+      currentChannelId = firstChannel.id;
+      openGuide();
+      void tuneChannel(firstChannel.id);
     } catch {
       menuStatus.textContent = "KANALDATA KUNDE INTE LÄSAS - FÖRSÖK IGEN";
       publicDataPromise = null;
@@ -561,7 +630,7 @@ export function mountStartView(
     ],
     onAction: (action, button) => {
       if (action === "start") {
-        void startTv();
+        void startTv(true);
       }
 
       if (action === "focus") {
@@ -571,8 +640,8 @@ export function mountStartView(
       }
 
       if (action === "crt") {
-        const nextMode = shell.dataset.crt === "subtle" ? "off" : "subtle";
-        setCrtMode(shell, nextMode);
+        toggleCrt();
+        const nextMode = shell.dataset.crt === "subtle" ? "subtle" : "off";
         const label = button.querySelector<HTMLElement>(".menu-button__label");
         const hint = button.querySelector<HTMLElement>(".menu-button__hint");
         if (label && hint) {
@@ -591,8 +660,18 @@ export function mountStartView(
   controls.append(menuTitle, menu, menuStatus);
   content.append(intro, controls);
   startScreen.append(topbar, content, createFocusProof());
+  tv.guideButton.addEventListener("click", openGuide);
   tv.txtButton.addEventListener("click", openTeletext);
-  safeArea.append(startScreen, tv.root, guide.element, teletext.element);
+  tv.crtButton.addEventListener("click", toggleCrt);
+  tv.infoButton.addEventListener("click", openInfo);
+  syncCrtButton();
+  safeArea.append(
+    startScreen,
+    tv.root,
+    guide.element,
+    teletext.element,
+    info.element,
+  );
   screen.append(media, safeArea);
   shell.append(screen);
   root.replaceChildren(shell);
@@ -632,6 +711,14 @@ export function mountStartView(
       return;
     }
 
+    if (info.isOpen()) {
+      if (action.type === "back" || action.type === "info") {
+        event.preventDefault();
+        backStack.back();
+      }
+      return;
+    }
+
     event.preventDefault();
     if (action.type === "digit") {
       directNumber.push(action.digit);
@@ -648,6 +735,14 @@ export function mountStartView(
     }
     if (action.type === "teletext") {
       openTeletext();
+      return;
+    }
+    if (action.type === "info") {
+      openInfo();
+      return;
+    }
+    if (action.type === "crt") {
+      toggleCrt();
       return;
     }
     if (action.type === "back") {
@@ -672,5 +767,6 @@ export function mountStartView(
 
   requestAnimationFrame(() => {
     menu.querySelector<HTMLButtonElement>("button")?.focus();
+    void startTv();
   });
 }

@@ -1,6 +1,6 @@
 # Beslutslogg
 
-Senast uppdaterad: 13 november 2026.
+Senast uppdaterad: 14 november 2026.
 
 ## Fastställt
 
@@ -61,8 +61,9 @@ Senast uppdaterad: 13 november 2026.
   siffror, bindestreck och understreck. Metadata behandlas som opålitlig data.
 - Publika MP4-filer med H.264-märkning prioriteras. Övriga MP4-derivat behålls
   som alternativ; webbläsaren avgör slutligen om filen kan avkodas.
-- Uppspelning med ljud startar först efter den uttryckliga handlingen `Starta
-  TV`. En nekad `play()` återgår till vänteläget och kräver ny handling.
+- Programguiden är första vy. Kanalvalet med Enter eller OK är den uttryckliga
+  handling som aktiverar uppspelning med ljud. Reservstartvyn finns kvar om
+  kanaldata inte kan läsas.
 - Vid nytt kanal- eller slotval avbryts föregående metadatahämtning och
   medieladdning. Den senaste begäran är alltid den enda som får ändra läget.
 - 404, timeout och decodefel provar nästa godkända MP4. När alternativen är
@@ -111,11 +112,18 @@ Senast uppdaterad: 13 november 2026.
 - Kvalitetsmatrisen omfattar Chromium, Firefox, WebKit och en TV-liknande
   Chromium-yta på 1280 × 720. En fysisk TV eller TV-box är fortsatt en manuell
   kontrollpunkt för projektägaren.
-- Visuell regression omfattar 4:3-start, programguide, Text-TV och Barns
-  slutskylt. Referenser tas med reducerad rörelse för stabila bilder.
+- Visuell regression omfattar startguiden i 4:3, kanalens fulla logotyp,
+  Text-TV och Barns slutskylt. Referenser tas med reducerad rörelse för stabila
+  bilder.
 - CRT-valet sparas lokalt. Reducerad rörelse ger alltid CRT av vid start.
+- Kanalens fulla logotyp visas i fyra sekunder vid kanalval och ersätts sedan
+  av kanalnamnet utan bakgrund.
+- Sändningsvyn har synliga knappar för Guide, Text-TV, CRT och teknisk
+  information. Appversion, datarevision och källrevision visas under Info.
+- Etapp 12 publiceras först som `1.0.0-rc.1`. Taggen `v1.0.0` skapas efter
+  godkänt familjetest på målskärmen.
 
-## Öppet inför senare etapper
+## Öppet inför slutlig v1-tagg
 
 - Vilken fysisk TV eller TV-box som används för manuell acceptanstest.
 

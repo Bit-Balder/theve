@@ -1,5 +1,9 @@
 # Familjens manuella acceptanstest för etapp 11
 
+> Detta protokoll är ersatt av
+> [release- och familjeacceptansen för v1](../release-acceptance-v1.md), där
+> programguiden är första vy. Det sparas som historik för etapp 11.
+
 Testet ska göras av en familjemedlem som inte har byggt Theve. Använd den
 webbläsare, dator eller TV-box som ska användas hemma. Mus ska inte behövas
 efter att sidan har öppnats.

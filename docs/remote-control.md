@@ -1,4 +1,4 @@
-# Fjärrkontroll, programguide och Text-TV · etapp 9
+# Fjärrkontroll, programguide och Text-TV
 
 Alla primära funktioner fungerar utan mus. Webbläsaren använder vanliga
 tangentbordshändelser som grund och översätter kända alternativa TV-koder till
@@ -8,12 +8,14 @@ samma lilla uppsättning handlingar.
 
 | Funktion | Standard | Alternativa koder |
 | --- | --- | --- |
-| Starta TV | Enter på startknappen | OK, Select, Accept |
+| Välj kanal från startguiden | Enter | OK, Select, Accept |
 | Kanal upp | Pil upp | ChannelUp, PageUp, keyCode 427 |
 | Kanal ned | Pil ned | ChannelDown, PageDown, keyCode 428 |
 | Direktnummer | 0–9 | Digit0–9, Numpad0–9 |
 | Programguide | G | Guide, keyCode 458 |
 | Text-TV | T eller TXT | Teletext, keyCode 459 |
+| Teknisk information | I | Info, keyCode 457 |
+| Bildrörseffekt | C | Synlig CRT-knapp |
 | Back/stäng | Escape eller Backspace | BrowserBack, GoBack, Back, keyCode 461 |
 | Bekräfta | Enter | OK, Select, Accept |
 
@@ -23,8 +25,9 @@ Exakta extrakoder varierar mellan TV-apparater. Nya koder läggs i
 ## Kanalbyte
 
 Pil upp går till nästa högre kanalnummer och pil ned till föregående. Listan
-går runt mellan sista och första kanalen. Kanalbuggen ligger kvar; bannern
-visar aktuellt och nästa program och försvinner efter fyra sekunder.
+går runt mellan sista och första kanalen. Kanallogotypen visas i fyra sekunder
+vid varje kanalval. Därefter ersätts den av kanalnamnet utan bakgrund; bannern
+med aktuellt och nästa program försvinner också efter fyra sekunder.
 
 Varje kanalval får ett revisionsnummer. Ett sent resultat från ett gammalt
 val ignoreras och spelarkedjan avbryter den gamla hämtningen. Vid snabba
@@ -38,7 +41,9 @@ finns visas ett statusmeddelande och aktuell kanal fortsätter.
 
 ## Programguide
 
-Guiden visar en rad per kanal med `NU` och `NÄSTA`.
+Guiden är första vyn när appen öppnas och visar en rad per kanal med `NU` och
+`NÄSTA`. Den kan alltid öppnas igen med G, Guide eller den synliga
+`GUIDE`-knappen.
 
 - Pil upp/ned flyttar ett enda tabb-stopp mellan raderna.
 - Home och End går till första respektive sista kanal.
@@ -72,7 +77,7 @@ tredje siffran.
 
 `npm run test:e2e` startar Theve lokalt och kör följande i Chromium:
 
-1. Enter på `Starta TV`.
+1. Programguiden visas direkt och Enter väljer första kanalen.
 2. Kanal upp och flera snabba kanalval.
 3. Direktnummer och synlig sifferbuffert.
 4. Guide, roving fokus och kanalval med Enter.

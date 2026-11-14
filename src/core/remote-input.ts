@@ -3,6 +3,8 @@ export type RemoteAction =
   | { readonly type: "channel_down" }
   | { readonly type: "guide" }
   | { readonly type: "teletext" }
+  | { readonly type: "info" }
+  | { readonly type: "crt" }
   | { readonly type: "back" }
   | { readonly type: "confirm" }
   | { readonly type: "digit"; readonly digit: string };
@@ -17,6 +19,8 @@ const channelUpKeys = new Set(["ArrowUp", "ChannelUp", "PageUp"]);
 const channelDownKeys = new Set(["ArrowDown", "ChannelDown", "PageDown"]);
 const guideKeys = new Set(["Guide", "g", "G"]);
 const teletextKeys = new Set(["Teletext", "TXT", "t", "T"]);
+const infoKeys = new Set(["Info", "i", "I"]);
+const crtKeys = new Set(["c", "C"]);
 const backKeys = new Set([
   "Escape",
   "Backspace",
@@ -61,6 +65,12 @@ export function normalizeRemoteInput(
   }
   if (teletextKeys.has(input.key) || input.keyCode === 459) {
     return { type: "teletext" };
+  }
+  if (infoKeys.has(input.key) || input.keyCode === 457) {
+    return { type: "info" };
+  }
+  if (crtKeys.has(input.key)) {
+    return { type: "crt" };
   }
   if (
     backKeys.has(input.key) ||
