@@ -22,7 +22,9 @@ interface ForecastApiResponse {
 
 export function describeWeatherError(error: unknown): string {
   if (error instanceof Error) {
-    const httpMatch = error.message.match(/^Open-Meteo svarade HTTP (\d{3})\.$/);
+    const httpMatch = error.message.match(
+      /^Open-Meteo svarade HTTP (\d{3})\.$/,
+    );
     if (httpMatch) return "OPEN-METEO SVARADE HTTP " + httpMatch[1];
     if (error.name === "TimeoutError" || error.name === "AbortError") {
       return "VÄDERTJÄNSTEN SVARADE INTE I TID";
