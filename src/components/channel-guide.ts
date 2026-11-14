@@ -43,7 +43,7 @@ export function createChannelGuide(
 
   const closeHint = document.createElement("span");
   closeHint.className = "channel-guide__close-hint numeric-text";
-  closeHint.textContent = "BACK · STÄNG";
+  closeHint.textContent = "BACK - STÄNG";
   header.append(heading, closeHint);
 
   const columns = document.createElement("div");
