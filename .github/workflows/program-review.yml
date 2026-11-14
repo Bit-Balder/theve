@@ -11,7 +11,10 @@ permissions:
 
 jobs:
   review:
-    if: startsWith(github.event.issue.body, 'THEVE_REVIEW_V2')
+    if: >-
+      startsWith(github.event.issue.body, 'THEVE_REVIEW_V2') &&
+      (github.event.action == 'reopened' ||
+       !contains(github.event.issue.body, '"decision":"approved"'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
