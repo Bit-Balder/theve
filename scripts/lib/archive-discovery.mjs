@@ -2,7 +2,8 @@ const SWEDISH_WORDS =
   /swedish|svensk|svenskt|svenska|svenskdubb|svt|bolibompa|björne|bjorne|bamse|barnprogram|barnfilm|barn-tv|tecknat|sagostund|nyhetssändning|svenskt tal|öppet arkiv/i;
 
 export function textValue(value) {
-  if (Array.isArray(value)) return value.map(textValue).filter(Boolean).join(" ");
+  if (Array.isArray(value))
+    return value.map(textValue).filter(Boolean).join(" ");
   if (typeof value === "string" || typeof value === "number") {
     return String(value).trim();
   }
@@ -26,7 +27,9 @@ export function periodStatus(year, period) {
 }
 
 export function hasSwedishSignal(metadata, summary = {}) {
-  const language = textValue(metadata?.language || summary.language).toLowerCase();
+  const language = textValue(
+    metadata?.language || summary.language,
+  ).toLowerCase();
   if (/(^|[\s,;])(sv|swe|sv-se|swedish|svenska)([\s,;]|$)/i.test(language)) {
     return true;
   }
@@ -48,7 +51,9 @@ export function playableFiles(files) {
   return files
     .filter((file) => {
       const name = textValue(file?.name);
-      return /\.(mp4|m4v|webm|ogv)$/i.test(name) && Number(file.size || 1) !== 0;
+      return (
+        /\.(mp4|m4v|webm|ogv)$/i.test(name) && Number(file.size || 1) !== 0
+      );
     })
     .map((file) => ({
       name: textValue(file.name),
@@ -70,7 +75,10 @@ export function parseDuration(input) {
   const text = textValue(input);
   if (/^\d+(\.\d+)?$/.test(text)) return Number(text);
   if (!/^\d{1,2}(:\d{1,2}){1,2}$/.test(text)) return null;
-  return text.split(":").map(Number).reduce((total, part) => total * 60 + part, 0);
+  return text
+    .split(":")
+    .map(Number)
+    .reduce((total, part) => total * 60 + part, 0);
 }
 
 export function searchUrl(query, page, rows) {
@@ -80,7 +88,15 @@ export function searchUrl(query, page, rows) {
   url.searchParams.set("rows", String(rows));
   url.searchParams.set("page", String(page));
   url.searchParams.append("sort[]", "publicdate asc");
-  for (const field of ["identifier", "title", "date", "year", "language", "description", "subject"]) {
+  for (const field of [
+    "identifier",
+    "title",
+    "date",
+    "year",
+    "language",
+    "description",
+    "subject",
+  ]) {
     url.searchParams.append("fl[]", field);
   }
   return url.toString();
@@ -115,7 +131,8 @@ export function makeCandidate(payload, summary, search, period, checkedAt) {
       periodMatch,
       language,
       description,
-      sourceUrl: "https://archive.org/details/" + encodeURIComponent(identifier),
+      sourceUrl:
+        "https://archive.org/details/" + encodeURIComponent(identifier),
       suggestedChannel: search.channel,
       matchingSearches: [search.id],
       media: {
@@ -146,7 +163,8 @@ export function validateConfig(config) {
   ) {
     throw new Error("Invalid archive search configuration.");
   }
-  const { searchesPerRun, resultsPerSearch, maxMetadataChecks } = config.settings || {};
+  const { searchesPerRun, resultsPerSearch, maxMetadataChecks } =
+    config.settings || {};
   for (const count of [searchesPerRun, resultsPerSearch, maxMetadataChecks]) {
     if (!Number.isInteger(count) || count < 1 || count > 500) {
       throw new Error("Search budgets must be integers from 1 to 500.");
@@ -175,7 +193,9 @@ export async function discoverArchive({
   now = new Date().toISOString(),
 }) {
   validateConfig(config);
-  const candidates = new Map(existingCandidates.map((candidate) => [candidate.identifier, candidate]));
+  const candidates = new Map(
+    existingCandidates.map((candidate) => [candidate.identifier, candidate]),
+  );
   const state = {
     schemaVersion: 1,
     nextQueryIndex: Number.isInteger(previousState.nextQueryIndex)
@@ -202,14 +222,22 @@ export async function discoverArchive({
     const page = state.pages[search.id] || 1;
     let result;
     try {
-      result = await requestJson(searchUrl(search.query, page, config.settings.resultsPerSearch));
+      result = await requestJson(
+        searchUrl(search.query, page, config.settings.resultsPerSearch),
+      );
     } catch (error) {
-      report.errors.push({ search: search.id, error: String(error.message || error) });
+      report.errors.push({
+        search: search.id,
+        error: String(error.message || error),
+      });
       continue;
     }
     const docs = result?.response?.docs;
     if (!Array.isArray(docs)) {
-      report.errors.push({ search: search.id, error: "Search response did not contain docs." });
+      report.errors.push({
+        search: search.id,
+        error: "Search response did not contain docs.",
+      });
       continue;
     }
     let finishedPage = true;
@@ -219,7 +247,10 @@ export async function discoverArchive({
       if (candidates.has(identifier)) {
         const existing = candidates.get(identifier);
         if (!existing.matchingSearches.includes(search.id)) {
-          existing.matchingSearches = [...existing.matchingSearches, search.id].sort();
+          existing.matchingSearches = [
+            ...existing.matchingSearches,
+            search.id,
+          ].sort();
         }
         report.duplicates++;
         continue;
@@ -233,23 +264,43 @@ export async function discoverArchive({
         payload = await requestJson(metadataUrl(identifier));
         report.metadataChecked++;
       } catch (error) {
-        report.errors.push({ identifier, error: String(error.message || error) });
+        report.errors.push({
+          identifier,
+          error: String(error.message || error),
+        });
         finishedPage = false;
         break;
       }
-      const result = makeCandidate(payload, summary, search, config.period, now);
+      const result = makeCandidate(
+        payload,
+        summary,
+        search,
+        config.period,
+        now,
+      );
       if (!result.candidate) {
-        report.skipped[result.reason] = (report.skipped[result.reason] || 0) + 1;
+        report.skipped[result.reason] =
+          (report.skipped[result.reason] || 0) + 1;
         continue;
       }
       candidates.set(identifier, result.candidate);
       report.added++;
     }
-    report.searched.push({ id: search.id, channel: search.channel, page, found: docs.length, complete: finishedPage });
+    report.searched.push({
+      id: search.id,
+      channel: search.channel,
+      page,
+      found: docs.length,
+      complete: finishedPage,
+    });
     if (finishedPage) {
       const total = Number(result?.response?.numFound) || docs.length;
-      const lastPage = Math.min(500, Math.max(1, Math.ceil(total / config.settings.resultsPerSearch)));
-      state.pages[search.id] = page >= lastPage || docs.length === 0 ? 1 : page + 1;
+      const lastPage = Math.min(
+        500,
+        Math.max(1, Math.ceil(total / config.settings.resultsPerSearch)),
+      );
+      state.pages[search.id] =
+        page >= lastPage || docs.length === 0 ? 1 : page + 1;
     }
   }
   const sorted = [...candidates.values()].sort((a, b) =>
@@ -274,7 +325,7 @@ export function formatReport(report) {
     "",
   ];
   for (const search of report.searched) {
-    lines.push("- " + search.id + " (kanal " + search.channel + ", sida " + search.page + "): " + search.found + " träffar");
+    lines.push(
   }
   lines.push("", "## Bortfiltrerade", "");
   for (const [reason, count] of Object.entries(report.skipped)) {
