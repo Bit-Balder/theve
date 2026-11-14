@@ -1,0 +1,78 @@
+name: Internet Archive discovery
+
+on:
+  schedule:
+    - cron: "47 4 * * 0"
+      timezone: "Europe/Stockholm"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: archive-discovery
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    name: Discover candidates without publishing
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+
+      - name: Restore previously proposed results
+        shell: bash
+        run: |
+          if git fetch --no-tags origin automation/archive-discovery-results:refs/remotes/origin/automation/archive-discovery-results; then
+            mkdir -p data/discovery/internet-archive
+            for name in candidates.json state.json; do
+              path="data/discovery/internet-archive/$name"
+              git show "origin/automation/archive-discovery-results:$path" > "$path" || rm -f "$path"
+            done
+          fi
+
+      - name: Find candidates through Internet Archive API
+        run: node scripts/discover-archive.mjs
+
+      - name: Save results and search report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: archive-discovery-${{ github.run_id }}
+          path: |
+            data/discovery/internet-archive
+            artifacts/archive-discovery
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Propose new candidates for human review
+        if: github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/archive-discovery-results
+          base: main
+          delete-branch: false
+          add-paths: data/discovery/internet-archive/
+          commit-message: "chore: update Internet Archive candidate inventory"
+          title: "Innehållsgranskning: nya Internet Archive-kandidater"
+          body: |
+            Automatisk inventering för Theve, huvudsakligen 1980–2004.
+
+            - Alla kandidater har rättighetsstatus review_required.
+            - Ingen video har lagts i tablån eller publicerats på Pages.
+            - Filnamn är kontrollerade, men uppspelning och rättigheter är inte verifierade.
+            - Granska katalogen och körningsrapporten före merge.
+
+            Den här pull requesten kan uppdateras av kommande körningar.
