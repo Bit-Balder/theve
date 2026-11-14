@@ -51,53 +51,95 @@ function run(request, sourceCatalog = catalog, sourceRights = rights) {
 
 describe("programgranskning", () => {
   it("kräver tydliga, unika identifierare och en bekräftad omfattning", () => {
-    expect(parseReviewRequest("THEVE_REVIEW_V1\n" + JSON.stringify(base))).toMatchObject({
+    expect(
+      parseReviewRequest("THEVE_REVIEW_V1\n" + JSON.stringify(base)),
+    ).toMatchObject({
       decision: "selected",
       identifiers: base.identifiers,
     });
-    expect(() => parseReviewRequest("THEVE_REVIEW_V1\n" + JSON.stringify({
-      ...base, confirmedScope: false,
-    }))).toThrow();
-    expect(() => parseReviewRequest("THEVE_REVIEW_V1\n" + JSON.stringify({
-      ...base, identifiers: [base.identifiers[0], base.identifiers[0]],
-    }))).toThrow();
+    expect(() =>
+      parseReviewRequest(
+        "THEVE_REVIEW_V1\n" +
+          JSON.stringify({
+            ...base,
+            confirmedScope: false,
+          }),
+      ),
+    ).toThrow();
+    expect(() =>
+      parseReviewRequest(
+        "THEVE_REVIEW_V1\n" +
+          JSON.stringify({
+            ...base,
+            identifiers: [base.identifiers[0], base.identifiers[0]],
+          }),
+      ),
+    ).toThrow();
   });
 
   it("massväljer en säsong utan att publicera eller godkänna rättigheter", () => {
-    const result = run(parseReviewRequest(
-      "THEVE_REVIEW_V1\n" + JSON.stringify(base),
-    ));
+    const result = run(
+      parseReviewRequest("THEVE_REVIEW_V1\n" + JSON.stringify(base)),
+    );
     expect(result.processed).toBe(2);
     expect(result.catalog.items).toHaveLength(2);
-    expect(result.rights.entries.every((item) => item.status === "review_required")).toBe(true);
-    expect(result.rights.entries.every((item) => item.publicationAllowed === false)).toBe(true);
-    expect(result.catalog.items.every((item) => item.familyStatus === "review_required")).toBe(true);
-    expect(result.catalog.items.every((item) => item.availabilityStatus === "unknown")).toBe(true);
+    expect(
+      result.rights.entries.every((item) => item.status === "review_required"),
+    ).toBe(true);
+    expect(
+      result.rights.entries.every((item) => item.publicationAllowed === false),
+    ).toBe(true);
+    expect(
+      result.catalog.items.every(
+        (item) => item.familyStatus === "review_required",
+      ),
+    ).toBe(true);
+    expect(
+      result.catalog.items.every(
+        (item) => item.availabilityStatus === "unknown",
+      ),
+    ).toBe(true);
     expect(result.journal.entries).toHaveLength(2);
   });
 
   it("avvisar alla valda även om upphovsrättslicens saknas", () => {
-    const request = parseReviewRequest("THEVE_REVIEW_V1\n" + JSON.stringify({
-      ...base, decision: "rejected", notes: "Tillståndet går inte att verifiera.",
-    }));
+    const request = parseReviewRequest(
+      "THEVE_REVIEW_V1\n" +
+        JSON.stringify({
+          ...base,
+          decision: "rejected",
+          notes: "Tillståndet går inte att verifiera.",
+        }),
+    );
     const result = run(request);
     expect(result.journal.entries.map((item) => item.decision)).toEqual([
-      "rejected", "rejected",
+      "rejected",
+      "rejected",
     ]);
     expect(result.catalog.items).toHaveLength(0);
   });
 
   it("kräver underlag för att godkänna rättigheter till en hel säsong", () => {
     const approved = {
-      ...base, decision: "approved", confirmedRightsForAll: true,
+      ...base,
+      decision: "approved",
+      confirmedRightsForAll: true,
       basis: "Tillstånd från ansvarig rättighetsinnehavare för alla avsnitt.",
       evidenceUrl: "https://example.org/licenses/season-1",
     };
-    const request = parseReviewRequest("THEVE_REVIEW_V1\n" + JSON.stringify(approved));
+    const request = parseReviewRequest(
+      "THEVE_REVIEW_V1\n" + JSON.stringify(approved),
+    );
     expect(() => run(request)).toThrow("saknar giltig licenslänk");
-    expect(() => parseReviewRequest("THEVE_REVIEW_V1\n" + JSON.stringify({
-      ...approved, confirmedRightsForAll: false,
-    }))).toThrow("Bekräfta");
+    expect(() =>
+      parseReviewRequest(
+        "THEVE_REVIEW_V1\n" +
+          JSON.stringify({
+            ...approved,
+            confirmedRightsForAll: false,
+          }),
+      ),
+    ).toThrow("Bekräfta");
   });
 
   it("godkänner rättigheter utan att lägga en rad i tablån", () => {
@@ -109,13 +151,15 @@ describe("programgranskning", () => {
       basis: "Verifierad tillåtelse för programmet och den svenska dubbningen.",
       evidenceUrl: "https://example.org/permission",
     };
-    const result = run(parseReviewRequest(
-      "THEVE_REVIEW_V1\n" + JSON.stringify(approved),
-    ));
+    const result = run(
+      parseReviewRequest("THEVE_REVIEW_V1\n" + JSON.stringify(approved)),
+    );
     expect(result.rights.entries[0].status).toBe("approved");
     expect(result.rights.entries[0].licenseUrl).toBe(candidates[0].licenseUrl);
     expect(result.rights.entries[0].publicationAllowed).toBe(false);
-    expect(result.catalog.items[0].source.mediaRef).toBe(candidates[0].identifier);
+    expect(result.catalog.items[0].source.mediaRef).toBe(
+      candidates[0].identifier,
+    );
     expect(result.catalog.items[0].durationSeconds).toBe(1412);
   });
 
@@ -124,15 +168,24 @@ describe("programgranskning", () => {
     expect(itemId).toBe(catalogIdFromIdentifier(candidates[0].identifier));
     const publishedRights = {
       ...rights,
-      entries: [{
-        catalogItemId: itemId,
-        status: "approved",
-        publicationAllowed: true,
-      }],
+      entries: [
+        {
+          catalogItemId: itemId,
+          status: "approved",
+          publicationAllowed: true,
+        },
+      ],
     };
-    const request = parseReviewRequest("THEVE_REVIEW_V1\n" + JSON.stringify({
-      ...base, identifiers: [candidates[0].identifier], decision: "rejected",
-    }));
-    expect(() => run(request, catalog, publishedRights)).toThrow("redan publicerad");
+    const request = parseReviewRequest(
+      "THEVE_REVIEW_V1\n" +
+        JSON.stringify({
+          ...base,
+          identifiers: [candidates[0].identifier],
+          decision: "rejected",
+        }),
+    );
+    expect(() => run(request, catalog, publishedRights)).toThrow(
+      "redan publicerad",
+    );
   });
 });

@@ -1,7 +1,10 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { applyReviewRequest, parseReviewRequest } from "./lib/editorial-review.mjs";
+import {
+  applyReviewRequest,
+  parseReviewRequest,
+} from "./lib/editorial-review.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const read = (path) => JSON.parse(readFileSync(join(root, path), "utf8"));
@@ -29,6 +32,7 @@ save("data/source/catalog.json", updated.catalog);
 save("data/source/rights.json", updated.rights);
 save("data/editorial/reviews.json", updated.journal);
 console.log(
-  "Granskade poster: " + updated.processed +
+  "Granskade poster: " +
+    updated.processed +
     ". Ingen post har automatiskt lagts i tablån eller publicerats.",
 );

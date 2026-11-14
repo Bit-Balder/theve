@@ -41,7 +41,9 @@ const CANDIDATES_URL =
   REPO +
   "/automation/archive-discovery-results/data/discovery/internet-archive/candidates.json";
 const REVIEWS_URL =
-  "https://raw.githubusercontent.com/" + REPO + "/main/data/editorial/reviews.json";
+  "https://raw.githubusercontent.com/" +
+  REPO +
+  "/main/data/editorial/reviews.json";
 const MAX_BATCH = 40;
 
 function element<T extends HTMLElement>(id: string): T {
@@ -84,13 +86,16 @@ function make<K extends keyof HTMLElementTagNameMap>(
 }
 
 function seasonOf(candidate: Candidate): { key: string; label: string } | null {
-  const match = /(?:\bs(\d{1,2})[\s._-]*e\d{1,3}\b|\b(?:säsong|sasong|season)\s*[#:._-]?\s*(\d{1,2})\b)/i.exec(
-    candidate.title + " " + candidate.identifier,
-  );
+  const match =
+    /(?:\bs(\d{1,2})[\s._-]*e\d{1,3}\b|\b(?:säsong|sasong|season)\s*[#:._-]?\s*(\d{1,2})\b)/i.exec(
+      candidate.title + " " + candidate.identifier,
+    );
   if (!match) return null;
   const season = Number(match[1] || match[2]);
-  const stem = candidate.title.slice(0, Math.min(match.index, candidate.title.length))
-    .replace(/[-_:.,\s]+$/g, "").trim();
+  const stem = candidate.title
+    .slice(0, Math.min(match.index, candidate.title.length))
+    .replace(/[-_:.,\s]+$/g, "")
+    .trim();
   if (stem.length < 3) return null;
   const title = stem.replace(/\s+/g, " ");
   return {
@@ -102,24 +107,35 @@ function seasonOf(candidate: Candidate): { key: string; label: string } | null {
 function shownCandidates(): Candidate[] {
   const query = search.value.toLocaleLowerCase("sv").trim();
   return candidates.filter((candidate) => {
-    const matchesText = !query ||
+    const matchesText =
+      !query ||
       (candidate.title + " " + candidate.identifier)
-        .toLocaleLowerCase("sv").includes(query);
+        .toLocaleLowerCase("sv")
+        .includes(query);
     const matchesChannel =
       filterChannel.value === "all" ||
       candidate.suggestedChannel === filterChannel.value;
     const review = existingReviews.get(candidate.identifier);
     const matchesReview =
       filterReview.value === "all" ||
-      (filterReview.value === "unreviewed" ? !review : review?.decision === filterReview.value);
+      (filterReview.value === "unreviewed"
+        ? !review
+        : review?.decision === filterReview.value);
     return matchesText && matchesChannel && matchesReview;
   });
 }
 
 function channelLabel(channel: string): string {
   const labels: Record<string, string> = {
-    "01": "TV1", "02": "TV2", "03": "TV3", "04": "TV4", "05": "TV5",
-    "06": "TV6", "07": "TV7", "08": "Barn", "09": "Natur",
+    "01": "TV1",
+    "02": "TV2",
+    "03": "TV3",
+    "04": "TV4",
+    "05": "TV5",
+    "06": "TV6",
+    "07": "TV7",
+    "08": "Barn",
+    "09": "Natur",
   };
   return labels[channel] ?? "Okänd";
 }
@@ -140,13 +156,18 @@ function render() {
   let previousSeason = "";
   for (const candidate of visible) {
     const season = seasonOf(candidate);
-    if (season && season.key !== previousSeason && (groups.get(season.key)?.length ?? 0) > 1) {
+    if (
+      season &&
+      season.key !== previousSeason &&
+      (groups.get(season.key)?.length ?? 0) > 1
+    ) {
       const header = make("div", "season-heading");
       const name = make("strong", "", season.label.toUpperCase());
       const button = make("button", "button button--quiet", "MARKERA SÄSONG");
       button.type = "button";
       button.addEventListener("click", () => {
-        for (const entry of groups.get(season.key) ?? []) selected.add(entry.identifier);
+        for (const entry of groups.get(season.key) ?? [])
+          selected.add(entry.identifier);
         groupLabel.value = season.label;
         render();
       });
@@ -225,10 +246,16 @@ async function loadCandidates() {
     });
     if (!result.ok) throw new Error("GitHub svarade HTTP " + result.status);
     const data: unknown = await result.json();
-    if (!Array.isArray(data) || data.some(
-      (item) => !item || typeof item !== "object" ||
-        typeof item.identifier !== "string" || typeof item.title !== "string",
-    )) {
+    if (
+      !Array.isArray(data) ||
+      data.some(
+        (item) =>
+          !item ||
+          typeof item !== "object" ||
+          typeof item.identifier !== "string" ||
+          typeof item.title !== "string",
+      )
+    ) {
       throw new Error("Kandidatlistan har oväntat format.");
     }
     candidates = data as Candidate[];
@@ -238,16 +265,19 @@ async function loadCandidates() {
         cache: "no-store",
       });
       if (reviewResponse.ok) {
-        const journal = (await reviewResponse.json()) as { entries?: ReviewRecord[] };
-        existingReviews = new Map((journal.entries || []).map(
-          (entry) => [entry.identifier, entry],
-        ));
+        const journal = (await reviewResponse.json()) as {
+          entries?: ReviewRecord[];
+        };
+        existingReviews = new Map(
+          (journal.entries || []).map((entry) => [entry.identifier, entry]),
+        );
       }
     } catch {
       existingReviews = new Map();
     }
     loadStatus.textContent =
-      "Inläst: " + candidates.length +
+      "Inläst: " +
+      candidates.length +
       " kandidater. Rättigheter och uppspelning är inte verifierade.";
     render();
   } catch (caught) {
@@ -261,9 +291,13 @@ function requestFromInputs(): ReviewRequest {
   const ids = [...selected].sort((a, b) => a.localeCompare(b, "sv"));
   if (ids.length < 1) throw new Error("Markera minst en arkivpost.");
   if (ids.length > MAX_BATCH) {
-    throw new Error("Dela upp massgranskningen i grupper om högst 40 arkivposter.");
+    throw new Error(
+      "Dela upp massgranskningen i grupper om högst 40 arkivposter.",
+    );
   }
-  const chosen = candidates.filter((candidate) => selected.has(candidate.identifier));
+  const chosen = candidates.filter((candidate) =>
+    selected.has(candidate.identifier),
+  );
   const mode = decision.value as Decision;
   if (!["selected", "approved", "rejected"].includes(mode)) {
     throw new Error("Välj ett giltigt beslut.");
@@ -274,14 +308,20 @@ function requestFromInputs(): ReviewRequest {
   if (!confirmScope.checked) {
     throw new Error("Bekräfta att du har granskat vilka poster som ingår.");
   }
-  if (mode !== "rejected" && chosen.some((candidate) =>
-    !Number.isFinite(candidate.media?.durationSeconds) ||
-    !/\.mp4$/i.test(candidate.media?.preferredFile || "")
-  )) {
+  if (
+    mode !== "rejected" &&
+    chosen.some(
+      (candidate) =>
+        !Number.isFinite(candidate.media?.durationSeconds) ||
+        !/\.mp4$/i.test(candidate.media?.preferredFile || ""),
+    )
+  ) {
     throw new Error("Någon vald arkivpost saknar MP4 eller speltid.");
   }
   if (mode === "approved") {
-    if (chosen.some((candidate) => !candidate.licenseUrl?.startsWith("https://"))) {
+    if (
+      chosen.some((candidate) => !candidate.licenseUrl?.startsWith("https://"))
+    ) {
       throw new Error(
         "Alla valda poster måste ha en verifierbar licenslänk i Internet Archive. Välj annars 'fortsatt granskning'.",
       );
@@ -318,12 +358,19 @@ function prepareIssue() {
   const request = requestFromInputs();
   const body = "THEVE_REVIEW_V1\n" + JSON.stringify(request);
   const query = new URLSearchParams({
-    title: "Theve: " + request.decision + " - " + request.identifiers.length + " poster",
+    title:
+      "Theve: " +
+      request.decision +
+      " - " +
+      request.identifiers.length +
+      " poster",
     body,
   });
   const url = "https://github.com/" + REPO + "/issues/new?" + query.toString();
   if (url.length > 7_500) {
-    throw new Error("Ärendet blir för stort. Välj färre poster eller kortare motivering.");
+    throw new Error(
+      "Ärendet blir för stort. Välj färre poster eller kortare motivering.",
+    );
   }
   return { request, url };
 }
@@ -332,7 +379,8 @@ element<HTMLButtonElement>("submit-review").addEventListener("click", () => {
   try {
     const { url } = prepareIssue();
     window.open(url, "_blank", "noopener,noreferrer");
-    error.textContent = "GitHub öppnades. Skicka ärendet där för att starta granskningen.";
+    error.textContent =
+      "GitHub öppnades. Skicka ärendet där för att starta granskningen.";
   } catch (caught) {
     error.textContent = caught instanceof Error ? caught.message : "Okänt fel.";
   }
@@ -374,16 +422,22 @@ importJson.addEventListener("change", async () => {
   if (!file) return;
   try {
     const data: unknown = JSON.parse(await file.text());
-    if (!Array.isArray(data) ||
-      data.some((candidate) => !candidate || typeof candidate.identifier !== "string")) {
+    if (
+      !Array.isArray(data) ||
+      data.some(
+        (candidate) => !candidate || typeof candidate.identifier !== "string",
+      )
+    ) {
       throw new Error("Filen innehåller ingen giltig kandidatlista.");
     }
     candidates = data as Candidate[];
     selected.clear();
-    loadStatus.textContent = "Lokal kandidatlista inläst: " + candidates.length + " poster.";
+    loadStatus.textContent =
+      "Lokal kandidatlista inläst: " + candidates.length + " poster.";
     render();
   } catch (caught) {
-    loadStatus.textContent = caught instanceof Error ? caught.message : "Felaktig JSON-fil.";
+    loadStatus.textContent =
+      caught instanceof Error ? caught.message : "Felaktig JSON-fil.";
   }
 });
 void loadCandidates();
