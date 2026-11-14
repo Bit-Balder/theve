@@ -12,9 +12,9 @@ export interface TvExperienceElements {
   readonly bannerNext: HTMLElement;
   readonly numberBuffer: HTMLElement;
   readonly status: HTMLElement;
+  readonly actions: HTMLElement;
   readonly guideButton: HTMLButtonElement;
   readonly txtButton: HTMLButtonElement;
-  readonly crtButton: HTMLButtonElement;
   readonly infoButton: HTMLButtonElement;
 }
 
@@ -71,10 +71,12 @@ export function createTvExperience(): TvExperienceElements {
   status.setAttribute("role", "status");
   status.setAttribute("aria-live", "polite");
   status.textContent =
-    "PIL UPP/NED - KANAL  -  G - GUIDE  -  T - TEXT-TV  -  I - INFO";
+    "PIL UPP/NED - KANAL  -  PIL VÄNSTER/HÖGER - MENY";
+  status.hidden = true;
 
   const actions = document.createElement("nav");
   actions.className = "tv-actions";
+  actions.hidden = true;
   actions.setAttribute("aria-label", "TV-funktioner");
 
   const guideButton = document.createElement("button");
@@ -89,18 +91,12 @@ export function createTvExperience(): TvExperienceElements {
   txtButton.textContent = "TXT";
   txtButton.setAttribute("aria-label", "Öppna Text-TV");
 
-  const crtButton = document.createElement("button");
-  crtButton.type = "button";
-  crtButton.className = "tv-action-button crt-button focus-control";
-  crtButton.textContent = "CRT";
-  crtButton.setAttribute("aria-label", "Växla bildrörseffekt");
-
   const infoButton = document.createElement("button");
   infoButton.type = "button";
   infoButton.className = "tv-action-button info-button focus-control";
   infoButton.textContent = "INFO";
   infoButton.setAttribute("aria-label", "Öppna teknisk information");
-  actions.append(guideButton, txtButton, crtButton, infoButton);
+  actions.append(guideButton, txtButton, infoButton);
 
   root.append(picture, channelBug, banner, numberBuffer, actions, status);
 
@@ -118,9 +114,9 @@ export function createTvExperience(): TvExperienceElements {
     bannerNext,
     numberBuffer,
     status,
+    actions,
     guideButton,
     txtButton,
-    crtButton,
     infoButton,
   };
 }
