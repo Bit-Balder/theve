@@ -1,0 +1,2036 @@
+{
+  "schemaVersion": 1,
+  "source": "Marcus Asplund: kommundata, MIT License (2017), kommunpunkter approximativa",
+  "municipalities": [
+    {
+      "id": "1082",
+      "region": "Blekinge län",
+      "name": "Karlshamn",
+      "latitude": 56.1640679,
+      "longitude": 14.8950264
+    },
+    {
+      "id": "1080",
+      "region": "Blekinge län",
+      "name": "Karlskrona",
+      "latitude": 56.161224,
+      "longitude": 15.5869
+    },
+    {
+      "id": "1060",
+      "region": "Blekinge län",
+      "name": "Olofström",
+      "latitude": 56.2780674,
+      "longitude": 14.5225729
+    },
+    {
+      "id": "1081",
+      "region": "Blekinge län",
+      "name": "Ronneby",
+      "latitude": 56.2054368,
+      "longitude": 15.6037495
+    },
+    {
+      "id": "1083",
+      "region": "Blekinge län",
+      "name": "Sölvesborg",
+      "latitude": 56.2783837,
+      "longitude": 15.0180058
+    },
+    {
+      "id": "2084",
+      "region": "Dalarnas län",
+      "name": "Avesta",
+      "latitude": 61.0917012,
+      "longitude": 14.6663653
+    },
+    {
+      "id": "2081",
+      "region": "Dalarnas län",
+      "name": "Borlänge",
+      "latitude": 60.484304,
+      "longitude": 15.433969
+    },
+    {
+      "id": "2080",
+      "region": "Dalarnas län",
+      "name": "Falun",
+      "latitude": 60.607755,
+      "longitude": 15.629663
+    },
+    {
+      "id": "2026",
+      "region": "Dalarnas län",
+      "name": "Gagnef",
+      "latitude": 60.4527768,
+      "longitude": 14.8480045
+    },
+    {
+      "id": "2083",
+      "region": "Dalarnas län",
+      "name": "Hedemora",
+      "latitude": 60.369005,
+      "longitude": 16.1508133
+    },
+    {
+      "id": "2029",
+      "region": "Dalarnas län",
+      "name": "Leksand",
+      "latitude": 60.50623,
+      "longitude": 15.4041053
+    },
+    {
+      "id": "2085",
+      "region": "Dalarnas län",
+      "name": "Ludvika",
+      "latitude": 60.0992705,
+      "longitude": 15.2371951
+    },
+    {
+      "id": "2023",
+      "region": "Dalarnas län",
+      "name": "Malung-Sälen",
+      "latitude": 60.6837214,
+      "longitude": 13.7152143
+    },
+    {
+      "id": "2062",
+      "region": "Dalarnas län",
+      "name": "Mora",
+      "latitude": 61.0091423,
+      "longitude": 14.5459988
+    },
+    {
+      "id": "2034",
+      "region": "Dalarnas län",
+      "name": "Orsa",
+      "latitude": 61.1169365,
+      "longitude": 14.6280708
+    },
+    {
+      "id": "2031",
+      "region": "Dalarnas län",
+      "name": "Rättvik",
+      "latitude": 60.889025,
+      "longitude": 15.123373
+    },
+    {
+      "id": "2061",
+      "region": "Dalarnas län",
+      "name": "Smedjebacken",
+      "latitude": 60.1394371,
+      "longitude": 15.4151076
+    },
+    {
+      "id": "2082",
+      "region": "Dalarnas län",
+      "name": "Säter",
+      "latitude": 60.9135138,
+      "longitude": 15.0193019
+    },
+    {
+      "id": "2021",
+      "region": "Dalarnas län",
+      "name": "Vansbro",
+      "latitude": 60.51556,
+      "longitude": 14.23479
+    },
+    {
+      "id": "2039",
+      "region": "Dalarnas län",
+      "name": "Älvdalen",
+      "latitude": 61.9321196,
+      "longitude": 12.990459
+    },
+    {
+      "id": "0980",
+      "region": "Gotlands län",
+      "name": "Gotland",
+      "latitude": 57.4684121,
+      "longitude": 18.4867447
+    },
+    {
+      "id": "2183",
+      "region": "Gävleborgs län",
+      "name": "Bollnä",
+      "latitude": 61.3483795,
+      "longitude": 16.3942685
+    },
+    {
+      "id": "2180",
+      "region": "Gävleborgs län",
+      "name": "Gävle",
+      "latitude": 60.6748796,
+      "longitude": 17.1412726
+    },
+    {
+      "id": "2104",
+      "region": "Gävleborgs län",
+      "name": "Hofor",
+      "latitude": 60.54595,
+      "longitude": 16.2841
+    },
+    {
+      "id": "2184",
+      "region": "Gävleborgs län",
+      "name": "Hudiksvall",
+      "latitude": 61.7273909,
+      "longitude": 17.107401
+    },
+    {
+      "id": "2161",
+      "region": "Gävleborgs län",
+      "name": "Ljusdal",
+      "latitude": 61.832709,
+      "longitude": 16.1005282
+    },
+    {
+      "id": "2132",
+      "region": "Gävleborgs län",
+      "name": "Nordanstig",
+      "latitude": 62.0366675,
+      "longitude": 17.205249
+    },
+    {
+      "id": "2101",
+      "region": "Gävleborgs län",
+      "name": "Ockelbo",
+      "latitude": 60.891784,
+      "longitude": 16.7201873
+    },
+    {
+      "id": "2121",
+      "region": "Gävleborgs län",
+      "name": "Ovanåker",
+      "latitude": 61.349734,
+      "longitude": 16.393688
+    },
+    {
+      "id": "2181",
+      "region": "Gävleborgs län",
+      "name": "Sandviken",
+      "latitude": 60.621618,
+      "longitude": 16.7767312
+    },
+    {
+      "id": "2182",
+      "region": "Gävleborgs län",
+      "name": "Söderhamn",
+      "latitude": 61.304795,
+      "longitude": 17.052526
+    },
+    {
+      "id": "1382",
+      "region": "Hallands län",
+      "name": "Falkenberg",
+      "latitude": 56.9027333,
+      "longitude": 12.4888013
+    },
+    {
+      "id": "1380",
+      "region": "Hallands län",
+      "name": "Halmstad",
+      "latitude": 56.6797417,
+      "longitude": 12.8838335
+    },
+    {
+      "id": "1315",
+      "region": "Hallands län",
+      "name": "Hylte",
+      "latitude": 56.9546839,
+      "longitude": 13.5284689
+    },
+    {
+      "id": "1384",
+      "region": "Hallands län",
+      "name": "Kungsbacka",
+      "latitude": 57.5035562,
+      "longitude": 12.0823342
+    },
+    {
+      "id": "1381",
+      "region": "Hallands län",
+      "name": "Laholm",
+      "latitude": 56.5057557,
+      "longitude": 13.0456048
+    },
+    {
+      "id": "1383",
+      "region": "Hallands län",
+      "name": "Varberg",
+      "latitude": 57.1087906,
+      "longitude": 12.2544831
+    },
+    {
+      "id": "2326",
+      "region": "Jämtlands län",
+      "name": "Berg",
+      "latitude": 62.7724812,
+      "longitude": 14.1698666
+    },
+    {
+      "id": "2305",
+      "region": "Jämtlands län",
+      "name": "Bräcke",
+      "latitude": 63.383333,
+      "longitude": 14
+    },
+    {
+      "id": "2361",
+      "region": "Jämtlands län",
+      "name": "Härjedalen",
+      "latitude": 62.2944578,
+      "longitude": 13.1942936
+    },
+    {
+      "id": "2309",
+      "region": "Jämtlands län",
+      "name": "Krokom",
+      "latitude": 63.1766832,
+      "longitude": 14.6360681
+    },
+    {
+      "id": "2303",
+      "region": "Jämtlands län",
+      "name": "Ragunda",
+      "latitude": 63.1246168,
+      "longitude": 16.3665889
+    },
+    {
+      "id": "2313",
+      "region": "Jämtlands län",
+      "name": "Strömsund",
+      "latitude": 63.8536621,
+      "longitude": 15.5568691
+    },
+    {
+      "id": "2321",
+      "region": "Jämtlands län",
+      "name": "Åre",
+      "latitude": 63.3990428,
+      "longitude": 13.0815059
+    },
+    {
+      "id": "2380",
+      "region": "Jämtlands län",
+      "name": "Östersund",
+      "latitude": 63.1766832,
+      "longitude": 14.6360681
+    },
+    {
+      "id": "0604",
+      "region": "Jönköpings län",
+      "name": "Aneby",
+      "latitude": 57.838521,
+      "longitude": 14.8178021
+    },
+    {
+      "id": "0686",
+      "region": "Jönköpings län",
+      "name": "Eksjö",
+      "latitude": 57.5909402,
+      "longitude": 15.0239091
+    },
+    {
+      "id": "0662",
+      "region": "Jönköpings län",
+      "name": "Gislaved",
+      "latitude": 57.2985,
+      "longitude": 13.54326
+    },
+    {
+      "id": "0617",
+      "region": "Jönköpings län",
+      "name": "Gnosjö",
+      "latitude": 57.3580398,
+      "longitude": 13.7371898
+    },
+    {
+      "id": "0643",
+      "region": "Jönköpings län",
+      "name": "Habo",
+      "latitude": 57.9093094,
+      "longitude": 14.0743665
+    },
+    {
+      "id": "0680",
+      "region": "Jönköpings län",
+      "name": "Jönköping",
+      "latitude": 57.783795,
+      "longitude": 14.161629
+    },
+    {
+      "id": "0642",
+      "region": "Jönköpings län",
+      "name": "Mullsjö",
+      "latitude": 57.9165989,
+      "longitude": 13.8773174
+    },
+    {
+      "id": "0682",
+      "region": "Jönköpings län",
+      "name": "Nässjö",
+      "latitude": 57.6526244,
+      "longitude": 14.6983398
+    },
+    {
+      "id": "0684",
+      "region": "Jönköpings län",
+      "name": "Sävsjö",
+      "latitude": 57.3989958,
+      "longitude": 14.6658136
+    },
+    {
+      "id": "0687",
+      "region": "Jönköpings län",
+      "name": "Tranå",
+      "latitude": 58.035518,
+      "longitude": 14.975696
+    },
+    {
+      "id": "0665",
+      "region": "Jönköpings län",
+      "name": "Vaggeryd",
+      "latitude": 57.498707,
+      "longitude": 14.14674
+    },
+    {
+      "id": "0685",
+      "region": "Jönköpings län",
+      "name": "Vetlanda",
+      "latitude": 57.42746,
+      "longitude": 15.08533
+    },
+    {
+      "id": "0683",
+      "region": "Jönköpings län",
+      "name": "Värnamo",
+      "latitude": 57.1831605,
+      "longitude": 14.0478214
+    },
+    {
+      "id": "0885",
+      "region": "Kalmar län",
+      "name": "Borgholm",
+      "latitude": 56.8802297,
+      "longitude": 16.6562355
+    },
+    {
+      "id": "0862",
+      "region": "Kalmar län",
+      "name": "Emmaboda",
+      "latitude": 56.62973,
+      "longitude": 15.541259
+    },
+    {
+      "id": "0860",
+      "region": "Kalmar län",
+      "name": "Hultsfred",
+      "latitude": 57.49484,
+      "longitude": 15.8416513
+    },
+    {
+      "id": "0821",
+      "region": "Kalmar län",
+      "name": "Högsby",
+      "latitude": 57.165088,
+      "longitude": 16.026229
+    },
+    {
+      "id": "0880",
+      "region": "Kalmar län",
+      "name": "Kalmar",
+      "latitude": 56.6634447,
+      "longitude": 16.356779
+    },
+    {
+      "id": "0861",
+      "region": "Kalmar län",
+      "name": "Mönsterå",
+      "latitude": 57.0415797,
+      "longitude": 16.44312
+    },
+    {
+      "id": "0840",
+      "region": "Kalmar län",
+      "name": "Mörbylånga",
+      "latitude": 56.5237566,
+      "longitude": 16.3869163
+    },
+    {
+      "id": "0881",
+      "region": "Kalmar län",
+      "name": "Nybro",
+      "latitude": 56.745012,
+      "longitude": 15.907874
+    },
+    {
+      "id": "0882",
+      "region": "Kalmar län",
+      "name": "Oskarshamn",
+      "latitude": 57.2656993,
+      "longitude": 16.4473984
+    },
+    {
+      "id": "0834",
+      "region": "Kalmar län",
+      "name": "Torså",
+      "latitude": 56.4126197,
+      "longitude": 15.9987709
+    },
+    {
+      "id": "0884",
+      "region": "Kalmar län",
+      "name": "Vimmerby",
+      "latitude": 57.6690339,
+      "longitude": 15.858857
+    },
+    {
+      "id": "0883",
+      "region": "Kalmar län",
+      "name": "Västervik",
+      "latitude": 57.758265,
+      "longitude": 16.630142
+    },
+    {
+      "id": "0764",
+      "region": "Kronobergs län",
+      "name": "Alvesta",
+      "latitude": 56.8992104,
+      "longitude": 14.5560006
+    },
+    {
+      "id": "0761",
+      "region": "Kronobergs län",
+      "name": "Lessebo",
+      "latitude": 56.7573602,
+      "longitude": 15.318206
+    },
+    {
+      "id": "0781",
+      "region": "Kronobergs län",
+      "name": "Ljungby",
+      "latitude": 56.8338774,
+      "longitude": 13.9410417
+    },
+    {
+      "id": "0767",
+      "region": "Kronobergs län",
+      "name": "Markaryd",
+      "latitude": 56.7183403,
+      "longitude": 14.4114674
+    },
+    {
+      "id": "0763",
+      "region": "Kronobergs län",
+      "name": "Tingsryd",
+      "latitude": 56.5247452,
+      "longitude": 14.9785342
+    },
+    {
+      "id": "0760",
+      "region": "Kronobergs län",
+      "name": "Uppvidinge",
+      "latitude": 56.9373436,
+      "longitude": 15.4446016
+    },
+    {
+      "id": "0780",
+      "region": "Kronobergs län",
+      "name": "Växjö",
+      "latitude": 56.8750413,
+      "longitude": 14.6091742
+    },
+    {
+      "id": "0765",
+      "region": "Kronobergs län",
+      "name": "Älmhult",
+      "latitude": 56.55097,
+      "longitude": 14.139023
+    },
+    {
+      "id": "2506",
+      "region": "Norrbottens län",
+      "name": "Arjeplog",
+      "latitude": 66.0515051,
+      "longitude": 17.8900543
+    },
+    {
+      "id": "2505",
+      "region": "Norrbottens län",
+      "name": "Arvidsjaur",
+      "latitude": 65.3165601,
+      "longitude": 21.3567714
+    },
+    {
+      "id": "2582",
+      "region": "Norrbottens län",
+      "name": "Boden",
+      "latitude": 65.8251188,
+      "longitude": 21.6887028
+    },
+    {
+      "id": "2523",
+      "region": "Norrbottens län",
+      "name": "Gällivare",
+      "latitude": 67.5021116,
+      "longitude": 19.0487443
+    },
+    {
+      "id": "2583",
+      "region": "Norrbottens län",
+      "name": "Haparanda",
+      "latitude": 65.621281,
+      "longitude": 22.1271203
+    },
+    {
+      "id": "2510",
+      "region": "Norrbottens län",
+      "name": "Jokkmokk",
+      "latitude": 66.6069609,
+      "longitude": 19.8229206
+    },
+    {
+      "id": "2514",
+      "region": "Norrbottens län",
+      "name": "Kalix",
+      "latitude": 65.8556159,
+      "longitude": 23.1447989
+    },
+    {
+      "id": "2584",
+      "region": "Norrbottens län",
+      "name": "Kiruna",
+      "latitude": 67.8557995,
+      "longitude": 20.2252821
+    },
+    {
+      "id": "2580",
+      "region": "Norrbottens län",
+      "name": "Luleå",
+      "latitude": 65.584819,
+      "longitude": 22.1567026
+    },
+    {
+      "id": "2521",
+      "region": "Norrbottens län",
+      "name": "Pajala",
+      "latitude": 66.8309216,
+      "longitude": 20.3991966
+    },
+    {
+      "id": "2581",
+      "region": "Norrbottens län",
+      "name": "Piteå",
+      "latitude": 65.316698,
+      "longitude": 21.4800364
+    },
+    {
+      "id": "2560",
+      "region": "Norrbottens län",
+      "name": "Älvsbyn",
+      "latitude": 65.6771363,
+      "longitude": 20.9928659
+    },
+    {
+      "id": "2513",
+      "region": "Norrbottens län",
+      "name": "Överkalix",
+      "latitude": 66.8309216,
+      "longitude": 20.3991966
+    },
+    {
+      "id": "2518",
+      "region": "Norrbottens län",
+      "name": "Övertorneå",
+      "latitude": 66.5158379,
+      "longitude": 23.5729618
+    },
+    {
+      "id": "1260",
+      "region": "Skåne län",
+      "name": "Bjuv",
+      "latitude": 56.0848002,
+      "longitude": 12.9147936
+    },
+    {
+      "id": "1272",
+      "region": "Skåne län",
+      "name": "Bromölla",
+      "latitude": 56.0745818,
+      "longitude": 14.4700234
+    },
+    {
+      "id": "1231",
+      "region": "Skåne län",
+      "name": "Burlöv",
+      "latitude": 55.6319129,
+      "longitude": 13.096379
+    },
+    {
+      "id": "1278",
+      "region": "Skåne län",
+      "name": "Båstad",
+      "latitude": 56.4264178,
+      "longitude": 12.8461656
+    },
+    {
+      "id": "1285",
+      "region": "Skåne län",
+      "name": "Eslöv",
+      "latitude": 55.8391198,
+      "longitude": 13.3033914
+    },
+    {
+      "id": "1283",
+      "region": "Skåne län",
+      "name": "Helsingborg",
+      "latitude": 56.2090107,
+      "longitude": 12.8557318
+    },
+    {
+      "id": "1293",
+      "region": "Skåne län",
+      "name": "Hässleholm",
+      "latitude": 56.1589145,
+      "longitude": 13.7667655
+    },
+    {
+      "id": "1284",
+      "region": "Skåne län",
+      "name": "Höganä",
+      "latitude": 56.2006388,
+      "longitude": 12.5553288
+    },
+    {
+      "id": "1266",
+      "region": "Skåne län",
+      "name": "Hörby",
+      "latitude": 55.851716,
+      "longitude": 13.6619255
+    },
+    {
+      "id": "1267",
+      "region": "Skåne län",
+      "name": "Höör",
+      "latitude": 55.9320612,
+      "longitude": 13.5420342
+    },
+    {
+      "id": "1276",
+      "region": "Skåne län",
+      "name": "Klippan",
+      "latitude": 56.1355523,
+      "longitude": 13.1279588
+    },
+    {
+      "id": "1290",
+      "region": "Skåne län",
+      "name": "Kristianstad",
+      "latitude": 55.5606075,
+      "longitude": 14.3412722
+    },
+    {
+      "id": "1261",
+      "region": "Skåne län",
+      "name": "Kävlinge",
+      "latitude": 55.7939999,
+      "longitude": 13.1104293
+    },
+    {
+      "id": "1282",
+      "region": "Skåne län",
+      "name": "Landskrona",
+      "latitude": 55.8703477,
+      "longitude": 12.8300802
+    },
+    {
+      "id": "1262",
+      "region": "Skåne län",
+      "name": "Lomma",
+      "latitude": 55.6706674,
+      "longitude": 13.077576
+    },
+    {
+      "id": "1281",
+      "region": "Skåne län",
+      "name": "Lund",
+      "latitude": 55.7046601,
+      "longitude": 13.1910073
+    },
+    {
+      "id": "1280",
+      "region": "Skåne län",
+      "name": "Malmö",
+      "latitude": 55.604981,
+      "longitude": 13.003822
+    },
+    {
+      "id": "1273",
+      "region": "Skåne län",
+      "name": "Osby",
+      "latitude": 56.3815355,
+      "longitude": 13.9929413
+    },
+    {
+      "id": "1275",
+      "region": "Skåne län",
+      "name": "Perstorp",
+      "latitude": 55.4726302,
+      "longitude": 13.0232164
+    },
+    {
+      "id": "1291",
+      "region": "Skåne län",
+      "name": "Simrishamn",
+      "latitude": 55.5573959,
+      "longitude": 14.3489651
+    },
+    {
+      "id": "1265",
+      "region": "Skåne län",
+      "name": "Sjöbo",
+      "latitude": 55.5934072,
+      "longitude": 13.6977756
+    },
+    {
+      "id": "1264",
+      "region": "Skåne län",
+      "name": "Skurup",
+      "latitude": 55.4791989,
+      "longitude": 13.5010092
+    },
+    {
+      "id": "1230",
+      "region": "Skåne län",
+      "name": "Staffanstorp",
+      "latitude": 55.641065,
+      "longitude": 13.212229
+    },
+    {
+      "id": "1214",
+      "region": "Skåne län",
+      "name": "Svalöv",
+      "latitude": 55.9129296,
+      "longitude": 13.1018168
+    },
+    {
+      "id": "1263",
+      "region": "Skåne län",
+      "name": "Svedala",
+      "latitude": 55.5089084,
+      "longitude": 13.2371097
+    },
+    {
+      "id": "1270",
+      "region": "Skåne län",
+      "name": "Tomelilla",
+      "latitude": 55.54355,
+      "longitude": 13.95484
+    },
+    {
+      "id": "1287",
+      "region": "Skåne län",
+      "name": "Trelleborg",
+      "latitude": 55.3735078,
+      "longitude": 13.1579755
+    },
+    {
+      "id": "1233",
+      "region": "Skåne län",
+      "name": "Vellinge",
+      "latitude": 55.4708928,
+      "longitude": 13.0199899
+    },
+    {
+      "id": "1286",
+      "region": "Skåne län",
+      "name": "Ystad",
+      "latitude": 55.5367258,
+      "longitude": 13.1726454
+    },
+    {
+      "id": "1277",
+      "region": "Skåne län",
+      "name": "Åstorp",
+      "latitude": 56.134262,
+      "longitude": 12.945908
+    },
+    {
+      "id": "1292",
+      "region": "Skåne län",
+      "name": "Ängelholm",
+      "latitude": 56.245748,
+      "longitude": 12.863881
+    },
+    {
+      "id": "1257",
+      "region": "Skåne län",
+      "name": "Örkelljunga",
+      "latitude": 56.283635,
+      "longitude": 13.278832
+    },
+    {
+      "id": "1256",
+      "region": "Skåne län",
+      "name": "Östra Göinge",
+      "latitude": 56.2378773,
+      "longitude": 14.2161662
+    },
+    {
+      "id": "0127",
+      "region": "Stockholms län",
+      "name": "Botkyrka",
+      "latitude": 59.2459411,
+      "longitude": 17.8408583
+    },
+    {
+      "id": "0162",
+      "region": "Stockholms län",
+      "name": "Danderyd",
+      "latitude": 59.4079049,
+      "longitude": 18.019075
+    },
+    {
+      "id": "0125",
+      "region": "Stockholms län",
+      "name": "Ekerö",
+      "latitude": 59.2798338,
+      "longitude": 17.7902246
+    },
+    {
+      "id": "0136",
+      "region": "Stockholms län",
+      "name": "Haninge",
+      "latitude": 59.1827236,
+      "longitude": 18.1510906
+    },
+    {
+      "id": "0126",
+      "region": "Stockholms län",
+      "name": "Huddinge",
+      "latitude": 59.23633,
+      "longitude": 17.9821561
+    },
+    {
+      "id": "0123",
+      "region": "Stockholms län",
+      "name": "Järfälla",
+      "latitude": 59.410065,
+      "longitude": 17.836804
+    },
+    {
+      "id": "0186",
+      "region": "Stockholms län",
+      "name": "Lidingö",
+      "latitude": 59.36296,
+      "longitude": 18.1468
+    },
+    {
+      "id": "0182",
+      "region": "Stockholms län",
+      "name": "Nacka",
+      "latitude": 59.307903,
+      "longitude": 18.156042
+    },
+    {
+      "id": "0188",
+      "region": "Stockholms län",
+      "name": "Norrtälje",
+      "latitude": 59.7595841,
+      "longitude": 18.7013584
+    },
+    {
+      "id": "0140",
+      "region": "Stockholms län",
+      "name": "Nykvarn",
+      "latitude": 59.178177,
+      "longitude": 17.427816
+    },
+    {
+      "id": "0192",
+      "region": "Stockholms län",
+      "name": "Nynäshamn",
+      "latitude": 58.902926,
+      "longitude": 17.9465289
+    },
+    {
+      "id": "0128",
+      "region": "Stockholms län",
+      "name": "Salem",
+      "latitude": 59.2,
+      "longitude": 17.766667
+    },
+    {
+      "id": "0191",
+      "region": "Stockholms län",
+      "name": "Sigtuna",
+      "latitude": 59.6191463,
+      "longitude": 17.7234191
+    },
+    {
+      "id": "0163",
+      "region": "Stockholms län",
+      "name": "Sollentuna",
+      "latitude": 59.43911,
+      "longitude": 17.94148
+    },
+    {
+      "id": "0184",
+      "region": "Stockholms län",
+      "name": "Solna",
+      "latitude": 59.3688791,
+      "longitude": 18.0084334
+    },
+    {
+      "id": "0180",
+      "region": "Stockholms län",
+      "name": "Stockholm",
+      "latitude": 59.3293235,
+      "longitude": 18.0685808
+    },
+    {
+      "id": "0183",
+      "region": "Stockholms län",
+      "name": "Sundbyberg",
+      "latitude": 59.3555208,
+      "longitude": 18.0034869
+    },
+    {
+      "id": "0181",
+      "region": "Stockholms län",
+      "name": "Södertälje",
+      "latitude": 59.195363,
+      "longitude": 17.625689
+    },
+    {
+      "id": "0138",
+      "region": "Stockholms län",
+      "name": "Tyresö",
+      "latitude": 59.2425954,
+      "longitude": 18.2833919
+    },
+    {
+      "id": "0160",
+      "region": "Stockholms län",
+      "name": "Täby",
+      "latitude": 59.4419,
+      "longitude": 18.0703299
+    },
+    {
+      "id": "0114",
+      "region": "Stockholms län",
+      "name": "Upplands Väsby",
+      "latitude": 59.51961,
+      "longitude": 17.92834
+    },
+    {
+      "id": "0139",
+      "region": "Stockholms län",
+      "name": "Upplands-Bro",
+      "latitude": 59.5094727,
+      "longitude": 17.6144117
+    },
+    {
+      "id": "0115",
+      "region": "Stockholms län",
+      "name": "Vallentuna",
+      "latitude": 59.5302741,
+      "longitude": 17.9667112
+    },
+    {
+      "id": "0187",
+      "region": "Stockholms län",
+      "name": "Vaxholm",
+      "latitude": 59.452788,
+      "longitude": 18.183603
+    },
+    {
+      "id": "0120",
+      "region": "Stockholms län",
+      "name": "Värmdö",
+      "latitude": 59.333333,
+      "longitude": 18.383333
+    },
+    {
+      "id": "0117",
+      "region": "Stockholms län",
+      "name": "Österåker",
+      "latitude": 59.5000584,
+      "longitude": 18.3524853
+    },
+    {
+      "id": "0484",
+      "region": "Södermanlands län",
+      "name": "Eskilstuna",
+      "latitude": 59.3712486,
+      "longitude": 16.5098045
+    },
+    {
+      "id": "0482",
+      "region": "Södermanlands län",
+      "name": "Flen",
+      "latitude": 59.0579376,
+      "longitude": 16.5879122
+    },
+    {
+      "id": "0461",
+      "region": "Södermanlands län",
+      "name": "Gnesta",
+      "latitude": 59.0485314,
+      "longitude": 17.3063027
+    },
+    {
+      "id": "0483",
+      "region": "Södermanlands län",
+      "name": "Katrineholm",
+      "latitude": 58.9955511,
+      "longitude": 16.2054756
+    },
+    {
+      "id": "0480",
+      "region": "Södermanlands län",
+      "name": "Nyköping",
+      "latitude": 58.7526968,
+      "longitude": 17.0085668
+    },
+    {
+      "id": "0481",
+      "region": "Södermanlands län",
+      "name": "Oxelösund",
+      "latitude": 58.671147,
+      "longitude": 17.107005
+    },
+    {
+      "id": "0486",
+      "region": "Södermanlands län",
+      "name": "Strängnä",
+      "latitude": 59.3774523,
+      "longitude": 17.0321193
+    },
+    {
+      "id": "0488",
+      "region": "Södermanlands län",
+      "name": "Trosa",
+      "latitude": 58.8985136,
+      "longitude": 17.5513527
+    },
+    {
+      "id": "0428",
+      "region": "Södermanlands län",
+      "name": "Vingåker",
+      "latitude": 59.046478,
+      "longitude": 15.876965
+    },
+    {
+      "id": "0381",
+      "region": "Uppsala län",
+      "name": "Enköping",
+      "latitude": 59.8496675,
+      "longitude": 17.5726536
+    },
+    {
+      "id": "0331",
+      "region": "Uppsala län",
+      "name": "Heby",
+      "latitude": 60.0092262,
+      "longitude": 17.2714589
+    },
+    {
+      "id": "0305",
+      "region": "Uppsala län",
+      "name": "Håbo",
+      "latitude": 59.8585638,
+      "longitude": 17.6389267
+    },
+    {
+      "id": "0330",
+      "region": "Uppsala län",
+      "name": "Knivsta",
+      "latitude": 59.724971,
+      "longitude": 17.800603
+    },
+    {
+      "id": "0360",
+      "region": "Uppsala län",
+      "name": "Tierp",
+      "latitude": 60.3458956,
+      "longitude": 17.516906
+    },
+    {
+      "id": "0380",
+      "region": "Uppsala län",
+      "name": "Uppsala",
+      "latitude": 59.8585638,
+      "longitude": 17.6389267
+    },
+    {
+      "id": "0319",
+      "region": "Uppsala län",
+      "name": "Älvkarleby",
+      "latitude": 60.5686067,
+      "longitude": 17.4489129
+    },
+    {
+      "id": "0382",
+      "region": "Uppsala län",
+      "name": "Östhammar",
+      "latitude": 60.2604081,
+      "longitude": 18.3710717
+    },
+    {
+      "id": "1784",
+      "region": "Värmlands län",
+      "name": "Arvika",
+      "latitude": 59.6424649,
+      "longitude": 12.4570024
+    },
+    {
+      "id": "1730",
+      "region": "Värmlands län",
+      "name": "Eda",
+      "latitude": 59.833056,
+      "longitude": 12.316667
+    },
+    {
+      "id": "1782",
+      "region": "Värmlands län",
+      "name": "Filipstad",
+      "latitude": 59.7139973,
+      "longitude": 14.1698445
+    },
+    {
+      "id": "1763",
+      "region": "Värmlands län",
+      "name": "Forshaga",
+      "latitude": 59.5274543,
+      "longitude": 13.4892494
+    },
+    {
+      "id": "1764",
+      "region": "Värmlands län",
+      "name": "Grum",
+      "latitude": 59.3531787,
+      "longitude": 13.1117319
+    },
+    {
+      "id": "1783",
+      "region": "Värmlands län",
+      "name": "Hagfor",
+      "latitude": 60.0314137,
+      "longitude": 13.7021418
+    },
+    {
+      "id": "1761",
+      "region": "Värmlands län",
+      "name": "Hammarö",
+      "latitude": 59.289306,
+      "longitude": 13.5177132
+    },
+    {
+      "id": "1780",
+      "region": "Värmlands län",
+      "name": "Karlstad",
+      "latitude": 59.3794119,
+      "longitude": 13.4955836
+    },
+    {
+      "id": "1715",
+      "region": "Värmlands län",
+      "name": "Kil",
+      "latitude": 59.5033505,
+      "longitude": 13.3175719
+    },
+    {
+      "id": "1781",
+      "region": "Värmlands län",
+      "name": "Kristinehamn",
+      "latitude": 59.2314721,
+      "longitude": 14.1604548
+    },
+    {
+      "id": "1762",
+      "region": "Värmlands län",
+      "name": "Munkfor",
+      "latitude": 59.3827781,
+      "longitude": 13.5176245
+    },
+    {
+      "id": "1760",
+      "region": "Värmlands län",
+      "name": "Storfor",
+      "latitude": 59.5332079,
+      "longitude": 14.2722085
+    },
+    {
+      "id": "1766",
+      "region": "Värmlands län",
+      "name": "Sunne",
+      "latitude": 59.8365575,
+      "longitude": 13.1440464
+    },
+    {
+      "id": "1785",
+      "region": "Värmlands län",
+      "name": "Säffle",
+      "latitude": 59.1915076,
+      "longitude": 12.7599042
+    },
+    {
+      "id": "1737",
+      "region": "Värmlands län",
+      "name": "Torsby",
+      "latitude": 60.1835706,
+      "longitude": 12.9319421
+    },
+    {
+      "id": "1765",
+      "region": "Värmlands län",
+      "name": "Årjäng",
+      "latitude": 59.3891592,
+      "longitude": 12.132717
+    },
+    {
+      "id": "2403",
+      "region": "Västerbottens län",
+      "name": "Bjurholm",
+      "latitude": 63.9304056,
+      "longitude": 19.2192125
+    },
+    {
+      "id": "2425",
+      "region": "Västerbottens län",
+      "name": "Dorotea",
+      "latitude": 64.2617939,
+      "longitude": 16.4152338
+    },
+    {
+      "id": "2481",
+      "region": "Västerbottens län",
+      "name": "Lycksele",
+      "latitude": 64.168142,
+      "longitude": 17.3806303
+    },
+    {
+      "id": "2418",
+      "region": "Västerbottens län",
+      "name": "Malå",
+      "latitude": 65.18512,
+      "longitude": 18.74907
+    },
+    {
+      "id": "2401",
+      "region": "Västerbottens län",
+      "name": "Nordmaling",
+      "latitude": 63.566667,
+      "longitude": 19.5
+    },
+    {
+      "id": "2417",
+      "region": "Västerbottens län",
+      "name": "Norsjö",
+      "latitude": 64.9135093,
+      "longitude": 19.4826413
+    },
+    {
+      "id": "2409",
+      "region": "Västerbottens län",
+      "name": "Robertsfor",
+      "latitude": 65.3337311,
+      "longitude": 16.5161695
+    },
+    {
+      "id": "2482",
+      "region": "Västerbottens län",
+      "name": "Skellefteå",
+      "latitude": 64.7462271,
+      "longitude": 20.9573181
+    },
+    {
+      "id": "2422",
+      "region": "Västerbottens län",
+      "name": "Sorsele",
+      "latitude": 65.5354385,
+      "longitude": 17.5272881
+    },
+    {
+      "id": "2421",
+      "region": "Västerbottens län",
+      "name": "Storuman",
+      "latitude": 65.5629922,
+      "longitude": 15.2948303
+    },
+    {
+      "id": "2480",
+      "region": "Västerbottens län",
+      "name": "Umeå",
+      "latitude": 63.8258471,
+      "longitude": 20.2630354
+    },
+    {
+      "id": "2462",
+      "region": "Västerbottens län",
+      "name": "Vilhelmina",
+      "latitude": 64.1909375,
+      "longitude": 17.3430378
+    },
+    {
+      "id": "2404",
+      "region": "Västerbottens län",
+      "name": "Vindeln",
+      "latitude": 64.2019041,
+      "longitude": 19.7188386
+    },
+    {
+      "id": "2460",
+      "region": "Västerbottens län",
+      "name": "Vännä",
+      "latitude": 63.9054631,
+      "longitude": 19.7514505
+    },
+    {
+      "id": "2463",
+      "region": "Västerbottens län",
+      "name": "Åsele",
+      "latitude": 64.162402,
+      "longitude": 17.3538989
+    },
+    {
+      "id": "2280",
+      "region": "Västernorrlands län",
+      "name": "Härnösand",
+      "latitude": 62.6304399,
+      "longitude": 17.9438148
+    },
+    {
+      "id": "2282",
+      "region": "Västernorrlands län",
+      "name": "Kramfor",
+      "latitude": 62.9284332,
+      "longitude": 17.7862947
+    },
+    {
+      "id": "2283",
+      "region": "Västernorrlands län",
+      "name": "Sollefteå",
+      "latitude": 63.1654065,
+      "longitude": 17.277135
+    },
+    {
+      "id": "2281",
+      "region": "Västernorrlands län",
+      "name": "Sundsvall",
+      "latitude": 62.390811,
+      "longitude": 17.306927
+    },
+    {
+      "id": "2262",
+      "region": "Västernorrlands län",
+      "name": "Timrå",
+      "latitude": 62.4854563,
+      "longitude": 17.3248651
+    },
+    {
+      "id": "2260",
+      "region": "Västernorrlands län",
+      "name": "Ånge",
+      "latitude": 62.5228738,
+      "longitude": 15.6589419
+    },
+    {
+      "id": "2284",
+      "region": "Västernorrlands län",
+      "name": "Örnsköldsvik",
+      "latitude": 63.2900474,
+      "longitude": 18.7166166
+    },
+    {
+      "id": "1984",
+      "region": "Västmanlands län",
+      "name": "Arboga",
+      "latitude": 59.3936883,
+      "longitude": 15.8381747
+    },
+    {
+      "id": "1982",
+      "region": "Västmanlands län",
+      "name": "Fagersta",
+      "latitude": 59.989144,
+      "longitude": 15.8166418
+    },
+    {
+      "id": "1961",
+      "region": "Västmanlands län",
+      "name": "Hallstahammar",
+      "latitude": 59.6132041,
+      "longitude": 16.2294755
+    },
+    {
+      "id": "1960",
+      "region": "Västmanlands län",
+      "name": "Kungsör",
+      "latitude": 59.4226191,
+      "longitude": 16.0976359
+    },
+    {
+      "id": "1983",
+      "region": "Västmanlands län",
+      "name": "Köping",
+      "latitude": 59.9770336,
+      "longitude": 15.7915677
+    },
+    {
+      "id": "1962",
+      "region": "Västmanlands län",
+      "name": "Norberg",
+      "latitude": 60.0653602,
+      "longitude": 15.924201
+    },
+    {
+      "id": "1981",
+      "region": "Västmanlands län",
+      "name": "Sala",
+      "latitude": 59.92024,
+      "longitude": 16.606505
+    },
+    {
+      "id": "1904",
+      "region": "Västmanlands län",
+      "name": "Skinnskatteberg",
+      "latitude": 59.8303775,
+      "longitude": 15.6824285
+    },
+    {
+      "id": "1907",
+      "region": "Västmanlands län",
+      "name": "Surahammar",
+      "latitude": 59.7072262,
+      "longitude": 16.2268409
+    },
+    {
+      "id": "1980",
+      "region": "Västmanlands län",
+      "name": "Västerå",
+      "latitude": 59.6099005,
+      "longitude": 16.5448091
+    },
+    {
+      "id": "1440",
+      "region": "Västra Götalands län",
+      "name": "Ale",
+      "latitude": 57.988605,
+      "longitude": 12.2344546
+    },
+    {
+      "id": "1489",
+      "region": "Västra Götalands län",
+      "name": "Alingså",
+      "latitude": 57.9799652,
+      "longitude": 12.5557707
+    },
+    {
+      "id": "1460",
+      "region": "Västra Götalands län",
+      "name": "Bengtsfor",
+      "latitude": 59.028612,
+      "longitude": 12.226943
+    },
+    {
+      "id": "1443",
+      "region": "Västra Götalands län",
+      "name": "Bollebygd",
+      "latitude": 57.6005306,
+      "longitude": 12.5891024
+    },
+    {
+      "id": "1490",
+      "region": "Västra Götalands län",
+      "name": "Borå",
+      "latitude": 57.5044942,
+      "longitude": 13.1104746
+    },
+    {
+      "id": "1438",
+      "region": "Västra Götalands län",
+      "name": "Dals-Ed",
+      "latitude": 58.9743879,
+      "longitude": 11.8651749
+    },
+    {
+      "id": "1445",
+      "region": "Västra Götalands län",
+      "name": "Essunga",
+      "latitude": 58.2527926,
+      "longitude": 13.0596425
+    },
+    {
+      "id": "1499",
+      "region": "Västra Götalands län",
+      "name": "Falköping",
+      "latitude": 58.175029,
+      "longitude": 13.553217
+    },
+    {
+      "id": "1439",
+      "region": "Västra Götalands län",
+      "name": "Färgelanda",
+      "latitude": 58.6513706,
+      "longitude": 12.0548287
+    },
+    {
+      "id": "1444",
+      "region": "Västra Götalands län",
+      "name": "Grästorp",
+      "latitude": 58.3340403,
+      "longitude": 12.6802177
+    },
+    {
+      "id": "1447",
+      "region": "Västra Götalands län",
+      "name": "Gullspång",
+      "latitude": 58.985467,
+      "longitude": 14.096623
+    },
+    {
+      "id": "1480",
+      "region": "Västra Götalands län",
+      "name": "Göteborg",
+      "latitude": 57.646667,
+      "longitude": 11.929444
+    },
+    {
+      "id": "1471",
+      "region": "Västra Götalands län",
+      "name": "Götene",
+      "latitude": 58.528002,
+      "longitude": 13.491428
+    },
+    {
+      "id": "1466",
+      "region": "Västra Götalands län",
+      "name": "Herrljunga",
+      "latitude": 58.0770678,
+      "longitude": 13.0267972
+    },
+    {
+      "id": "1497",
+      "region": "Västra Götalands län",
+      "name": "Hjo",
+      "latitude": 58.3984771,
+      "longitude": 13.9030062
+    },
+    {
+      "id": "1401",
+      "region": "Västra Götalands län",
+      "name": "Härryda",
+      "latitude": 57.660155,
+      "longitude": 12.2915063
+    },
+    {
+      "id": "1446",
+      "region": "Västra Götalands län",
+      "name": "Karlsborg",
+      "latitude": 58.5542194,
+      "longitude": 14.013523
+    },
+    {
+      "id": "1482",
+      "region": "Västra Götalands län",
+      "name": "Kungälv",
+      "latitude": 58.2772609,
+      "longitude": 12.2596732
+    },
+    {
+      "id": "1441",
+      "region": "Västra Götalands län",
+      "name": "Lerum",
+      "latitude": 57.7697883,
+      "longitude": 12.2696504
+    },
+    {
+      "id": "1494",
+      "region": "Västra Götalands län",
+      "name": "Lidköping",
+      "latitude": 58.5035047,
+      "longitude": 13.1570768
+    },
+    {
+      "id": "1462",
+      "region": "Västra Götalands län",
+      "name": "Lilla Edet",
+      "latitude": 58.132158,
+      "longitude": 12.1241336
+    },
+    {
+      "id": "1484",
+      "region": "Västra Götalands län",
+      "name": "Lysekil",
+      "latitude": 58.275573,
+      "longitude": 11.435558
+    },
+    {
+      "id": "1493",
+      "region": "Västra Götalands län",
+      "name": "Mariestad",
+      "latitude": 58.7097907,
+      "longitude": 13.8217561
+    },
+    {
+      "id": "1463",
+      "region": "Västra Götalands län",
+      "name": "Mark",
+      "latitude": 57.4253176,
+      "longitude": 12.5695216
+    },
+    {
+      "id": "1461",
+      "region": "Västra Götalands län",
+      "name": "Mellerud",
+      "latitude": 58.698678,
+      "longitude": 12.452479
+    },
+    {
+      "id": "1430",
+      "region": "Västra Götalands län",
+      "name": "Munkedal",
+      "latitude": 58.4715051,
+      "longitude": 11.6801923
+    },
+    {
+      "id": "1481",
+      "region": "Västra Götalands län",
+      "name": "Mölndal",
+      "latitude": 57.6841241,
+      "longitude": 11.999811
+    },
+    {
+      "id": "1421",
+      "region": "Västra Götalands län",
+      "name": "Orust",
+      "latitude": 58.1866415,
+      "longitude": 11.6069189
+    },
+    {
+      "id": "1402",
+      "region": "Västra Götalands län",
+      "name": "Partille",
+      "latitude": 57.7366497,
+      "longitude": 12.1251968
+    },
+    {
+      "id": "1495",
+      "region": "Västra Götalands län",
+      "name": "Skara",
+      "latitude": 58.3873233,
+      "longitude": 13.4400612
+    },
+    {
+      "id": "1496",
+      "region": "Västra Götalands län",
+      "name": "Skövde",
+      "latitude": 58.3902782,
+      "longitude": 13.8461208
+    },
+    {
+      "id": "1427",
+      "region": "Västra Götalands län",
+      "name": "Sotenä",
+      "latitude": 58.4401392,
+      "longitude": 11.3614392
+    },
+    {
+      "id": "1415",
+      "region": "Västra Götalands län",
+      "name": "Stenungsund",
+      "latitude": 58.0678388,
+      "longitude": 11.8294346
+    },
+    {
+      "id": "1486",
+      "region": "Västra Götalands län",
+      "name": "Strömstad",
+      "latitude": 58.3527396,
+      "longitude": 11.9242665
+    },
+    {
+      "id": "1465",
+      "region": "Västra Götalands län",
+      "name": "Svenljunga",
+      "latitude": 57.4955715,
+      "longitude": 13.1146225
+    },
+    {
+      "id": "1435",
+      "region": "Västra Götalands län",
+      "name": "Tanum",
+      "latitude": 58.7327267,
+      "longitude": 11.4578192
+    },
+    {
+      "id": "1472",
+      "region": "Västra Götalands län",
+      "name": "Tibro",
+      "latitude": 58.424323,
+      "longitude": 14.1616418
+    },
+    {
+      "id": "1498",
+      "region": "Västra Götalands län",
+      "name": "Tidaholm",
+      "latitude": 57.9191645,
+      "longitude": 13.8777292
+    },
+    {
+      "id": "1419",
+      "region": "Västra Götalands län",
+      "name": "Tjörn",
+      "latitude": 58.0410195,
+      "longitude": 11.6836708
+    },
+    {
+      "id": "1452",
+      "region": "Västra Götalands län",
+      "name": "Tranemo",
+      "latitude": 57.4839099,
+      "longitude": 13.3507705
+    },
+    {
+      "id": "1488",
+      "region": "Västra Götalands län",
+      "name": "Trollhättan",
+      "latitude": 58.2834894,
+      "longitude": 12.2858206
+    },
+    {
+      "id": "1473",
+      "region": "Västra Götalands län",
+      "name": "Töreboda",
+      "latitude": 58.7055092,
+      "longitude": 14.1261468
+    },
+    {
+      "id": "1485",
+      "region": "Västra Götalands län",
+      "name": "Uddevalla",
+      "latitude": 58.3498003,
+      "longitude": 11.935649
+    },
+    {
+      "id": "1491",
+      "region": "Västra Götalands län",
+      "name": "Ulricehamn",
+      "latitude": 58.2527926,
+      "longitude": 13.0596425
+    },
+    {
+      "id": "1470",
+      "region": "Västra Götalands län",
+      "name": "Vara",
+      "latitude": 58.261781,
+      "longitude": 12.960194
+    },
+    {
+      "id": "1442",
+      "region": "Västra Götalands län",
+      "name": "Vårgårda",
+      "latitude": 58.2527926,
+      "longitude": 13.0596425
+    },
+    {
+      "id": "1487",
+      "region": "Västra Götalands län",
+      "name": "Vänersborg",
+      "latitude": 58.3117155,
+      "longitude": 12.2918706
+    },
+    {
+      "id": "1492",
+      "region": "Västra Götalands län",
+      "name": "Åmål",
+      "latitude": 59.051117,
+      "longitude": 12.6977323
+    },
+    {
+      "id": "1407",
+      "region": "Västra Götalands län",
+      "name": "Öckerö",
+      "latitude": 57.711741,
+      "longitude": 11.6487886
+    },
+    {
+      "id": "1882",
+      "region": "Örebro län",
+      "name": "Askersund",
+      "latitude": 58.8894268,
+      "longitude": 14.9109867
+    },
+    {
+      "id": "1862",
+      "region": "Örebro län",
+      "name": "Degerfor",
+      "latitude": 59.2391027,
+      "longitude": 14.4339179
+    },
+    {
+      "id": "1861",
+      "region": "Örebro län",
+      "name": "Hallsberg",
+      "latitude": 59.065374,
+      "longitude": 15.1050204
+    },
+    {
+      "id": "1863",
+      "region": "Örebro län",
+      "name": "Hällefor",
+      "latitude": 59.783688,
+      "longitude": 14.5225692
+    },
+    {
+      "id": "1883",
+      "region": "Örebro län",
+      "name": "Karlskoga",
+      "latitude": 59.328634,
+      "longitude": 14.536414
+    },
+    {
+      "id": "1881",
+      "region": "Örebro län",
+      "name": "Kumla",
+      "latitude": 59.1265359,
+      "longitude": 15.1401053
+    },
+    {
+      "id": "1860",
+      "region": "Örebro län",
+      "name": "Laxå",
+      "latitude": 58.9896252,
+      "longitude": 14.6388738
+    },
+    {
+      "id": "1814",
+      "region": "Örebro län",
+      "name": "Lekeberg",
+      "latitude": 59.1653904,
+      "longitude": 14.7434068
+    },
+    {
+      "id": "1885",
+      "region": "Örebro län",
+      "name": "Lindesberg",
+      "latitude": 59.59161,
+      "longitude": 15.229
+    },
+    {
+      "id": "1864",
+      "region": "Örebro län",
+      "name": "Ljusnarsberg",
+      "latitude": 59.9752934,
+      "longitude": 14.8777794
+    },
+    {
+      "id": "1884",
+      "region": "Örebro län",
+      "name": "Nora",
+      "latitude": 59.5192064,
+      "longitude": 15.0378667
+    },
+    {
+      "id": "1880",
+      "region": "Örebro län",
+      "name": "Örebro",
+      "latitude": 59.2752626,
+      "longitude": 15.2134105
+    },
+    {
+      "id": "0560",
+      "region": "Östergötlands län",
+      "name": "Boxholm",
+      "latitude": 58.1966895,
+      "longitude": 15.0474881
+    },
+    {
+      "id": "0562",
+      "region": "Östergötlands län",
+      "name": "Finspång",
+      "latitude": 58.7074884,
+      "longitude": 15.773595
+    },
+    {
+      "id": "0513",
+      "region": "Östergötlands län",
+      "name": "Kinda",
+      "latitude": 57.9535789,
+      "longitude": 15.8479635
+    },
+    {
+      "id": "0580",
+      "region": "Östergötlands län",
+      "name": "Linköping",
+      "latitude": 58.3941654,
+      "longitude": 15.5599638
+    },
+    {
+      "id": "0586",
+      "region": "Östergötlands län",
+      "name": "Mjölby",
+      "latitude": 58.2497209,
+      "longitude": 14.6543704
+    },
+    {
+      "id": "0583",
+      "region": "Östergötlands län",
+      "name": "Motala",
+      "latitude": 58.5414775,
+      "longitude": 15.0105791
+    },
+    {
+      "id": "0581",
+      "region": "Östergötlands län",
+      "name": "Norrköping",
+      "latitude": 58.7023914,
+      "longitude": 15.8071836
+    },
+    {
+      "id": "0582",
+      "region": "Östergötlands län",
+      "name": "Söderköping",
+      "latitude": 58.4643957,
+      "longitude": 16.3566075
+    },
+    {
+      "id": "0584",
+      "region": "Östergötlands län",
+      "name": "Vadstena",
+      "latitude": 58.4521401,
+      "longitude": 14.8994742
+    },
+    {
+      "id": "0563",
+      "region": "Östergötlands län",
+      "name": "Valdemarsvik",
+      "latitude": 58.2024514,
+      "longitude": 16.6013626
+    },
+    {
+      "id": "0512",
+      "region": "Östergötlands län",
+      "name": "Ydre",
+      "latitude": 57.8595195,
+      "longitude": 15.2973458
+    },
+    {
+      "id": "0561",
+      "region": "Östergötlands län",
+      "name": "Åtvidaberg",
+      "latitude": 58.2021898,
+      "longitude": 15.9972698
+    },
+    {
+      "id": "0509",
+      "region": "Östergötlands län",
+      "name": "Ödeshög",
+      "latitude": 58.2291051,
+      "longitude": 14.6530212
+    }
+  ]
+}
