@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { describeWeatherError, smhiPointUrl } from "../src/core/local-weather";
+import {
+  describeWeatherError,
+  fetchMunicipalityWeather,
+  openMeteoForecastUrl,
+} from "../src/core/local-weather";
 import {
   chooseMunicipality,
   findMunicipality,
@@ -56,23 +60,59 @@ describe("Väderregioner, kommuner och favoriter", () => {
     expect(MUNICIPALITIES.some((place) => place.name === "Höganäs")).toBe(true);
   });
 
-  it("visar statuskod eller nätverksfel från SMHI", () => {
-    expect(describeWeatherError(new Error("SMHI svarade HTTP 403."))).toBe(
-      "SMHI SVARADE HTTP 403",
+  it("visar statuskod eller nätverksfel från lokalt väder", () => {
+    expect(describeWeatherError(new Error("Open-Meteo svarade HTTP 403."))).toBe(
+      "OPEN-METEO SVARADE HTTP 403",
     );
     expect(describeWeatherError(new TypeError("Failed to fetch"))).toBe(
-      "NÄTVERK ELLER WEBBLÄSARE STOPPADE SMHI",
+      "NÄTVERK ELLER WEBBLÄSARE STOPPADE DATA",
     );
   });
 
-  it("söker en SMHI-prognos för vald kommuns punkt", () => {
-    const municipality = findMunicipality("0180");
-    expect(municipality?.name).toBe("Stockholm");
-    if (!municipality) throw new Error("Stockholm saknas");
-    const url = smhiPointUrl(municipality);
-    expect(url).toContain("snow1g");
-    expect(url).toContain("lon/");
-    expect(url).toContain("lat/");
-    expect(url).toContain("timeseries=8");
+  it("söker Open-Meteo med m/s och UTC-tidsstämplar", () => {
+    const municipality = findMunicipality("0486");
+    expect(municipality?.name).toBe("Strängnäs");
+    if (!municipality) throw new Error("Strängnäs saknas");
+    const url = new URL(openMeteoForecastUrl(municipality));
+    expect(url.origin).toBe("https://api.open-meteo.com");
+    expect(url.searchParams.get("latitude")).toBe(String(municipality.latitude));
+    expect(url.searchParams.get("longitude")).toBe(String(municipality.longitude));
+    expect(url.searchParams.get("wind_speed_unit")).toBe("ms");
+    expect(url.searchParams.get("timeformat")).toBe("unixtime");
+    expect(url.searchParams.get("hourly")).toContain("precipitation");
+  });
+
+  it("omvandlar Open-Meteos timprognos till Text-TV:s värden", async () => {
+    const municipality = findMunicipality("0486");
+    if (!municipality) throw new Error("Strängnäs saknas");
+    const nextHour = Math.ceil(Date.now() / 3_600_000) * 3_600;
+    let calls = 0;
+    const fetcher = (async (url: RequestInfo | URL) => {
+      calls += 1;
+      expect(String(url)).toContain("api.open-meteo.com");
+      return new Response(
+        JSON.stringify({
+          hourly: {
+            time: [nextHour, nextHour + 3600],
+            temperature_2m: [4.5, 3],
+            precipitation: [0, 0.3],
+            wind_speed_10m: [2.6, 3.4],
+          },
+        }),
+        { status: 200, headers: { "Content-Type": "application/json" } },
+      );
+    }) as typeof fetch;
+
+    const result = await fetchMunicipalityWeather(municipality, fetcher);
+    expect(calls).toBe(1);
+    expect(result.location.sourceUrl).toContain("api.open-meteo.com");
+    expect(result.location.name).toBe("Strängnäs");
+    expect(result.location.forecasts).toHaveLength(2);
+    expect(result.location.forecasts[0]?.temperatureC).toBe(4.5);
+    expect(result.location.forecasts[1]?.precipitationMm).toBe(0.3);
+    expect(result.location.forecasts[0]?.windMps).toBe(2.6);
+    expect(result.location.forecasts[0]?.validAt).toBe(
+      new Date(nextHour * 1000).toISOString(),
+    );
   });
 });
