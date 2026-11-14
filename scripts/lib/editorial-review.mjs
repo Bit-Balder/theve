@@ -22,7 +22,7 @@ export function parseReviewRequest(body) {
   }
   if (body.length > 14_000) throw new Error("Ärendet är för stort.");
   const data = JSON.parse(body.slice("THEVE_REVIEW_V1\n".length));
-  const decisions = ["approved", "rejected"];
+  const decisions = ["selected", "approved", "rejected"];
   if (
     data?.version !== 1 ||
     !decisions.includes(data.decision) ||
@@ -57,7 +57,9 @@ export function parseReviewRequest(body) {
     identifiers: data.identifiers,
     decision: data.decision,
     notes: data.notes.trim(),
-    basis: data.decision === "approved" ? data.basis.trim() : "Innehållet har avvisats i redaktionell granskning.",
+    basis: data.decision === "approved" ? data.basis.trim() :
+      data.decision === "selected" ? "Utvald för fortsatt rättighetsgranskning." :
+      "Innehållet har avvisats i redaktionell granskning.",
     evidenceUrl: data.decision === "approved" ? data.evidenceUrl : null,
     channelId: data.channelId || null,
     groupLabel: typeof data.groupLabel === "string" ? data.groupLabel.trim().slice(0, 120) : "",
@@ -106,6 +108,8 @@ export function applyReviewRequest({
       if (!validUrl(candidate.licenseUrl)) {
         throw new Error(id + " saknar giltig licenslänk i Internet Archives metadata.");
       }
+    }
+    if (request.decision !== "rejected") {
       if (!IDENTIFIER.test(id)) throw new Error("Ogiltig identifierare " + id);
       const duration = candidate.media?.durationSeconds;
       if (!Number.isFinite(duration) || duration < 1 || !/\.mp4$/i.test(candidate.media?.preferredFile || "")) {
@@ -160,12 +164,12 @@ export function applyReviewRequest({
     });
     existingRights.set(itemId, {
       catalogItemId: itemId,
-      status: "approved",
+      status: request.decision === "approved" ? "approved" : "review_required",
       basis: request.basis,
       evidenceUrl: request.evidenceUrl,
       reviewedAt,
       publicationAllowed: false,
-      licenseUrl: candidate.licenseUrl,
+      licenseUrl: candidate.licenseUrl || null,
       notes: "Redaktionell granskning #" + issueNumber + ". " + request.notes +
         " Uppspelning, familjegranskning och tablå återstår.",
     });
