@@ -73,6 +73,32 @@ describe("Text-TV", () => {
     expect(missing.rows.join("\n")).toContain("VÄDERDATA SAKNAS");
   });
 
+  it("skiljer lokala Open-Meteo-data från SMHI:s Sverigeöversikt", () => {
+    const local = createTeletextPage("300", {
+      ...baseContext,
+      selectedMunicipalityName: "Strängnäs",
+      selectedWeather: {
+        id: "0486",
+        name: "Strängnäs",
+        latitude: 59.377,
+        longitude: 17.032,
+        sourceUrl: "https://api.open-meteo.com/v1/forecast",
+        forecasts: [
+          {
+            validAt: "2026-11-13T14:00:00Z",
+            temperatureC: 4,
+            windMps: 3,
+            precipitationMm: 0.2,
+          },
+        ],
+      },
+    });
+    expect(local.rows.join("\n")).toContain("OPEN-METEO.COM");
+    expect(local.rows.join("\n")).not.toContain("SMHI");
+    const overview = createTeletextPage("304", baseContext);
+    expect(overview.rows.join("\n")).toContain("SMHI");
+  });
+
   it("bygger sida 400 från samma aktuella schema som programguiden", () => {
     const page = createTeletextPage("400", baseContext);
     const text = page.rows.join("\n");
