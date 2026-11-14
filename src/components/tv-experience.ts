@@ -65,7 +65,7 @@ export function createTvExperience(): TvExperienceElements {
   status.setAttribute("role", "status");
   status.setAttribute("aria-live", "polite");
   status.textContent =
-    "PIL UPP/NED · KANAL  ·  G · GUIDE  ·  T · TEXT-TV  ·  0–9 · DIREKT";
+    "PIL UPP/NED - KANAL  -  G - GUIDE  -  T - TEXT-TV  -  0–9 - DIREKT";
 
   const txtButton = document.createElement("button");
   txtButton.type = "button";
