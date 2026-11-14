@@ -284,6 +284,18 @@ select option {
   text-align: right;
 }
 
+.candidate-hide,
+.candidate-reject {
+  min-height: 32px;
+  padding: 6px 9px;
+  font-size: 10px;
+}
+
+.candidate-reject {
+  border-color: var(--color-coral);
+  color: var(--color-coral);
+}
+
 .status-tag {
   display: inline-block;
   border: 1px solid #8d97b7;

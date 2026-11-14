@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 
 export const MAX_REVIEW_ITEMS = 40;
+export const PRIVATE_RIGHTS_BASIS =
+  "Rättigheter verifierade. Privat underlag finns i GitHub Secrets.";
 const CHANNELS = {
   "01": "tv1",
   "02": "tv2",
@@ -24,14 +26,24 @@ function validUrl(value) {
 }
 
 export function parseReviewRequest(body) {
-  if (typeof body !== "string" || !body.startsWith("THEVE_REVIEW_V1\n")) {
-    throw new Error("Ärendet saknar THEVE_REVIEW_V1.");
+  if (typeof body !== "string" || !body.startsWith("THEVE_REVIEW_V2\n")) {
+    throw new Error(
+      "Ärendet måste använda THEVE_REVIEW_V2 utan privata underlag.",
+    );
   }
   if (body.length > 14_000) throw new Error("Ärendet är för stort.");
-  const data = JSON.parse(body.slice("THEVE_REVIEW_V1\n".length));
+  const data = JSON.parse(body.slice("THEVE_REVIEW_V2\n".length));
+  if (
+    Object.hasOwn(data ?? {}, "basis") ||
+    Object.hasOwn(data ?? {}, "evidenceUrl")
+  ) {
+    throw new Error(
+      "Privat rättighetsunderlag får inte finnas i ett offentligt ärende.",
+    );
+  }
   const decisions = ["selected", "approved", "rejected"];
   if (
-    data?.version !== 1 ||
+    data?.version !== 2 ||
     !decisions.includes(data.decision) ||
     !Array.isArray(data.identifiers) ||
     data.identifiers.length < 1 ||
@@ -56,43 +68,70 @@ export function parseReviewRequest(body) {
   ) {
     throw new Error("Skriv en motivering på minst åtta tecken.");
   }
-  if (data.decision === "approved") {
-    if (
-      typeof data.basis !== "string" ||
-      data.basis.trim().length < 20 ||
-      data.basis.length > 1200
-    ) {
-      throw new Error("Godkännande kräver ett tydligt rättighetsunderlag.");
-    }
-    if (!validUrl(data.evidenceUrl)) {
-      throw new Error(
-        "Godkännande kräver en publik HTTPS-länk till rättighetsunderlaget.",
-      );
-    }
-    if (data.confirmedRightsForAll !== true) {
-      throw new Error(
-        "Bekräfta att rättighetsunderlaget gäller alla valda poster.",
-      );
-    }
+  if (data.decision === "approved" && data.confirmedRightsForAll !== true) {
+    throw new Error(
+      "Bekräfta din manuella rättighetsgranskning för alla valda poster.",
+    );
   }
   return {
-    version: 1,
+    version: 2,
     identifiers: data.identifiers,
     decision: data.decision,
     notes: data.notes.trim(),
     basis:
       data.decision === "approved"
-        ? data.basis.trim()
+        ? PRIVATE_RIGHTS_BASIS
         : data.decision === "selected"
           ? "Utvald för fortsatt rättighetsgranskning."
           : "Innehållet har avvisats i redaktionell granskning.",
-    evidenceUrl: data.decision === "approved" ? data.evidenceUrl : null,
+    evidenceUrl: null,
     channelId: data.channelId || null,
     groupLabel:
       typeof data.groupLabel === "string"
         ? data.groupLabel.trim().slice(0, 120)
         : "",
   };
+}
+
+/**
+ * GitHub Secret THEVE_PRIVATE_RIGHTS_RECORDS is only read during the Action.
+ * Neither the secret nor its values may enter a public JSON file.
+ */
+export function verifyPrivateRightsRecord(
+  recordsJson,
+  issueNumber,
+  identifiers,
+) {
+  if (typeof recordsJson !== "string" || !recordsJson.trim()) {
+    throw new Error(
+      "Lägg först till ärendets privata underlag i GitHub Secret THEVE_PRIVATE_RIGHTS_RECORDS. Öppna sedan ärendet igen.",
+    );
+  }
+  let records;
+  try {
+    records = JSON.parse(recordsJson);
+  } catch {
+    throw new Error(
+      "GitHub Secret THEVE_PRIVATE_RIGHTS_RECORDS innehåller ogiltig JSON.",
+    );
+  }
+  const record = records?.[String(issueNumber)];
+  if (
+    !record ||
+    !Array.isArray(record.identifiers) ||
+    !Array.isArray(identifiers) ||
+    record.identifiers.length !== identifiers.length ||
+    !identifiers.every((id) => record.identifiers.includes(id)) ||
+    new Set(record.identifiers).size !== identifiers.length ||
+    typeof record.basis !== "string" ||
+    record.basis.trim().length < 20 ||
+    !validUrl(record.evidenceUrl)
+  ) {
+    throw new Error(
+      "Privat rättighetsunderlag för ärendet saknas, är ofullständigt eller omfattar inte alla valda arkivposter.",
+    );
+  }
+  return true;
 }
 
 export function catalogIdFromIdentifier(identifier) {
@@ -118,6 +157,7 @@ export function applyReviewRequest({
   reviewer,
   issueNumber,
   reviewedAt,
+  rightsRecordsJson = "",
 }) {
   if (!/^[A-Za-z0-9-]{1,39}$/.test(reviewer))
     throw new Error("Ogiltigt granskar-ID.");
@@ -125,6 +165,13 @@ export function applyReviewRequest({
     throw new Error("Ogiltigt ärendenummer.");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(reviewedAt))
     throw new Error("Ogiltigt granskningsdatum.");
+  if (request.decision === "approved") {
+    verifyPrivateRightsRecord(
+      rightsRecordsJson,
+      issueNumber,
+      request.identifiers,
+    );
+  }
   const byId = new Map(
     candidates.map((candidate) => [candidate.identifier, candidate]),
   );
@@ -150,28 +197,15 @@ export function applyReviewRequest({
           " är redan publicerad. Använd en separat granskningsändring.",
       );
     }
-    if (request.decision === "approved") {
-      if (!validUrl(candidate.licenseUrl)) {
-        throw new Error(
-          id + " saknar giltig licenslänk i Internet Archives metadata.",
-        );
-      }
-    }
-    if (request.decision !== "rejected") {
-      if (!IDENTIFIER.test(id)) throw new Error("Ogiltig identifierare " + id);
-      const duration = candidate.media?.durationSeconds;
-      if (
-        !Number.isFinite(duration) ||
-        duration < 1 ||
-        !/\.mp4$/i.test(candidate.media?.preferredFile || "")
-      ) {
-        throw new Error(id + " saknar MP4 eller speltid. Kontrollera källan.");
-      }
-    }
-    return { candidate, itemId };
+    const duration = candidate.media?.durationSeconds;
+    const catalogReady =
+      Number.isFinite(duration) &&
+      duration >= 1 &&
+      /\.mp4$/i.test(candidate.media?.preferredFile || "");
+    return { candidate, itemId, catalogReady };
   });
 
-  for (const { candidate, itemId } of selected) {
+  for (const { candidate, itemId, catalogReady } of selected) {
     const channelId = request.channelId || CHANNELS[candidate.suggestedChannel];
     if (!channelId)
       throw new Error("Ingen giltig kanal för " + candidate.identifier);
@@ -182,6 +216,7 @@ export function applyReviewRequest({
       channelId,
       groupLabel: request.groupLabel,
       decision: request.decision,
+      catalogPending: !catalogReady && request.decision !== "rejected",
       basis: request.basis,
       evidenceUrl: request.evidenceUrl,
       licenseUrl: candidate.licenseUrl || null,
@@ -192,19 +227,15 @@ export function applyReviewRequest({
     });
 
     if (request.decision === "rejected") {
-      if (existingRights.has(itemId)) {
-        existingRights.set(itemId, {
-          ...existingRights.get(itemId),
-          status: "rejected",
-          publicationAllowed: false,
-          basis: request.basis,
-          evidenceUrl: null,
-          reviewedAt,
-          notes: request.notes,
-        });
-      }
+      // Rejected drafts disappear from the catalog and remain in the journal.
+      // Active published entries were already blocked above.
+      existingCatalog.delete(itemId);
+      existingRights.delete(itemId);
       continue;
     }
+
+    // Keep the decision, but never invent a duration or video format.
+    if (!catalogReady) continue;
 
     existingCatalog.set(itemId, {
       id: itemId,

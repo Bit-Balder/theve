@@ -47,11 +47,12 @@
           </label>
           <label>GRANSKNING
             <select id="filter-review">
-              <option value="all">Alla</option>
+              <option value="all">Aktiva (dölj avvisade)</option>
               <option value="unreviewed">Ogranskade</option>
               <option value="selected">Utvalda</option>
               <option value="approved">Rättigheter godkända</option>
               <option value="rejected">Avvisade</option>
+              <option value="hidden">Lokalt dolda</option>
             </select>
           </label>
           <button id="reload" type="button" class="button button--quiet">HÄMTA NYTT</button>
@@ -71,7 +72,7 @@
             <div id="candidate-list" class="candidate-list"></div>
           </section>
 
-          <aside class="review-panel" aria-label="Massgranskning">
+          <aside id="review-panel" class="review-panel" aria-label="Massgranskning">
             <h2>MASSGRANSKNING</h2>
             <p class="selection-count" id="selected-count">0 VALDA PROGRAM</p>
             <p>Markera en serie, en säsong eller flera arkivposter.</p>
@@ -103,25 +104,19 @@
               <textarea id="notes" rows="3" maxlength="1200" placeholder="Varför väljer, godkänner eller avvisar du materialet?"></textarea>
             </label>
             <div id="rights-fields" hidden>
-              <label>RÄTTIGHETSGRUND
-                <textarea id="basis" rows="3" maxlength="1200" placeholder="Beskriv vem som äger rättigheterna och varför tillståndet gäller."></textarea>
-              </label>
-              <label>OFFENTLIG LÄNK TILL RÄTTIGHETSUNDERLAG
-                <input id="evidence-url" type="url" maxlength="2048" placeholder="https://..." />
-              </label>
-              <p class="rights-note">Internet Archives licensetikett räcker inte ensam. Underlaget måste omfatta alla valda program.</p>
+              <p class="rights-note">Du kan godkänna en ogranskad arkivpost utan licensetikett. Ditt privata underlag ska endast finnas i GitHub Secret THEVE_PRIVATE_RIGHTS_RECORDS, kopplat till ärendenumret. Lägg inte rättighetsgrund eller länkar här.</p>
               <label class="checkline"><input type="checkbox" id="confirm-rights" />
-                Jag har verifierat rättigheterna för samtliga valda poster.
+                Jag har manuellt granskat rättigheterna för alla valda poster.
               </label>
             </div>
             <label class="checkline"><input type="checkbox" id="confirm-scope" />
               Jag har granskat vilka poster som omfattas.
             </label>
-            <p class="privacy">GitHub-ärenden är offentliga. Lägg aldrig privata avtal eller personuppgifter i formuläret.</p>
+            <p class="privacy">Motiveringen och ärendet är offentliga. Skriv inte privat rättighetsgrund, avtal, länkar eller personuppgifter här. För godkännande måste ett separat GitHub Secret kopplas till ärendet.</p>
             <p id="review-error" class="error" role="alert" aria-live="assertive"></p>
             <button type="button" class="button button--primary" id="submit-review">SKAPA GRANSKNINGSÄRENDE</button>
             <button type="button" class="button button--quiet" id="download-review">SPARA BESLUT SOM JSON</button>
-            <p class="small">GitHub skapar en separat gren. Om automatiska pull requests är blockerade får du en manuell länk.</p>
+            <p class="small">DÖLJ sparas bara i den här webbläsaren. AVVISA sparas i granskningen efter att ändringsförslaget har mergats. Då filtreras posten även bort från nya arkivsökningar. GitHub skapar en separat gren.</p>
           </aside>
         </div>
 

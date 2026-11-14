@@ -128,6 +128,34 @@ describe("Internet Archive discovery", () => {
     expect(result.report.errors).toHaveLength(1);
   });
 
+  it("never reintroduces archive entries rejected in the editorial journal", async () => {
+    const result = await discoverArchive({
+      config,
+      existingCandidates: [
+        {
+          identifier: "test-svenskt",
+          title: "Tidigare kandidat",
+          matchingSearches: ["barn"],
+        },
+      ],
+      excludedIdentifiers: ["test-svenskt"],
+      requestJson: async (url) => {
+        if (url.includes("advancedsearch.php")) {
+          return {
+            response: {
+              numFound: 1,
+              docs: [{ identifier: "test-svenskt" }],
+            },
+          };
+        }
+        throw new Error("Rejection must skip metadata requests");
+      },
+    });
+    expect(result.candidates).toHaveLength(0);
+    expect(result.report.skipped.previously_rejected).toBe(1);
+    expect(result.report.metadataChecked).toBe(0);
+  });
+
   it("validates channel identifiers and request budgets", () => {
     expect(validateConfig(config)).toBe(config);
     expect(() =>

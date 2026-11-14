@@ -26,6 +26,7 @@ const updated = applyReviewRequest({
   reviewer: process.env.THEVE_REVIEW_AUTHOR,
   issueNumber: Number(process.env.THEVE_REVIEW_ISSUE),
   reviewedAt: process.env.THEVE_REVIEW_DATE?.slice(0, 10),
+  rightsRecordsJson: process.env.THEVE_PRIVATE_RIGHTS_RECORDS || "",
 });
 mkdirSync(join(root, "data/editorial"), { recursive: true });
 save("data/source/catalog.json", updated.catalog);

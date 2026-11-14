@@ -63,8 +63,14 @@ async function main() {
     return;
   }
 
+  const rejected = readJson(join(root, "data", "editorial", "reviews.json"), {
+    entries: [],
+  })
+    .entries.filter((entry) => entry.decision === "rejected")
+    .map((entry) => entry.identifier);
   const result = await discoverArchive({
     config,
+    excludedIdentifiers: rejected,
     existingCandidates: readJson(join(outputDir, "candidates.json"), []),
     previousState: readJson(join(outputDir, "state.json"), {}),
     requestJson: async (url) => {

@@ -63,12 +63,15 @@ test("programschema väljer en hel säsong utan att publicera", async ({ page })
   expect(download.suggestedFilename()).toBe("theve-review-selected.json");
 
   await page.locator("#decision").selectOption("approved");
-  await page.locator("#basis").fill("Påstått rättighetsunderlag för säsongen behöver kontrolleras.");
-  await page.locator("#evidence-url").fill("https://example.org/rights");
+  await expect(page.locator("#basis")).toHaveCount(0);
+  await expect(page.locator("#evidence-url")).toHaveCount(0);
+  await expect(page.locator("#rights-fields")).toBeVisible();
   await page.locator("#confirm-rights").check();
-  await page.locator("#submit-review").click();
-  await expect(page.locator("#review-error")).toContainText("Alla valda poster");
-  await expect(page.locator("#review-error")).toContainText("licenslänk");
+  const approvedDownloadPromise = page.waitForEvent("download");
+  await page.locator("#download-review").click();
+  const approvedDownload = await approvedDownloadPromise;
+  expect(approvedDownload.suggestedFilename()).toBe("theve-review-approved.json");
+  await expect(page.locator("#review-error")).toBeEmpty();
 });
 
 test("programschema kan välja och avvisa filtrerade kandidater", async ({ page }) => {
@@ -84,4 +87,43 @@ test("programschema kan välja och avvisa filtrerade kandidater", async ({ page 
   await page.locator("#download-review").click();
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toBe("theve-review-rejected.json");
+});
+
+test("lokal döljning består efter omladdning och kan återställas", async ({ page }) => {
+  await page.goto("/programschema/");
+  await expect(page.locator(".candidate-row")).toHaveCount(3);
+  const second = page.locator(".candidate-row").filter({
+    has: page.getByRole("heading", { name: "En annan film" }),
+  });
+  await second.getByRole("button", { name: "DÖLJ LOKALT" }).click();
+  await expect(page.locator(".candidate-row")).toHaveCount(2);
+  await page.reload();
+  await expect(page.locator(".candidate-row")).toHaveCount(2);
+  await page.locator("#filter-review").selectOption("hidden");
+  await expect(page.locator(".candidate-row")).toHaveCount(1);
+  await page.getByRole("button", { name: "VISA IGEN" }).click();
+  await expect(page.locator(".candidate-row")).toHaveCount(0);
+  await page.locator("#filter-review").selectOption("all");
+  await expect(page.locator(".candidate-row")).toHaveCount(3);
+});
+
+test("avvisade arkivposter döljs i aktiv lista och kan granskas separat", async ({ page }) => {
+  await page.route("https://raw.githubusercontent.com/Bit-Balder/theve/main/data/editorial/reviews.json**", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        schemaVersion: 1,
+        entries: [{ identifier: "annan-film", decision: "rejected" }],
+      }),
+    });
+  });
+  await page.goto("/programschema/");
+  await expect(page.locator(".candidate-row")).toHaveCount(2);
+  await page.locator("#filter-review").selectOption("rejected");
+  await expect(page.locator(".candidate-row")).toHaveCount(1);
+  await expect(page.getByText("En annan film")).toBeVisible();
+  await page.getByRole("button", { name: "AVVISA I GITHUB" }).click();
+  await expect(page.locator("#selected-count")).toHaveText("1 VALDA ARKIVPOSTER");
+  await expect(page.locator("#decision")).toHaveValue("rejected");
 });
