@@ -44,7 +44,10 @@ async function requestJson(url) {
       }
     } catch (error) {
       lastError = error;
-      if (error.message?.startsWith("Internet Archive HTTP 4") && !error.message.endsWith("429")) {
+      if (
+        error.message?.startsWith("Internet Archive HTTP 4") &&
+        !error.message.endsWith("429")
+      ) {
         throw error;
       }
     }
@@ -76,12 +79,18 @@ async function main() {
   writeJson(join(reportDir, "report.json"), result.report);
   writeFileSync(join(reportDir, "report.md"), formatReport(result.report));
   console.log(
-    "Archive discovery: " + result.report.added + " new, " +
-      result.report.totalCandidates + " total, " +
-      result.report.errors.length + " errors.",
+    "Archive discovery: " +
+      result.report.added +
+      " new, " +
+      result.report.totalCandidates +
+      " total, " +
+      result.report.errors.length +
+      " errors.",
   );
   if (result.report.searched.length === 0) {
-    throw new Error("All Internet Archive searches failed. Review the report artifact.");
+    throw new Error(
+      "All Internet Archive searches failed. Review the report artifact.",
+    );
   }
 }
 
