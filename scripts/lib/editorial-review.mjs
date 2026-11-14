@@ -177,18 +177,12 @@ export function applyReviewRequest({
           " är redan publicerad. Använd en separat granskningsändring.",
       );
     }
-    if (request.decision !== "rejected") {
-      if (!IDENTIFIER.test(id)) throw new Error("Ogiltig identifierare " + id);
-      const duration = candidate.media?.durationSeconds;
-      if (
-        !Number.isFinite(duration) ||
-        duration < 1 ||
-        !/\.mp4$/i.test(candidate.media?.preferredFile || "")
-      ) {
-        throw new Error(id + " saknar MP4 eller speltid. Kontrollera källan.");
-      }
-    }
-    return { candidate, itemId };
+    const duration = candidate.media?.durationSeconds;
+    const catalogReady =
+      Number.isFinite(duration) &&
+      duration >= 1 &&
+      /\.mp4$/i.test(candidate.media?.preferredFile || "");
+    return { candidate, itemId, catalogReady };
   });
 
   for (const { candidate, itemId } of selected) {
