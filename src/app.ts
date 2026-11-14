@@ -15,6 +15,7 @@ import { DirectNumberBuffer } from "./core/direct-number-buffer";
 import { InternetArchiveAdapter } from "./core/internet-archive";
 import {
   type CachedForecast,
+  describeWeatherError,
   fetchMunicipalityWeather,
 } from "./core/local-weather";
 import { OverlayBackStack } from "./core/overlay-back-stack";
@@ -162,6 +163,7 @@ export function mountStartView(
   let weatherPreferences = readWeatherPreferences();
   let selectedWeather: CachedForecast | null = null;
   let localWeatherStatus: "loading" | "error" | "ready" = "loading";
+  let localWeatherError = "";
   let weatherRequestRevision = 0;
   const teletext = createTeletext({
     getPage: (number, channelName) => {
@@ -179,6 +181,7 @@ export function mountStartView(
         )?.name,
         selectedWeather: selectedWeather?.location,
         localWeatherStatus,
+        localWeatherError,
         isSelectedFavorite: Boolean(
           weatherPreferences.selectedId &&
             weatherPreferences.favorites.includes(
@@ -211,16 +214,19 @@ export function mountStartView(
   ): Promise<void> {
     const revision = ++weatherRequestRevision;
     localWeatherStatus = "loading";
+    localWeatherError = "";
     teletext.refresh();
     try {
       const result = await fetchMunicipalityWeather(municipality);
       if (revision !== weatherRequestRevision) return;
       selectedWeather = result;
       localWeatherStatus = "ready";
-    } catch {
+    } catch (error) {
       if (revision !== weatherRequestRevision) return;
       localWeatherStatus = "error";
+      localWeatherError = describeWeatherError(error);
       selectedWeather = null;
+      console.warn("Lokalt SMHI-väder kunde inte hämtas:", error);
     }
     teletext.refresh();
   }
