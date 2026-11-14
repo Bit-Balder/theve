@@ -38,6 +38,9 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   await expect(tv).toBeVisible();
   await expect(tv).toHaveAttribute("data-channel-id", "tv1");
   await expect(page.getByText("TV1 - Nyheter och kultur").first()).toBeVisible();
+  await expect(page.locator(".program-banner__next")).toContainText(
+    "NÄSTA - TV1 - Nyheter och kultur",
+  );
   await expect(page.locator(".channel-bug__logo")).toHaveAttribute(
     "src",
     "assets/logos/tv1-bug.svg",
