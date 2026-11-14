@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "period": {
+    "start": 1980,
+    "end": 2004
+  },
+  "settings": {
+    "searchesPerRun": 14,
+    "resultsPerSearch": 12,
+    "maxMetadataChecks": 168
+  },
+  "queries": [
+    {
+      "id": "barn-swedish",
+      "channel": "08",
+      "query": "mediatype:movies AND (language:swedish OR language:swe OR language:sv) AND (title:barn OR title:saga OR subject:barn)"
+    },
+    {
+      "id": "tv6-tecknat",
+      "channel": "06",
+      "query": "mediatype:movies AND (language:swedish OR language:swe OR language:sv) AND (title:tecknat OR subject:animation OR title:animerat)"
+    },
+    {
+      "id": "tv1-news-culture",
+      "channel": "01",
+      "query": "mediatype:movies AND (language:swedish OR language:swe OR language:sv) AND (title:nyheter OR subject:kultur OR title:reportage)"
+    },
+    {
+      "id": "tv2-society",
+      "channel": "02",
+      "query": "mediatype:movies AND (language:swedish OR language:swe OR language:sv) AND (title:debatt OR subject:politik OR title:samhälle)"
+    },
+    {
+      "id": "tv3-series",
+      "channel": "03",
+      "query": "mediatype:movies AND (language:swedish OR language:swe OR language:sv) AND (title:serie OR subject:komedi OR title:drama)"
+    },
+    {
+      "id": "tv4-entertainment",
+      "channel": "04",
+      "query": "mediatype:movies AND (language:swedish OR language:swe OR language:sv) AND (title:musik OR title:humor OR subject:underhållning)"
+    },
+    {
+      "id": "tv5-film",
+      "channel": "05",
+      "query": "mediatype:movies AND (language:swedish OR language:swe OR language:sv) AND (title:kortfilm OR subject:filmklassiker OR title:film)"
+    },
+    {
+      "id": "tv7-crime",
+      "channel": "07",
+      "query": "mediatype:movies AND (language:swedish OR language:swe OR language:sv) AND (title:kriminal OR subject:brott OR title:polis)"
+    },
+    {
+      "id": "natur-animals",
+      "channel": "09",
+      "query": "mediatype:movies AND (language:swedish OR language:swe OR language:sv) AND (title:natur OR title:djur OR subject:miljö)"
+    },
+    {
+      "id": "barn-vhs",
+      "channel": "08",
+      "query": "mediatype:movies AND (title:VHS OR description:VHS) AND (title:barn OR title:saga OR description:barnprogram)"
+    },
+    {
+      "id": "tv6-swedish-dub",
+      "channel": "06",
+      "query": "mediatype:movies AND (title:\"svensk dubbning\" OR description:\"svensk dubbning\" OR title:svenskdubbad)"
+    },
+    {
+      "id": "barn-classics",
+      "channel": "08",
+      "query": "mediatype:movies AND (title:\"Björnes magasin\" OR title:Bolibompa OR title:Bamse OR title:\"Ika i rutan\")"
+    },
+    {
+      "id": "tv6-animation",
+      "channel": "06",
+      "query": "mediatype:movies AND (title:tecknat OR title:\"svenskt tal\" OR subject:\"svensk animation\")"
+    },
+    {
+      "id": "barn-dubbed",
+      "channel": "08",
+      "query": "mediatype:movies AND (description:\"svenskt tal\" OR title:\"svenskt tal\") AND (title:barn OR description:barnfilm OR title:VHS)"
+    }
+  ]
+}
