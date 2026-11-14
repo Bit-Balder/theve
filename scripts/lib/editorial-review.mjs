@@ -185,7 +185,7 @@ export function applyReviewRequest({
     return { candidate, itemId, catalogReady };
   });
 
-  for (const { candidate, itemId } of selected) {
+  for (const { candidate, itemId, catalogReady } of selected) {
     const channelId = request.channelId || CHANNELS[candidate.suggestedChannel];
     if (!channelId)
       throw new Error("Ingen giltig kanal för " + candidate.identifier);
