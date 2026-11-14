@@ -196,6 +196,7 @@ export function applyReviewRequest({
       channelId,
       groupLabel: request.groupLabel,
       decision: request.decision,
+      catalogPending: !catalogReady && request.decision !== "rejected",
       basis: request.basis,
       evidenceUrl: request.evidenceUrl,
       licenseUrl: candidate.licenseUrl || null,
