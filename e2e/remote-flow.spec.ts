@@ -83,6 +83,8 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   const guideButton = page.getByRole("button", {
     name: "Öppna programguide",
   });
+  await page.keyboard.press("ArrowRight");
+  await expect(guideButton).toBeFocused();
   await guideButton.click();
   await expect(guide).toBeVisible();
   await page.keyboard.press("Escape");
