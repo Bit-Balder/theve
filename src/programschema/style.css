@@ -11,20 +11,26 @@ html {
 body {
   min-width: 320px;
   margin: 0;
-  background:
-    radial-gradient(circle at 50% 3%, #243672, #101839 55%, #070b19);
+  background: radial-gradient(circle at 50% 3%, #243672, #101839 55%, #070b19);
 }
 
-button, input, textarea, select {
+button,
+input,
+textarea,
+select {
   font: inherit;
 }
 
-button, select {
+button,
+select {
   cursor: pointer;
 }
 
-button:focus-visible, input:focus-visible, textarea:focus-visible,
-select:focus-visible, a:focus-visible {
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
   outline: 3px solid var(--color-yellow);
   outline-offset: 3px;
 }
@@ -52,7 +58,10 @@ select:focus-visible, a:focus-visible {
   text-decoration: none;
 }
 
-h1, h2, h3, p {
+h1,
+h2,
+h3,
+p {
   margin-top: 0;
 }
 
@@ -134,8 +143,12 @@ label {
   color: var(--color-yellow);
 }
 
-input[type="search"], input[type="url"], input[type="text"],
-input:not([type]), textarea, select {
+input[type="search"],
+input[type="url"],
+input[type="text"],
+input:not([type]),
+textarea,
+select {
   width: 100%;
   min-height: 46px;
   border: 2px solid #6271a5;
@@ -146,7 +159,8 @@ input:not([type]), textarea, select {
   font-size: 15px;
 }
 
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: #b1b3bf;
 }
 
@@ -192,7 +206,9 @@ select option {
   gap: 20px;
 }
 
-.catalog, .review-panel, .import-panel {
+.catalog,
+.review-panel,
+.import-panel {
   min-width: 0;
   border: 1px solid #8992b5;
   background: rgb(0 0 0 / 36%);
@@ -315,7 +331,8 @@ select option {
   overflow-y: auto;
 }
 
-.review-panel h2, .review-panel p {
+.review-panel h2,
+.review-panel p {
   margin-bottom: 0;
 }
 
@@ -349,7 +366,9 @@ select option {
   accent-color: var(--color-yellow);
 }
 
-.rights-note, .privacy, .small {
+.rights-note,
+.privacy,
+.small {
   font-size: 12px;
   color: #cbd0df;
 }
