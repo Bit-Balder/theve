@@ -1,43 +1,54 @@
 import type { WeatherLocation } from "./teletext";
 import type { Municipality } from "./weather-places";
 
-const PARAMETERS =
-  "air_temperature,wind_speed,precipitation_amount_mean,symbol_code";
 const CACHE_AGE_MS = 60 * 60 * 1000;
-const STORAGE_PREFIX = "theve.weather.forecast.v1.";
+const STORAGE_PREFIX = "theve.weather.forecast.v2.";
+const OPEN_METEO_ORIGIN = "https://api.open-meteo.com";
+const HOURLY_FIELDS = "temperature_2m,precipitation,wind_speed_10m";
 
 export interface CachedForecast {
   readonly fetchedAt: string;
   readonly location: WeatherLocation;
 }
 
-export function describeWeatherError(error: unknown): string {
-  if (error instanceof Error) {
-    const httpMatch = error.message.match(/^SMHI svarade HTTP (\d{3})\.$/);
-    if (httpMatch) return `SMHI SVARADE HTTP ${httpMatch[1]}`;
-    if (error.name === "TimeoutError" || error.name === "AbortError") {
-      return "SMHI SVARADE INTE I TID";
-    }
-    if (error instanceof SyntaxError) {
-      return "SMHI SKICKADE ETT FELAKTIGT SVAR";
-    }
-    if (error instanceof TypeError) {
-      return "NÄTVERK ELLER WEBBLÄSARE STOPPADE SMHI";
-    }
-  }
-  return "SMHI-PROGNOSEN KUNDE INTE HÄMTAS";
+interface ForecastApiResponse {
+  readonly hourly?: {
+    readonly time?: readonly number[];
+    readonly temperature_2m?: readonly (number | null)[];
+    readonly precipitation?: readonly (number | null)[];
+    readonly wind_speed_10m?: readonly (number | null)[];
+  };
 }
 
-export function smhiPointUrl(municipality: Municipality): string {
-  return (
-    "https://opendata-download-metfcst.smhi.se/api/category/snow1g/" +
-    "version/1/geotype/point/lon/" +
-    municipality.longitude +
-    "/lat/" +
-    municipality.latitude +
-    "/data.json?timeseries=8&parameters=" +
-    PARAMETERS
-  );
+export function describeWeatherError(error: unknown): string {
+  if (error instanceof Error) {
+    const httpMatch = error.message.match(
+      /^Open-Meteo svarade HTTP (\d{3})\.$/,
+    );
+    if (httpMatch) return "OPEN-METEO SVARADE HTTP " + httpMatch[1];
+    if (error.name === "TimeoutError" || error.name === "AbortError") {
+      return "VÄDERTJÄNSTEN SVARADE INTE I TID";
+    }
+    if (error instanceof SyntaxError) {
+      return "VÄDERTJÄNSTEN SKICKADE FELAKTIG DATA";
+    }
+    if (error instanceof TypeError) {
+      return "NÄTVERK ELLER WEBBLÄSARE STOPPADE DATA";
+    }
+  }
+  return "LOKAL VÄDERPROGNOS KUNDE INTE HÄMTAS";
+}
+
+export function openMeteoForecastUrl(municipality: Municipality): string {
+  const url = new URL("/v1/forecast", OPEN_METEO_ORIGIN);
+  url.searchParams.set("latitude", String(municipality.latitude));
+  url.searchParams.set("longitude", String(municipality.longitude));
+  url.searchParams.set("hourly", HOURLY_FIELDS);
+  url.searchParams.set("wind_speed_unit", "ms");
+  url.searchParams.set("precipitation_unit", "mm");
+  url.searchParams.set("timeformat", "unixtime");
+  url.searchParams.set("forecast_days", "2");
+  return url.toString();
 }
 
 export function readCachedForecast(
@@ -48,20 +59,70 @@ export function readCachedForecast(
     const value = localStorage.getItem(STORAGE_PREFIX + municipality.id);
     if (!value) return null;
     const parsed = JSON.parse(value) as CachedForecast;
-    if (!parsed.location || !Array.isArray(parsed.location.forecasts))
-      return null;
-    if (nowEpochMs - Date.parse(parsed.fetchedAt) > CACHE_AGE_MS) return null;
-    if (nowEpochMs < Date.parse(parsed.fetchedAt)) return null;
+    const fetchedAtEpoch = Date.parse(parsed.fetchedAt);
+    if (!Number.isFinite(fetchedAtEpoch)) return null;
+    if (nowEpochMs - fetchedAtEpoch > CACHE_AGE_MS) return null;
+    if (nowEpochMs < fetchedAtEpoch) return null;
+    if (!parsed.location?.sourceUrl.startsWith(OPEN_METEO_ORIGIN)) return null;
+    if (!Array.isArray(parsed.location.forecasts)) return null;
     if (
       !parsed.location.forecasts.some(
         (forecast) => Date.parse(forecast.validAt) >= nowEpochMs,
       )
-    )
+    ) {
       return null;
+    }
     return parsed;
   } catch {
     return null;
   }
+}
+
+function readForecasts(response: ForecastApiResponse) {
+  const hourly = response.hourly;
+  const times = hourly?.time;
+  const temperatures = hourly?.temperature_2m;
+  const precipitation = hourly?.precipitation;
+  const wind = hourly?.wind_speed_10m;
+  if (
+    !times?.length ||
+    !temperatures ||
+    !precipitation ||
+    !wind ||
+    times.length !== temperatures.length ||
+    times.length !== precipitation.length ||
+    times.length !== wind.length
+  ) {
+    throw new Error("Vädertjänsten saknar fullständiga timprognoser.");
+  }
+  const forecasts = times.flatMap((time, index) => {
+    const temperatureC = temperatures[index];
+    const precipitationMm = precipitation[index];
+    const windMps = wind[index];
+    if (
+      !Number.isFinite(time) ||
+      !Number.isFinite(temperatureC) ||
+      !Number.isFinite(precipitationMm) ||
+      !Number.isFinite(windMps) ||
+      temperatureC === null ||
+      precipitationMm === null ||
+      windMps === null
+    ) {
+      return [];
+    }
+    return [
+      {
+        validAt: new Date(time * 1000).toISOString(),
+        temperatureC,
+        precipitationMm,
+        windMps,
+      },
+    ];
+  });
+  if (forecasts.length === 0) {
+    throw new Error("Vädertjänsten saknar giltiga prognosvärden.");
+  }
+  return forecasts;
 }
 
 export async function fetchMunicipalityWeather(
@@ -70,39 +131,16 @@ export async function fetchMunicipalityWeather(
 ): Promise<CachedForecast> {
   const cached = readCachedForecast(municipality);
   if (cached) return cached;
-  const sourceUrl = smhiPointUrl(municipality);
+  const sourceUrl = openMeteoForecastUrl(municipality);
   const response = await fetcher(sourceUrl, {
-    headers: { Accept: "application/json" },
     signal: AbortSignal.timeout(15_000),
   });
   if (!response.ok) {
-    throw new Error("SMHI svarade HTTP " + response.status + ".");
+    throw new Error("Open-Meteo svarade HTTP " + response.status + ".");
   }
-  const snapshot = (await response.json()) as {
-    timeSeries?: {
-      time: string;
-      data: {
-        air_temperature: number;
-        wind_speed: number;
-        precipitation_amount_mean: number;
-        symbol_code: number;
-      };
-    }[];
-  };
-  if (!Array.isArray(snapshot.timeSeries) || snapshot.timeSeries.length === 0) {
-    throw new Error("SMHI saknar prognos för kommunen.");
-  }
-  const forecasts = snapshot.timeSeries
-    .filter((item) => item.data && typeof item.time === "string")
-    .map((item) => ({
-      validAt: item.time,
-      temperatureC: item.data.air_temperature,
-      windMps: item.data.wind_speed,
-      precipitationMm: item.data.precipitation_amount_mean,
-      symbolCode: item.data.symbol_code,
-    }));
-  if (forecasts.length === 0)
-    throw new Error("SMHI skickade inga prognosvärden.");
+  const forecasts = readForecasts(
+    (await response.json()) as ForecastApiResponse,
+  );
   const result: CachedForecast = {
     fetchedAt: new Date().toISOString(),
     location: {
@@ -120,7 +158,7 @@ export async function fetchMunicipalityWeather(
       JSON.stringify(result),
     );
   } catch {
-    // Prognosen går att visa utan lokal cache.
+    // Prognosen går att visa även när lokal lagring saknas.
   }
   return result;
 }

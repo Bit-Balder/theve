@@ -7,6 +7,24 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
     const fixedNow = Date.parse("2026-11-13T13:05:00.000Z");
     Date.now = () => fixedNow;
   });
+  await page.route("https://api.open-meteo.com/v1/forecast**", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      headers: { "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify({
+        hourly: {
+          time: [
+            Date.parse("2026-11-13T14:00:00Z") / 1000,
+            Date.parse("2026-11-13T15:00:00Z") / 1000,
+          ],
+          temperature_2m: [3.5, 4.2],
+          precipitation: [0, 0.2],
+          wind_speed_10m: [2.3, 3.1],
+        },
+      }),
+    });
+  });
   await page.goto("/");
 
   await expect(
@@ -88,6 +106,8 @@ test("hela TV-flödet fungerar med tangentbord som fjärrkontroll", async ({
   await page.keyboard.press("Enter");
   await expect(teletext).toHaveAttribute("data-page-number", "300");
   await expect(teletext.getByText("DITT LOKALA VÄDER")).toBeVisible();
+  await expect(teletext.getByText(/KÄLLA: OPEN-METEO.COM/)).toBeVisible();
+  await expect(teletext.getByText(/TEMPERATUR 4°C/)).toBeVisible();
   await page.keyboard.press("Enter");
   await page.keyboard.press("3");
   await page.keyboard.press("0");

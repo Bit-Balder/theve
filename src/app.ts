@@ -226,7 +226,7 @@ export function mountStartView(
       localWeatherStatus = "error";
       localWeatherError = describeWeatherError(error);
       selectedWeather = null;
-      console.warn("Lokalt SMHI-väder kunde inte hämtas:", error);
+      console.warn("Lokalt Open-Meteo-väder kunde inte hämtas:", error);
     }
     teletext.refresh();
   }

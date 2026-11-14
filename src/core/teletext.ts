@@ -23,7 +23,7 @@ export interface WeatherForecast {
   readonly temperatureC: number;
   readonly windMps: number;
   readonly precipitationMm: number;
-  readonly symbolCode: number;
+  readonly symbolCode?: number;
 }
 
 export interface WeatherLocation {
@@ -354,7 +354,7 @@ function localRows(context: TeletextPageContext): readonly string[] {
     return [
       name,
       context.localWeatherStatus === "error"
-        ? "KUNDE INTE HÄMTA VÄDER FRÅN SMHI"
+        ? "KUNDE INTE HÄMTA LOKALT VÄDER"
         : "HÄMTAR LOKAL VÄDERPROGNOS",
       ...(context.localWeatherStatus === "error" && context.localWeatherError
         ? [context.localWeatherError]
@@ -382,8 +382,8 @@ function localRows(context: TeletextPageContext): readonly string[] {
     "303  TIMPROGNOS",
     "304  SVERIGEÖVERSIKT",
     "",
-    "KÄLLA: SMHI ÖPPNA DATA",
-    "BEARBETAD AV THEVE",
+    "KÄLLA: OPEN-METEO.COM",
+    "DATA CC BY 4.0 · BEARBETAD AV THEVE",
   ];
 }
 
@@ -433,7 +433,8 @@ function createHourlyWeather(context: TeletextPageContext): TeletextPage {
         ),
         ...(forecasts.length === 0 ? ["301  VÄLJ LÄN OCH KOMMUN"] : []),
         "",
-        "KÄLLA SMHI · BEARBETAD AV THEVE",
+        "KÄLLA OPEN-METEO.COM · CC BY 4.0",
+        "BEARBETAD AV THEVE",
       ],
       context.nowEpochMs,
     ),

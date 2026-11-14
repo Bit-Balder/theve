@@ -35,19 +35,35 @@ Uppgifterna är bearbetade från Marcus Asplunds kommundata (2017)
 under MIT-licens. Se [källan och dess licens](https://github.com/marcusasplund/kommundata).
 Kommunindelningen bör kontrolleras mot SCB när nya register publiceras.
 
-När en kommun väljs anropar webbläsaren endast denna kommuns punkt
-via [SMHI:s SNOW1G-API](https://www.smhi.se/data/sok-oppna-data-i-utforskaren/meteorologisk-prognos-api).
+När en kommun väljs anropar webbläsaren bara den kommunens punkt
+via [Open-Meteos prognos-API](https://open-meteo.com/en/docs).
+Open-Meteo dokumenterar stöd för CORS och kräver ingen API-nyckel för
+icke-kommersiell användning. Det löser SMHI:s CORS-blockering på GitHub Pages.
+
+Theve begär timvärden för temperatur, nederbörd och vind.
+Vind anges uttryckligen i m/s, tider levereras som UTC-tidsstämplar.
+Theve formaterar sedan tiderna för Europe/Stockholm.
 En prognos återanvänds lokalt i högst en timme.
-Vi gör inte 290 parallella förfrågningar.
+Vi gör inte 290 parallella förfrågningar och hämtar ingen prognos i förväg.
 
-Direkt anrop kräver att TV-webbläsaren kan nå SMHI.
-Om anropet misslyckas visas ett tydligt fel i Text-TV.
+**Lokalt väder:** Källa [Open-Meteo.com](https://open-meteo.com/).
+Data: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Bearbetad av Theve: urval av variabler, kommunpunkt och avrundning.
+Open-Meteos kostnadsfria API avser icke-kommersiell användning.
+Kontrollera deras villkor om Theve senare blir en kommersiell tjänst.
 
-Det separata väderarbetsflödet startar var tredje timme på main.
-Det uppdaterar tre förvalda översiktspunkter, bygger om webbplatsen
-och publicerar vädret via GitHub Pages utan någon commit till main.
+**Sverigeöversikt:** Fortsätter använda
+[SMHI:s SNOW1G-API](https://www.smhi.se/data/sok-oppna-data-i-utforskaren/meteorologisk-prognos-api).
+Det separata väderarbetsflödet körs var tredje timme på main.
+Det uppdaterar tre förvalda SMHI-punkter, bygger om webbplatsen
+och publicerar via GitHub Pages utan någon commit till main.
 Om SMHI inte svarar publiceras inget nytt bygge.
 Den tidigare webbplatsen fortsätter att fungera.
+
+Nya lokala data använder en ny lagringsnyckel.
+Theve återanvänder därför inte tidigare SMHI-svar som lokala Open-Meteo-data.
+Om en användares webbläsare blockerar även Open-Meteo
+visar Text-TV ett nätverksfel. Det bör testas på den slutliga TV-enheten.
 
 ## Kommunregistrets MIT-licens
 
